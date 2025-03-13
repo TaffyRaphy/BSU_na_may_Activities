@@ -4,39 +4,123 @@ import java.util.Scanner;
 
 public class Activity4 {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in); // user input
-        String words, nospace; // storing the needed strings
-        int i, white = 0; // used for counting
+        Scanner input = new Scanner(System.in);
+        char[] vowels = "aeiouAEIOU".toCharArray();
+        char[] consonants = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ".toCharArray();
+        char[] reversedChar;
+        int i, ctr, str = 0, maxLength = 0, index = 0, vowelcout = 0, consocount = 0;
+        String userword, reversed, currentchecking = "", longestWords = "", conat;
+        String predef = "HUZZAH";
+        boolean palindrome, same, same2;
 
-        System.out.println("Welcome to string manipulation!\nInstructions: ");
-        System.out.println("- This program asks you to enter words (It can be more than 1)");
-        System.out.println("- After entering the word press enter");
-        System.out.println(
-                "- According to your input, the program will the following:\n\t-Total number of characters\n\t-Total number of white spaces\n\t-Updated string removing the whitespaces");
-        lineDesign();
-        System.out.print("Enter your words here:\t");
-        words = input.nextLine();
+        System.out.println("Sup bro imma manipulate you");
+        System.out.println("Ermm this program predefined string is " + predef);
+        System.out.print("Enter your shit here:\t");
+        userword = input.nextLine();
+        System.out.println();
+        reversedChar = new char[userword.length()];
 
-        for (i = 0; i < words.length(); i++) {
-            // checking if the string has whitespace
-            if (words.charAt(i) == ' ') {
-                white++; // whitespace counter
+        // counting the vowels
+        for (i = 0; i < userword.length(); i++) {
+            for (ctr = 0; ctr < vowels.length; ctr++) {
+                if (vowels[ctr] == userword.charAt(i)) {
+                    vowelcout++;
+                }
             }
         }
-        nospace = words.replace(" ", ""); // replacing the white space with no space
-        lineDesign();
-        System.out.println("Your total number of characters:\t\t" + words.length());
-        System.out.println("Your total number of white spaces:\t\t" + white);
-        System.out.println("Your updated string without white spaces:\t" + nospace);
-        lineDesign();
-        System.out.println("Thank you for using this program o7");
-    }
 
-    // line design
-    public static void lineDesign() {
-        for (int i = 0; i < 50; i++) {
-            System.out.print("-");
+        // counting the consonants
+        for (i = 0; i < userword.length(); i++) {
+            for (ctr = 0; ctr < consonants.length; ctr++) {
+                if (consonants[ctr] == userword.charAt(i)) {
+                    consocount++;
+                }
+            }
         }
-        System.out.println();
+        // this section is reversing the word
+        for (i = userword.length() - 1; i >= 0; i--) {
+            reversedChar[index] = userword.charAt(i);
+            index++;
+        }
+        reversed = new String(reversedChar);
+
+        // this section is where finding the longest word
+        for (i = 0; i < userword.length(); i++) {
+            if (userword.charAt(i) == ' ') {
+                currentchecking = userword.substring(str, i);
+
+                // Compare with max length found so far
+                if (currentchecking.length() > maxLength) {
+                    maxLength = currentchecking.length();
+                    longestWords = currentchecking; // Reset list with new longest
+                } else if (currentchecking.length() == maxLength) {
+                    longestWords += " and " + currentchecking; // Add to list of longest words
+                }
+
+                str = i + 1; // put the starting to the current
+            }
+        }
+
+        // this is checking after the last space
+        if (str < userword.length()) {
+            currentchecking = userword.substring(str);
+            if (currentchecking.length() > maxLength) {
+                maxLength = currentchecking.length();
+                longestWords = currentchecking;
+            } else if (currentchecking.length() == maxLength) {
+                if (longestWords.isEmpty()) {
+                    longestWords = currentchecking;
+                } else {
+                    longestWords += " and " + currentchecking;
+                }
+            }
+        }
+
+        // checking if a palindrome
+        if (reversed.equals(userword)) {
+            palindrome = true;
+        } else {
+            palindrome = false;
+        }
+
+        // checking if equals to the predefined string
+        if (predef.equals(userword)) {
+            same = true;
+        } else {
+            same = false;
+        }
+
+        if (predef.equalsIgnoreCase(userword)) {
+            same2 = true;
+        } else {
+            same2 = false;
+        }
+
+        // concatenating the user input
+        conat = userword.concat(predef);
+
+        System.out.println("The number of vowels : " + vowelcout);
+        System.out.println("The number of consonant : " + consocount);
+        // printing if the longest has a tie
+        if (longestWords.contains(" and ")) {
+            System.out.println("Multiple words tie for longest length: " + longestWords);
+        } else {
+            System.out.println("Longest word: " + longestWords);
+        }
+        // printing if palindrome
+        if (palindrome) {
+            System.out.println("Your string is a palindrome!!");
+        } else {
+            System.out.println("Damn, your string is not a palindrome");
+        }
+        System.out.println("Your string in Uppercase: " + userword.toUpperCase());
+        System.out.println("Your string in Lowercase: " + userword.toLowerCase());
+        System.out.println("Your string in Reverse: " + reversed);
+        // print the Equals to the predefined string
+        System.out.println("Is your string equal (Case sensitive) to the predefined string: " + same);
+        System.out.println("Is your string equal (Not Case sensitive) to the predefined string: " + same2);
+        System.out.println("Your string but concatenated with the predefined string: " + conat);
+
+        System.out.println("\nThank you at ayoko na mag prog BAWUHAWUW");
     }
 }

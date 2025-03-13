@@ -1,8 +1,6 @@
-package CC104;
-
 import java.util.Scanner;
 
-public class Activity2 {
+public class Activity1 {
     public static void main(String[] args) {
         int[] arawkopo = new int[10];
         Scanner input = new Scanner(System.in);
