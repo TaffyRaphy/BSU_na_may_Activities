@@ -20,6 +20,7 @@ public class Activity5 {
         System.out.println();
         reversedChar = new char[userword.length()];
 
+        // counting the vowels
         for (i = 0; i < userword.length(); i++) {
             for (ctr = 0; ctr < vowels.length; ctr++) {
                 if (vowels[ctr] == userword.charAt(i)) {
@@ -28,6 +29,7 @@ public class Activity5 {
             }
         }
 
+        // counting the consonants
         for (i = 0; i < userword.length(); i++) {
             for (ctr = 0; ctr < consonants.length; ctr++) {
                 if (consonants[ctr] == userword.charAt(i)) {
@@ -35,13 +37,14 @@ public class Activity5 {
                 }
             }
         }
-
+        // this section is reversing the word
         for (i = userword.length() - 1; i >= 0; i--) {
             reversedChar[index] = userword.charAt(i);
             index++;
         }
         reversed = new String(reversedChar);
 
+        // this section is where finding the longest word
         for (i = 0; i < userword.length(); i++) {
             if (userword.charAt(i) == ' ') {
                 currentchecking = userword.substring(str, i);
@@ -117,6 +120,7 @@ public class Activity5 {
         System.out.println("Is your string equal (Case sensitive) to the predefined string: " + same);
         System.out.println("Is your string equal (Not Case sensitive) to the predefined string: " + same2);
         System.out.println("Your string but concatenated with the predefined string: " + conat);
+
         System.out.println("\nThank you at ayoko na mag prog BAWUHAWUW");
     }
 }
