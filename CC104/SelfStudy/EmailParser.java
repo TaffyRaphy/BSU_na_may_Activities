@@ -42,7 +42,7 @@ public class EmailParser {
             System.out.println(
                     "- Is BULSU email:\tNo, your email is not a BULSU email :< (boooo di kita kababayan JAJAHAHAH)");
         }
-        System.out.println("- Top-level domain:\t" + censoredemail);
+        System.out.println("- Censored email::\t" + censoredemail);
         lineDesign();
         System.out.println("Program ended HUZZAH!!!");
     }
