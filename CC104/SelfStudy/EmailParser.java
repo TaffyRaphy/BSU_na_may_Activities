@@ -171,6 +171,20 @@ public class EmailParser {
         return censoredemail;
     }
 
+    /*
+     * public static String censorUser(String username, String domain) {
+     * if (username.length() <= 2) {
+     * return "*@" + domain;
+     * }
+     * 
+     * char firstChar = username.charAt(0);
+     * char lastChar = username.charAt(username.length() - 1);
+     * String asterisks = "*".repeat(username.length() - 2);
+     * 
+     * return firstChar + asterisks + lastChar + "@" + domain;
+     * }
+     */
+
     // Line design method
     public static void lineDesign() {
         int i;
