@@ -1,5 +1,3 @@
-package CC104;
-
 import java.util.Scanner;
 
 public class Exercise3 {
