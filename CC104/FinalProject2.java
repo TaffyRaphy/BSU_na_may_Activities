@@ -1,593 +1,517 @@
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner; //All imports needed will be called
 
 public class FinalProject2 {
-    // Set variables for the cilents
-    static ArrayList<Integer> cilents_Number = new ArrayList<>();
-    static ArrayList<String> cilents_Name = new ArrayList<>();
-    static ArrayList<String> cilents_Address = new ArrayList<>();
-    static ArrayList<String> cilents_Email = new ArrayList<>(); // gamitin nyo regex HAHAHA (name@domain.com)
-    static ArrayList<String> cilents_Contact_Number = new ArrayList<>(); // gamitin nyo regex HAHAHA (dapat format
-                                                                         // 0000-000-0000pero dapat di ganyan pag input
-                                                                         // ni user, 12 digits lang)
 
-    // Set variables for the transanctions
-    static ArrayList<Integer> transanctions_Cilent_Number = new ArrayList<>();
-    static ArrayList<Integer> transanctions_Transanction_Number = new ArrayList<>();
+    static ArrayList<String> transNums = new ArrayList<>(); // View by TransacNum
+    static ArrayList<String> transAccNums = new ArrayList<>(); // View by AccNum
+    static ArrayList<String> loanTypes = new ArrayList<>(); // View by Loan Types
+    static ArrayList<Double> loanAmo = new ArrayList<>(); // Loan Amount (niloan ni user)
+    static ArrayList<Double> monPay = new ArrayList<>(); // Monthly Payment (babayarn ni user kada buwan kasama na
+                                                         // interest)
+    static ArrayList<Integer> loanTerms = new ArrayList<>(); // Loan Term (months)
+    static ArrayList<Boolean> approvals = new ArrayList<>(); // Approval Status
+    static ArrayList<Double> loanInterest = new ArrayList<>();
+    static ArrayList<Double> maturityValues = new ArrayList<>(); // * Total amount to be paid (Principal + Interest)
+    static ArrayList<Double> yearlyPay = new ArrayList<>(); // Yearly payment
 
-    // Loan data for viewing
-    static ArrayList<Integer> transanction_Baby_Loan_Transanction_Numbers = new ArrayList<>();
-    static ArrayList<Float> transanctions_Loan_amount = new ArrayList<>();
-    static ArrayList<String> transanctions_Loan_Type = new ArrayList<>();
-    static ArrayList<Integer> transanctions_Loan_Intrest = new ArrayList<>();
-    static ArrayList<Float> transanctions_LoanIntrest_Amount = new ArrayList<>();
-    static ArrayList<Float> transanctions_LoanMonthly_Amortization = new ArrayList<>();
-    static ArrayList<Integer> transanctions_Loan_Term = new ArrayList<>();
-    static ArrayList<Float> transanctions_Total_Due_Amount = new ArrayList<>();
-
-    // Set starting cilent and transanction number
-    static int cilent_Number = 2020;
-    static int transanction_Number = 1010;
-
-    // declare Scanner as a global variable
-    static Scanner input = new Scanner(System.in);
+    // Storing Account Infos
+    static ArrayList<String> clientAccNum = new ArrayList<>(); // account numbers
+    static ArrayList<String> clientName = new ArrayList<>(); // client names
+    static ArrayList<Double> salaries = new ArrayList<>(); // monthly salaries
 
     public static void main(String[] args) {
-        System.out.println(
-                "Naka lagay dito ang instructions ng program at ano ginagawa ng program!!! (edit this please)");
-        boolean exit = false;
-        while (!exit) {
-            System.out.println("Welcome to the main menu of this program");
-            System.out.println(
-                    "Here is your selection\n1. Add account. \n2. New Transaction.\n3. View transaction.\n4. Exit.");
-            System.out.print("\nPlease enter your choice here (1-4):\t");
-            int choice = input.nextInt();
+        Scanner s = new Scanner(System.in);
 
-            switch (choice) {
-                case 1:
-                    add_Account();
-                    break;
-                case 2:
-                    add_Transanction();
-                    break;
-                case 3:
-                    view_Transanction_Menu();
-                    break;
-                case 4:
-                    exit = true;
-                    System.out.println("Sayonara!");
-                    break;
+        // declaration of variables
+        String accNum = "", name, loantype = "";
+        double salary = 0, principal = 0, rate = 0, max = 0;
+        int index, loanchoice = 0, term = 0, viewchoice, menuChoice = 0;
+        int acctr = 1; // Counter for Creating unique AccNum
+        int transctr = 1; // For TransacNum (ginaya ko lang yung ginawa ni jims)
 
-                default:
-                    System.out.println("Invalid choice Please input a number.");
-                    break;
-                // Dapat may try catch para ma punta dito
+        // introduction
+        System.out.println("\n                 【 Welcome to Loan Computation 】                 ");
+        System.out.println("        ╭───────────────────────────────────────────────╮          ");
+        System.out.println("        ┊  The Program Computes Loan Interest, Monthly  ┊          ");
+        System.out.println("        │  Amortization. This Program also list User's  │          ");
+        System.out.println("        ┊  Transactionns.                               ┊          ");
+        System.out.println("        ╰───────────────────────────────────────────────╯          ");
+
+        while (true) { // main menu loop
+            // display menu options
+            System.out.println("\n        ╭───────────────────────────────────────────────╮          ");
+            System.out.println("        │              Select from the Menu             │          ");
+            System.out.println("        │  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮  │          ");
+            System.out.println("        │  ┊   [1]  »  Add Account                   ┊  │          ");
+            System.out.println("        │  ┊                                         ┊  │          ");
+            System.out.println("        │  ┊   [2]  »  New Transaction               ┊  │          ");
+            System.out.println("        │  ┊                                         ┊  │          ");
+            System.out.println("        │  ┊   [3]  »  View Transaction              ┊  │          ");
+            System.out.println("        │  ┊                                         ┊  │          ");
+            System.out.println("        │  ┊   [4]  »  Exit                          ┊  │          ");
+            System.out.println("        │  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯  │          ");
+            System.out.println("        ╰───────────────────────────────────────────────╯          \n");
+
+            try { // Checking menu choice
+                System.out.print(" ➤ Enter Choice: ");
+                menuChoice = s.nextInt();
+                s.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                s.nextLine();
+                continue;
             }
-        }
-    }
+            System.out.println("\n┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
 
-    // method for adding account here
-    public static void add_Account() {
-        System.out.println("Adding a account!!");
-
-        int adding_cilent_number = generate_Cilent_Number();
-        System.out.println("Your new Cilent Number : " + adding_cilent_number);
-
-        input.nextLine();
-        String name;
-        System.out.print("Enter your name: \t");
-        name = input.nextLine();
-
-        String adress;
-        System.out.print("Enter your address: \t");
-        adress = input.nextLine();
-
-        String email;
-        System.out.print("Enter your email (must be valid email): \t");
-        email = input.nextLine();
-
-        String number;
-        System.out.print("Enter your contact number (must be valid number): \t");
-        number = input.nextLine();
-
-        // Adding the data to the arrays
-        cilents_Number.add(adding_cilent_number);
-        cilents_Name.add(name);
-        cilents_Address.add(adress);
-        cilents_Email.add(email);
-        cilents_Contact_Number.add(number);
-
-        System.out.println("\n===========\nAccount added sucessfully");
-        System.out.println("Remember your Cilent number : " + adding_cilent_number);
-        System.out.println("You need to input your Cilent to add a transanction\n");
-    }
-
-    // method for adding transanction here
-    public static void add_Transanction() {
-        System.out.print("Enter a Cilent Number for this transanction: \t");
-        int input_Cilent = input.nextInt();
-        int finding_Cilent_Index = find_Cilent_Index(input_Cilent);
-
-        if (finding_Cilent_Index == -1) {
-            System.out.println("Cilent not found, try again");
-            return;
-        }
-
-        // generating transaction number
-        System.out.println("\nCilent Found: " + cilents_Number.get(finding_Cilent_Index));
-        int new_Transanction_Number = generate_Transanction_Number();
-        System.out.println("Transanction Number: \t" + new_Transanction_Number);
-
-        transanctions_Transanction_Number.add(new_Transanction_Number);
-        transanctions_Cilent_Number.add(input_Cilent);
-
-        loan_Selection(new_Transanction_Number);
-
-        System.out.println("==================");
-        System.out.println("Transanction added Succesfully");
-        System.out.println("Transanction Number: \t" + new_Transanction_Number + "\n");
-    }
-
-    // create a method for selection of viewing transanction here
-    public static void view_Transanction_Menu() {
-        boolean balik = false;
-        while (!balik) {
-            System.out.println("View transanctions menu");
-            System.out.println("1. View by Cilent Number");
-            System.out.println("2. View by Transanction Number");
-            System.out.println("3. View by Loan Type");
-            System.out.println("4. View by All Trasanction");
-            System.out.println("5. Go back to Main Menu");
-            System.out.print("Enter your choice:\t");
-
-            int choice = input.nextInt();
-
-            switch (choice) {
-                case 1:
-                    view_by_Cilent_Numeber();
-                    break;
-                case 2:
-                    view_by_Transanction_Number();
-                    break;
-                case 3:
-                    view_by_Loan_Type();
-                    break;
-                case 4:
-                    view_by_All_Transactions();
-                    break;
-                case 5:
-                    break;
-                default:
-                    System.out.println("Invalid choice Please input a number.");
-                    break;
-                // Dapat may try catch para ma punta dito
-            }
-        }
-    }
-
-    // method for Loan selection
-    public static void loan_Selection(int transanction_Number) {
-        System.out.print("Enter the number of loans for this transactions (at least one loan):\t");
-        int num_Loans;
-        num_Loans = input.nextInt();
-        input.nextLine();
-
-        if (num_Loans <= 0) {
-            System.out.print("You should transact at least one loan. Type it here:\t");
-            num_Loans = input.nextInt();
-            input.nextLine();
-        }
-        int i;
-        for (i = 0; i < num_Loans; i++) {
-            System.out.println("Loan #" + (i + 1));
-            System.out.println("\nSelect a Loan Type:");
-            System.out.println("1. Regular Loan");
-            System.out.println("2. Emergency Loan");
-
-            System.out.print("\nInput your choice here (1-2):\t");
-            int loanChoice = input.nextInt();
-            switch (loanChoice) {
-                case 1:
-                    compute_Regular();
-                    break;
-                case 2:
-                    compute_Emergency();
-                    break;
-                default:
-                    System.out.print("Input your choice here (1-2):\t");
-                    break;
-            }
-            input.nextLine();
-            transanction_Baby_Loan_Transanction_Numbers.add(transanction_Number);
-        }
-
-    }
-
-    // method to compute Regular loan
-    public static void compute_Regular() {
-        float amount = 0;
-        while (true) {
-            System.out.print("\nInput loan amount (maximum of 60k Pesos ) : Pesos");
-            amount = input.nextFloat();
-            if (amount >= 60000) {
-                System.out.println("You have reached the maxium ammount. Please borrow less than 60k");
-            } else {
+            if (menuChoice == 4) { // Exit
+                System.out.println("Exiting...");
                 break;
             }
-        }
 
-        System.out.println("\nSelect the terms of your payment");
-        System.out.println("1. 1 year");
-        System.out.println("2. 2 years");
-        System.out.print("Input your choice here (1-2):\t");
-        int Term_choice;
-        Term_choice = input.nextInt();
+            switch (menuChoice) {
+                case 1: // Add new Account
+                    System.out.print("\n ➤ Enter Full Name         : ");
+                    name = s.nextLine();
 
-        int term_in_months = 0, term_in_years = 0;
-        switch (Term_choice) {
-            case 1:
-                term_in_months = 12;
-                term_in_years = 1;
-                break;
-            case 2:
-                term_in_months = 24;
-                term_in_years = 2;
-                break;
-            default:
-                System.out.print("Input your choice here (1-2):\t");
-                break;
-        }
-
-        // compute loan
-        float Total_Interest;
-        Total_Interest = amount * 0.10f * term_in_years;
-
-        float Total_Due;
-        Total_Due = amount + Total_Interest;
-
-        float Monthly_Payment;
-        Monthly_Payment = Total_Due / term_in_months;
-
-        // Add the loan details to the array
-        transanctions_Loan_amount.add(amount); // How much is borrowed
-        transanctions_Loan_Type.add("Regular"); // What type of loan
-        transanctions_Loan_Intrest.add(10); // How much is the interest
-        transanctions_LoanIntrest_Amount.add(Total_Interest); // How much is the Interest Amount
-        transanctions_LoanMonthly_Amortization.add(Monthly_Payment); // How much is the monthly payment
-        transanctions_Loan_Term.add(term_in_years); // How long is the term of the loan by year
-        transanctions_Total_Due_Amount.add(Total_Due); // How much you owe to the loan
-    }
-
-    // method to compute Emergency loan
-    public static void compute_Emergency() {
-        float amount = 0;
-        while (true) {
-            System.out.print("\nInput loan amount (maximum of 25k Pesos) : Pesos");
-            amount = input.nextFloat();
-            if (amount >= 25000) {
-                System.out.println("You have reached the maxium ammount. Please borrow less than 25k");
-            } else {
-                break;
-            }
-        }
-
-        System.out.println("\nSelect the terms of your payment");
-        System.out.println("1. 3 months");
-        System.out.println("2. 6 months");
-        System.out.print("Input your choice here (1-2):\t");
-        int Term_choice;
-        Term_choice = input.nextInt();
-
-        int term_in_months = 0;
-        switch (Term_choice) {
-            case 1:
-                term_in_months = 3;
-                break;
-            case 2:
-                term_in_months = 6;
-                break;
-            default:
-                System.out.print("Input your choice here (1-2):\t");
-                break;
-        }
-
-        // compute loan
-        float Total_Interest;
-        Total_Interest = amount * 0.01f * term_in_months;
-
-        float Total_Due;
-        Total_Due = amount + Total_Interest;
-
-        float Monthly_Payment;
-        Monthly_Payment = Total_Due / term_in_months;
-
-        // Add the loan details to the array
-        transanctions_Loan_amount.add(amount); // How much is borrowed
-        transanctions_Loan_Type.add("Emergency"); // What type of loan
-        transanctions_Loan_Intrest.add(1); // How much is the interest
-        transanctions_LoanIntrest_Amount.add(Total_Interest); // How much is the Interest Amount
-        transanctions_LoanMonthly_Amortization.add(Monthly_Payment); // How much is the monthly payment
-        transanctions_Loan_Term.add((term_in_months / 12)); // How long is the term of the loan by year
-        transanctions_Total_Due_Amount.add(Total_Due); // How much you owe to the loan
-    }
-
-    // create seperate menus for viewing here
-    public static void view_by_Cilent_Numeber() {
-        int clientNumber;
-        System.out.print("Enter the cilent number:\t");
-        clientNumber = input.nextInt();
-        input.nextLine(); // clear integer
-
-        boolean is_the_cilent_found = false;
-        int i;
-        // Find and display client details first
-        int clientIndex = find_Cilent_Index(clientNumber);
-        if (clientIndex != -1) {
-            System.out.println("\nClient Details:");
-            System.out.println("Client Number: " + cilents_Number.get(clientIndex));
-            System.out.println("Name: " + cilents_Name.get(clientIndex));
-            System.out.println("Address: " + cilents_Address.get(clientIndex));
-            System.out.println("Email: " + cilents_Email.get(clientIndex));
-            System.out.println("Contact Number: " + cilents_Contact_Number.get(clientIndex));
-            System.out.println("\nTransactions:");
-            System.out.println("=============================");
-        } else {
-            System.out.println("Client not found.");
-            return;
-        }
-        for (i = 0; i < transanctions_Transanction_Number.size(); i++) {
-            if (transanctions_Cilent_Number.get(i) == clientNumber) {
-                is_the_cilent_found = true;
-                int transactionNumber = transanctions_Transanction_Number.get(i);
-
-                System.out.println("Transanction #: " + transactionNumber);
-
-                int loanCounter = 1, bilang;
-                boolean has_Loans = false;
-                for (bilang = 0; bilang < transanction_Baby_Loan_Transanction_Numbers.size(); bilang++) {
-                    if (transanction_Baby_Loan_Transanction_Numbers.get(bilang) == transactionNumber) {
-                        has_Loans = true;
-                        System.out.println("Loan number: " + loanCounter);
-                        System.out.println("Loan Amount: Pesos " + transanctions_Loan_amount.get(bilang));
-                        System.out.println("Loan Type: " + transanctions_Loan_Type.get(bilang));
-                        System.out.println("Interest Rate: " + transanctions_Loan_Intrest.get(bilang) + "%");
-                        System.out.println("Interest Amount: Pesos " + transanctions_LoanIntrest_Amount.get(bilang));
-                        System.out.println(
-                                "Monthly Amortization: Pesos " + transanctions_LoanMonthly_Amortization.get(bilang));
-                        System.out.println("Loan Term: " + transanctions_Loan_Term.get(bilang) + " year(s)");
-                        System.out.println("Total Due Amount: Pesos " + transanctions_Total_Due_Amount.get(bilang));
-                        System.out.println("----------------------------------------");
-                        loanCounter++;
-                    }
-                }
-
-                if (!has_Loans) {
-                    System.out.println("No loans found in this transaction");
-                }
-            }
-        }
-
-        if (!is_the_cilent_found) {
-            System.out.println("There no transanctions found on this client");
-        }
-
-    }
-
-    // View Transanction Number
-    public static void view_by_Transanction_Number() {
-        int transaction_number;
-        System.out.print("Enter transaction number:\t");
-        transaction_number = input.nextInt();
-        input.nextLine();
-        int transaction_Index;
-        transaction_Index = find_Transanction_Index(transaction_number);
-
-        if (transaction_Index == -1) {
-            System.out.println("Transaction not found");
-            return;
-        }
-
-        int client_Number;
-        client_Number = transanctions_Cilent_Number.get(transaction_Index);
-        int client_Index = find_Cilent_Index(client_Number);
-
-        System.out.println("\nTransaction Details");
-        System.out.println("=============================");
-
-        if (client_Index != -1) {
-            System.out.println("Cilent Name: " + cilents_Name.get(client_Index));
-        }
-
-        int loanCounter = 1, bilang;
-        boolean has_Loans = false;
-        for (bilang = 0; bilang < transanction_Baby_Loan_Transanction_Numbers.size(); bilang++) {
-            if (transanction_Baby_Loan_Transanction_Numbers.get(bilang) == transaction_number) {
-                has_Loans = true;
-                System.out.println("Loan number: " + loanCounter);
-                System.out.println("Loan Amount: Pesos " + transanctions_Loan_amount.get(bilang));
-                System.out.println("Loan Type: " + transanctions_Loan_Type.get(bilang));
-                System.out.println("Interest Rate: " + transanctions_Loan_Intrest.get(bilang) + "%");
-                System.out.println("Interest Amount: Pesos " + transanctions_LoanIntrest_Amount.get(bilang));
-                System.out.println("Monthly Amortization: Pesos " + transanctions_LoanMonthly_Amortization.get(bilang));
-                System.out.println("Loan Term: " + transanctions_Loan_Term.get(bilang) + " year(s)");
-                System.out.println("Total Due Amount: Pesos " + transanctions_Total_Due_Amount.get(bilang));
-                System.out.println("----------------------------------------");
-                loanCounter++;
-            }
-        }
-
-        if (!has_Loans) {
-            System.out.println("No loans found in this transaction");
-        }
-
-    }
-
-    // view by loan type
-    public static void view_by_Loan_Type() {
-        String loanTypeToFind = "";
-        boolean validChoice = false;
-
-        while (!validChoice) {
-            System.out.println("\nSelect Loan Type to View:");
-            System.out.println("1. Regular Loan");
-            System.out.println("2. Emergency Loan");
-            System.out.print("Enter your choice (1-2): ");
-
-            int choice = input.nextInt();
-            input.nextLine(); // clear buffer
-
-            switch (choice) {
-                case 1:
-                    loanTypeToFind = "Regular";
-                    validChoice = true;
-                    break;
-                case 2:
-                    loanTypeToFind = "Emergency";
-                    validChoice = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
-            }
-        }
-
-        System.out.println("\nChecking if there is " + loanTypeToFind + " loans:");
-        System.out.println("=====================================");
-
-        int i;
-        boolean loansFound = false;
-        for (i = 0; i < transanctions_Loan_Type.size(); i++) {
-            if (transanctions_Loan_Type.get(i).equals(loanTypeToFind)) {
-                loansFound = true;
-
-                int transaction_Number = transanction_Baby_Loan_Transanction_Numbers.get(i);
-                int client_Number = -1;
-
-                int j;
-                // Find client number for this transaction
-                for (j = 0; j < transanctions_Transanction_Number.size(); j++) {
-                    if (transanctions_Transanction_Number.get(j) == transaction_Number) {
-                        client_Number = transanctions_Cilent_Number.get(j);
+                    try { // checking of salary kasi baka tatanga tanga si client mag input
+                        System.out.print("\n ➤ Enter Monthly Salary    : PHP ");
+                        salary = s.nextDouble();
+                        s.nextLine();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid salary input. Please enter a number.");
+                        s.nextLine();
                         break;
                     }
-                }
 
-                int client_Index = find_Cilent_Index(client_Number);
-                String client_Name;
+                    if (salary <= 0) {
+                        System.out.println("Invalid salary. It should be not be 0.");
+                        break;
+                    }
 
-                if (client_Index != -1) {
-                    client_Name = cilents_Name.get(client_Index);
-                } else {
-                    client_Name = "Unknown";
-                }
+                    accNum = String.format("%03d", acctr++); // generate acc num
+                    System.out.println("\n ➤ Generated Account Number: #" + accNum);
 
-                System.out.println("Transaction #: " + transaction_Number);
-                System.out.println("Client #: " + client_Number);
-                System.out.println("Client Name: " + client_Name);
-                System.out.println("Loan Amount: Pesos " + transanctions_Loan_amount.get(i));
-                System.out.println("Interest Rate: " + transanctions_Loan_Intrest.get(i) + "%");
-                System.out.println("Interest Amount: Pesos " + transanctions_LoanIntrest_Amount.get(i));
-                System.out.println("Monthly Amortization: Pesos " + transanctions_LoanMonthly_Amortization.get(i));
-                System.out.println("Loan Term: " + transanctions_Loan_Term.get(i) + " year(s)");
-                System.out.println("Total Due Amount: Pesos " + transanctions_Total_Due_Amount.get(i));
-                System.out.println("----------------------------------------");
+                    // Add Account to List
+                    clientAccNum.add(accNum);
+                    clientName.add(name);
+                    salaries.add(salary);
+
+                    System.out.println("\n                  Account Successfully created!                  ");
+                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+                    break;
+
+                case 2: // Loan Transaction
+                    System.out.print("\n ➤ Enter your Account Number: #");
+                    String inputAcc = s.nextLine();
+                    index = clientAccNum.indexOf(inputAcc); // Searching Proper Index
+                    // Verifying if Account exist or not
+
+                    if (index == -1) { // No Match
+                        System.out.println("Account number not found. Please create an account first.");
+                        break;
+                    }
+
+                    // Initialization of Temporary List to Restart Computation
+                    double totalMonthly = 0;
+                    ArrayList<String> tempLoanTypes = new ArrayList<>();
+                    ArrayList<Double> tempLoanAmo = new ArrayList<>();
+                    ArrayList<Double> tempLoanInterest = new ArrayList<>();
+                    ArrayList<Double> tempMaturityValues = new ArrayList<>();
+                    ArrayList<Double> tempYearPay = new ArrayList<>();
+                    ArrayList<Double> tempMonPay = new ArrayList<>();
+                    ArrayList<Integer> tempLoanTerms = new ArrayList<>();
+                    ArrayList<String> tempTransNums = new ArrayList<>();
+
+                    System.out.print("\n ➤ Your Transaction Number  : #00" + transctr + "\n");
+
+                    // para sa multiple loans in single transanction
+                    // Ask user how many loans they want
+                    int numLoans = 0;
+                    while (true) {
+                        System.out.print("\n ➤ How many loans do you want to take? : ");
+                        try {
+                            numLoans = s.nextInt();
+                            s.nextLine(); // consume newline
+                            if (numLoans > 0) {
+                                break;
+                            } else {
+                                System.out.println("Please enter a positive number.");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a number.");
+                            s.nextLine(); // consume invalid input
+                        }
+                    }
+
+                    outerLoop: for (int loanCount = 0; loanCount < numLoans; loanCount++) {
+                        String transNum = "00" + (transctr); // Generate Transaction ID (ito galing kay boss jims)
+                        System.out.println("\n ➤ Processing Loan " + (loanCount + 1) + " of " + numLoans);
+
+                        // loan type options
+                        System.out.println("\n╭┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Limit┈┈┈┈┈┈┈┈┈┈Interest┈┈┈┈┈╮");
+                        System.out.println("┊ [1]  »    Regular            │   PHP 60k   │   10% / Year     ┊");
+                        System.out.println("┊ [2]  »    Emergency          │   PHP 25k   │   1%  / Month    ┊");
+                        System.out.println("┊ [3]  »    Educational        │   PHP 30k   │   10% / 4Years   ┊");
+                        System.out.println("┊ [4]  »    Car                │   PHP 500k  │   10% / Year     ┊");
+                        System.out.println("┊ [5]  »    Housing            │   PHP 2M    │   15% / Year     ┊");
+                        System.out.println("╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
+
+                        try { // validation for loan choice, avoids crashing of program ofr inavlid inputs
+                            System.out.print("\n ➤ Enter Loan Type (select from the menu) : ");
+                            loanchoice = s.nextInt();
+                            s.nextLine();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a number.");
+                            s.nextLine();
+                            loanCount--; // retry this loan
+                            continue;
+                        }
+
+                        if (loanchoice < 1 || loanchoice > 5) {
+                            System.out.println("Invalid choice. Please select 1 to 5.");
+                            loanCount--; // retry this loan
+                            continue;
+                        }
+
+                        try {
+                            if (loanchoice == 1) { // regular loan
+                                loantype = "Regular Loan";
+                                max = 60000;
+                                rate = 0.10;
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 60,000]   : PHP ");
+                                principal = s.nextDouble();
+                                if (principal > max) {
+                                    System.out.println("Exceeds limit.");
+                                    loanCount--; // retry this loan
+                                    continue;
+                                }
+                                while (true) {
+                                    System.out.print("\n ➤ Enter Loan Term   [1 or 2 Years]       : ");
+                                    try { // Try Catch to Prevent Crash
+                                        int yr = s.nextInt();
+                                        if (yr == 1 || yr == 2) {
+                                            term = yr;
+                                            break;
+                                        } else {
+                                            System.out.println("Invalid term. Please enter 1 or 2.");
+                                            continue outerLoop;
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        s.nextLine();
+                                        continue outerLoop;
+                                    }
+                                }
+                            } else if (loanchoice == 2) { // Emergency Loan
+                                loantype = "Emergency Loan";
+                                max = 25000;
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 25,000]   : PHP ");
+                                principal = s.nextDouble();
+                                if (principal > max) {
+                                    System.out.println("Exceeds limit.");
+                                    loanCount--; // retry this loan
+                                    continue;
+                                }
+                                while (true) {
+                                    System.out.print("\n ➤ Enter Loan Term   [3 or 6 Months]       : ");
+                                    try {
+                                        term = s.nextInt();
+                                        if (term == 3 || term == 6) {
+                                            rate = 0.01 * term;
+                                            break;
+                                        } else {
+                                            System.out.println("Invalid term. Please enter 3 or 6.");
+                                            continue outerLoop;
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        s.nextLine();
+                                        continue outerLoop;
+                                    }
+                                }
+                            } else if (loanchoice == 3) { // Educ Loan. Fixed 4 Years loan term
+                                loantype = "Educational Loan";
+                                max = 30000;
+                                rate = 0.10;
+                                term = 4 * 12;
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 30,000]   : PHP ");
+                                principal = s.nextDouble();
+                                if (principal > max) {
+                                    System.out.println("Exceeds limit.");
+                                    loanCount--; // retry this loan
+                                    continue;
+                                }
+                            } else if (loanchoice == 4) { // car loan
+                                loantype = "Car Loan";
+                                max = 500000;
+                                rate = 0.10;
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 500,000]  : PHP ");
+                                principal = s.nextDouble();
+                                if (principal > max) {
+                                    System.out.println("Exceeds limit.");
+                                    loanCount--; // retry this loan
+                                    continue;
+                                }
+                                while (true) {
+                                    System.out.print("\n ➤ Enter Loan Term   [2 or 4 years]       : ");
+                                    try {
+                                        int yr = s.nextInt();
+                                        if (yr == 2 || yr == 4) {
+                                            term = yr * 12;
+                                            break;
+                                        } else {
+                                            System.out.println("Invalid term. Please enter 2 or 4.");
+                                            continue outerLoop;
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        s.nextLine();
+                                        continue outerLoop;
+                                    }
+                                }
+                            } else if (loanchoice == 5) { // house loan
+                                loantype = "Housing Loan";
+                                max = 2000000;
+                                rate = 0.15;
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 2,000,000]: PHP ");
+                                principal = s.nextDouble();
+                                if (principal > max) {
+                                    System.out.println("Exceeds limit.");
+                                    loanCount--; // retry this loan
+                                    continue;
+                                }
+                                while (true) {
+                                    System.out.print("\n ➤ Enter Loan Term   [10 or 20 years]     : ");
+                                    try {
+                                        int yr = s.nextInt();
+                                        if (yr == 10 || yr == 20) {
+                                            term = yr * 12;
+                                            break;
+                                        } else {
+                                            System.out.println("Invalid term. Please enter 10 or 20.");
+                                            continue outerLoop;
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        s.nextLine();
+                                        continue outerLoop;
+                                    }
+                                }
+                            } else {
+                                System.out.println("Invalid loan type.");
+                                loanCount--; // retry this loan
+                                continue;
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. This loan has been skipped.");
+                            s.nextLine();
+                            continue;
+                        }
+                        // COMPUTATION
+                        double interest = principal * rate;
+                        double totalAmount = principal + interest;
+                        double maturity = totalAmount; // *Store maturity value
+                        double monthly = totalAmount / term;
+                        double yearly = monthly * 12;
+                        totalMonthly += monthly;
+
+                        // dito sstore temporarily yon yung inexplain ko kanina
+                        tempLoanTypes.add(loantype);
+                        tempLoanAmo.add(principal);
+                        tempMonPay.add(monthly);
+                        tempYearPay.add(yearly);
+                        tempLoanTerms.add(term);
+                        tempTransNums.add(transNum);
+                        tempMaturityValues.add(maturity); // * Add to temporary list
+                        tempLoanInterest.add(interest);
+
+                        s.nextLine(); // consume any remaining newline
+                    }
+
+                    // Check if total Monthly Payment is enough for Client's Monthly Salary
+                    salary = salaries.get(index);
+                    double remaining = salary - totalMonthly;
+
+                    if (remaining < (salary / 3)) {
+                        System.out.println(
+                                "\nMonthly deduction exceeds 1/3 rule. Cancelling all loans in this transaction.");
+                        continue;
+                    }
+
+                    System.out.printf("\n   ✅ Added loans: ₱%.2f/month total\n", totalMonthly);
+                    // Print current Transaction if Transaction is Succesful
+                    for (int i = 0; i < tempLoanTypes.size(); i++) {
+                        transNums.add(tempTransNums.get(i));
+                        transAccNums.add(inputAcc);
+                        loanTypes.add(tempLoanTypes.get(i));
+                        loanAmo.add(tempLoanAmo.get(i));
+                        loanTerms.add(tempLoanTerms.get(i));
+                        monPay.add(tempMonPay.get(i));
+                        yearlyPay.add(tempYearPay.get(i));
+                        approvals.add(true);
+                        maturityValues.add(tempMaturityValues.get(i)); // * Save permanently
+                        loanInterest.add(tempLoanInterest.get(i));
+
+                    }
+
+                    transctr++; // increment TransacNum for future Transactions
+
+                    // Printing Loan Details
+                    ArrayList<Integer> newIndexes = new ArrayList<>();
+                    for (int i = transNums.size() - tempLoanTypes.size(); i < transNums.size(); i++) {
+                        newIndexes.add(i);
+                    }
+                    printAllSuccessfulTransactions(newIndexes);
+                    break;
+
+                case 3: // Viewing Transactions
+                    System.out.println("          ╭───────────────────────────────────────────╮");
+                    System.out.println("          │              View Transaction             │");
+                    System.out.println("          │╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮│");
+                    System.out.println("          │┊   [1]   »  Account Number               ┊│");
+                    System.out.println("          │┊   [2]   »  Transaction Number           ┊│");
+                    System.out.println("          │┊   [3]   »  Per Type of Loan             ┊│");
+                    System.out.println("          │┊   [4]   »  View All                     ┊│");
+                    System.out.println("          │┊   [5]   »  Back to Main Menu            ┊│");
+                    System.out.println("          │╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯│");
+                    System.out.println("          ╰───────────────────────────────────────────╯");
+
+                    // Instead of going back to the main menu when you select something you go back
+                    // to the view menu instead
+                    boolean viewingTransactions = true;
+                    while (viewingTransactions) {
+                        System.out.print("\n ➤ Enter choice: ");
+
+                        try { // Try Catch to avoid crash
+                            viewchoice = s.nextInt();
+                            s.nextLine();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid input. Please enter a number.");
+                            s.nextLine();
+                            continue;
+                        }
+
+                        if (viewchoice == 5) { // Return to main menu
+                            viewingTransactions = false;
+                            continue;
+                        }
+
+                        if (viewchoice == 1) { // by AccNum
+                            System.out.print("\n ➤ Enter Account Number: ");
+                            String accSearch = s.nextLine();
+                            boolean found = false;
+                            System.out.println("\n┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+                            for (int i = 0; i < transAccNums.size(); i++) {
+                                if (transAccNums.get(i).equals(accSearch)) {
+                                    printTransaction(i);
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                                System.out.println("No transactions found.");
+
+                        } else if (viewchoice == 2) { // by TransacNum
+                            System.out.print("\n ➤ Enter Transaction Number: ");
+                            String transSearch = s.nextLine();
+                            System.out.println("\n┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+                            boolean found = false;
+
+                            for (int i = 0; i < transNums.size(); i++) {
+                                if (transNums.get(i).equalsIgnoreCase(transSearch)) {
+                                    printTransaction(i);
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                                System.out.println("Transaction not found.");
+                        } else if (viewchoice == 3) { // by Loan Type
+                            System.out.println("  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮");
+                            System.out.println("  ┊  » Regular     Loan           » Educational Loan  ┊");
+                            System.out.println("  ┊  » Emergency   Loan           » Housing Loan      ┊");
+                            System.out.println("  ┊  » Educational Loan                               ┊");
+                            System.out.println("  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
+                            System.out.print("\n ➤ Enter Loan Type (e.g. Regular Loan): ");
+                            String typeSearch = s.nextLine();
+                            System.out.println("\n┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+                            boolean found = false;
+                            for (int i = 0; i < loanTypes.size(); i++) {
+                                if (loanTypes.get(i).equalsIgnoreCase(typeSearch)) {
+                                    printTransaction(i);
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                                System.out.println("No transactions of this type.");
+                        } else if (viewchoice == 4) { // View ALL
+                            if (transNums.isEmpty()) {
+                                System.out.println("No transactions yet.");
+                            } else {
+                                for (int i = 0; i < transNums.size(); i++) {
+                                    printTransaction(i);
+                                }
+                            }
+                        } else {
+                            System.out.println("Invalid choice. Please select 1-5.");
+                        }
+
+                        // Display view menu again after each operation
+                        System.out.println("\n          ╭───────────────────────────────────────────╮");
+                        System.out.println("          │              View Transaction             │");
+                        System.out.println("          │╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮│");
+                        System.out.println("          │┊   [1]   »  Account Number               ┊│");
+                        System.out.println("          │┊   [2]   »  Transaction Number           ┊│");
+                        System.out.println("          │┊   [3]   »  Per Type of Loan             ┊│");
+                        System.out.println("          │┊   [4]   »  View All                     ┊│");
+                        System.out.println("          │┊   [5]   »  Back to Main Menu            ┊│");
+                        System.out.println("          │╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯│");
+                        System.out.println("          ╰───────────────────────────────────────────╯");
+                    }
+                    break;
             }
-        }
-
-        if (!loansFound) {
-            System.out.println("No " + loanTypeToFind + " loans found.");
         }
     }
 
-    // view by all Transactions method
-    public static void view_by_All_Transactions() {
-        System.out.println("\nChecking if there are Transactions");
-        System.out.println("=====================================");
-
-        if (transanctions_Transanction_Number.isEmpty()) {
-            System.out.println("No transactions found in the system.");
-            return;
+    /*
+     * Method for Viewing by AccNum, TransacNum, loanType
+     * Display Transaction
+     */
+    public static void printTransaction(int i) {
+        if (loanTypes.get(i).equals("Emergency Loan")) {
+            System.out.printf(" • Account Number    : #%s\n", transAccNums.get(i));
+            System.out.printf(" • Transaction Number: #%s\n", transNums.get(i));
+            System.out.printf(" • Loan Type         : %s\n", loanTypes.get(i));
+            System.out.printf(" • Loan Amount       : PHP %.2f\n", loanAmo.get(i));
+            System.out.printf(" • Loan Interest     : PHP %.2f\n", loanInterest.get(i));
+            System.out.printf(" • Total Amount Due  : PHP %.2f\n", maturityValues.get(i));
+            System.out.printf(" • Loan Term         : %d months\n", loanTerms.get(i));
+            System.out.printf(" • Monthly Payment   : PHP %.2f\n", monPay.get(i));
+            System.out.println(" • Loan Status       : ✅ Approved");
+            System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+        } else {
+            System.out.printf(" • Account Number    : #%s\n", transAccNums.get(i));
+            System.out.printf(" • Transaction Number: #%s\n", transNums.get(i));
+            System.out.printf(" • Loan Type         : %s\n", loanTypes.get(i));
+            System.out.printf(" • Loan Amount       : PHP %.2f\n", loanAmo.get(i));
+            System.out.printf(" • Loan Interest     : PHP %.2f\n", loanInterest.get(i));
+            System.out.printf(" • Total Amount Due  : PHP %.2f\n", maturityValues.get(i));
+            System.out.printf(" • Loan Term         : %d months\n", loanTerms.get(i));
+            System.out.printf(" • Monthly Payment   : PHP %.2f\n", monPay.get(i));
+            System.out.printf(" • Yearly Payment   : PHP %.2f\n", yearlyPay.get(i));
+            System.out.println(" • Loan Status       : ✅ Approved");
+            System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
         }
 
-        // Loop through all transactions
-        int i;
-        for (i = 0; i < transanctions_Transanction_Number.size(); i++) {
-            int transaction_Number = transanctions_Transanction_Number.get(i);
-            int client_Number = transanctions_Cilent_Number.get(i);
-            int client_Index = find_Cilent_Index(client_Number);
-
-            System.out.println("\nTransaction #: " + transaction_Number);
-            System.out.println("Client #: " + client_Number);
-
-            if (client_Index != -1) {
-                System.out.println("Client Name: " + cilents_Name.get(client_Index));
-                System.out.println("Client Address: " + cilents_Address.get(client_Index));
-                System.out.println("Client Email: " + cilents_Email.get(client_Index));
-                System.out.println("Client Contact: " + cilents_Contact_Number.get(client_Index));
-            } else {
-                System.out.println("Client details not found");
-            }
-
-            // Find and display all loans associated with this transaction
-            int loanCounter = 1;
-            boolean hasLoans = false;
-
-            System.out.println("Loans for this transaction:");
-
-            int j;
-            for (j = 0; j < transanction_Baby_Loan_Transanction_Numbers.size(); j++) {
-                if (transanction_Baby_Loan_Transanction_Numbers.get(j) == transaction_Number) {
-                    hasLoans = true;
-                    System.out.println("Loan #" + loanCounter);
-                    System.out.println("Loan Amount: Pesos " + transanctions_Loan_amount.get(j));
-                    System.out.println("Loan Type: " + transanctions_Loan_Type.get(j));
-                    System.out.println("Interest Rate: " + transanctions_Loan_Intrest.get(j) + "%");
-                    System.out.println("Interest Amount: Pesos " + transanctions_LoanIntrest_Amount.get(j));
-                    System.out.println("Monthly Amortization: Pesos " + transanctions_LoanMonthly_Amortization.get(j));
-                    System.out.println("Loan Term: " + transanctions_Loan_Term.get(j) + " year(s)");
-                    System.out.println("Total Due Amount: Pesos " + transanctions_Total_Due_Amount.get(j));
-                    System.out.println("  ----------------------------------------");
-                    loanCounter++;
-                }
-            }
-
-            if (!hasLoans) {
-                System.out.println("  No loans found in this transaction");
-            }
-
-            System.out.println("=====================================");
-        }
     }
 
-    // method to find cilent Index
-    public static int find_Cilent_Index(int cilent_Number) {
-        int i;
-        for (i = 0; i < cilents_Number.size(); i++) {
-            if (cilents_Number.get(i) == cilent_Number) {
-                return i;
+    // If Accepted then Print ALl
+    public static void printAllSuccessfulTransactions(ArrayList<Integer> indexes) {
+        System.out.println("\n┈┈┈┈┈┈┈┈─────────Transactions Added This Session─────────┈┈┈┈┈┈┈┈");
+        for (int i : indexes) {
+            if (approvals.get(i)) {
+                printTransaction(i);
             }
         }
-        return -1;
-    }
-
-    // method to find transanction number
-    public static int find_Transanction_Index(int trans_Num) {
-        int i;
-        for (i = 0; i < transanctions_Transanction_Number.size(); i++) {
-            if (transanctions_Transanction_Number.get(i) == trans_Num) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    // method to generating cilent number
-    public static int generate_Cilent_Number() {
-        return cilent_Number++;
-    }
-
-    // method to generating transanction number
-    public static int generate_Transanction_Number() {
-        return transanction_Number++;
     }
 }
