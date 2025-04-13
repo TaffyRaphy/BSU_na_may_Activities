@@ -184,7 +184,7 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
-                                    loanCount--; // retry this loan
+                                    loanCount--;
                                     continue;
                                 }
                                 while (true) {
@@ -211,7 +211,7 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
-                                    loanCount--; // retry this loan
+                                    loanCount--;
                                     continue;
                                 }
                                 while (true) {
@@ -235,12 +235,12 @@ public class FinalProject2 {
                                 loantype = "Educational Loan";
                                 max = 30000;
                                 rate = 0.10;
-                                term = 4 * 12;
+                                term = 4;
                                 System.out.print("\n ➤ Enter Loan Amount [max » PHP 30,000]   : PHP ");
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
-                                    loanCount--; // retry this loan
+                                    loanCount--;
                                     continue;
                                 }
                             } else if (loanchoice == 4) { // car loan
@@ -251,7 +251,7 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
-                                    loanCount--; // retry this loan
+                                    loanCount--;
                                     continue;
                                 }
                                 while (true) {
@@ -259,7 +259,7 @@ public class FinalProject2 {
                                     try {
                                         int yr = s.nextInt();
                                         if (yr == 2 || yr == 4) {
-                                            term = yr * 12;
+                                            term = yr;
                                             break;
                                         } else {
                                             System.out.println("Invalid term. Please enter 2 or 4.");
@@ -279,7 +279,7 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
-                                    loanCount--; // retry this loan
+                                    loanCount--;
                                     continue;
                                 }
                                 while (true) {
@@ -287,7 +287,7 @@ public class FinalProject2 {
                                     try {
                                         int yr = s.nextInt();
                                         if (yr == 10 || yr == 20) {
-                                            term = yr * 12;
+                                            term = yr;
                                             break;
                                         } else {
                                             System.out.println("Invalid term. Please enter 10 or 20.");
@@ -301,7 +301,7 @@ public class FinalProject2 {
                                 }
                             } else {
                                 System.out.println("Invalid loan type.");
-                                loanCount--; // retry this loan
+                                loanCount--;
                                 continue;
                             }
                         } catch (InputMismatchException e) {
@@ -313,7 +313,17 @@ public class FinalProject2 {
                         double interest = principal * rate;
                         double totalAmount = principal + interest;
                         double maturity = totalAmount; // *Store maturity value
-                        double monthly = totalAmount / term;
+
+                        // Fix monthly payment calculation based on loan type
+                        double monthly;
+                        if (loantype.equals("Emergency Loan")) {
+                            // Emergency Loan terms are already in months
+                            monthly = totalAmount / term;
+                        } else {
+                            // Other loan types' terms are in years, convert to months
+                            monthly = totalAmount / (term * 12);
+                        }
+
                         double yearly = monthly * 12;
                         totalMonthly += monthly;
 
