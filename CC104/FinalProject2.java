@@ -1,15 +1,18 @@
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner; //All imports needed will be called
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class FinalProject2 {
+
 
     static ArrayList<String> transNums = new ArrayList<>(); // View by TransacNum
     static ArrayList<String> transAccNums = new ArrayList<>(); // View by AccNum
     static ArrayList<String> loanTypes = new ArrayList<>(); // View by Loan Types
     static ArrayList<Double> loanAmo = new ArrayList<>(); // Loan Amount (niloan ni user)
     static ArrayList<Double> monPay = new ArrayList<>(); // Monthly Payment (babayarn ni user kada buwan kasama na
-                                                         // interest)
+    // interest)
     static ArrayList<Integer> loanTerms = new ArrayList<>(); // Loan Term (months)
     static ArrayList<Boolean> approvals = new ArrayList<>(); // Approval Status
     static ArrayList<Double> loanInterest = new ArrayList<>();
@@ -20,18 +23,26 @@ public class FinalProject2 {
     static ArrayList<String> clientAccNum = new ArrayList<>(); // account numbers
     static ArrayList<String> clientName = new ArrayList<>(); // client names
     static ArrayList<Double> salaries = new ArrayList<>(); // monthly salaries
+    static ArrayList<String> address = new ArrayList<>();
+    static ArrayList<String> contactinfo = new ArrayList<>();
+    static ArrayList<String> email = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
 
         // declaration of variables
-        String accNum = "", name, loantype = "";
+        String contactPattern = "\\d{4}\\d{3}\\d{4}";
+        String emailPattern =  "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        Pattern contactpattern = Pattern.compile(contactPattern);
+        Pattern emailpattern = Pattern.compile(emailPattern);
+        String accNum = "", name, loantype = "",adressinput,emailinput,contactinf;
         double salary = 0, principal = 0, rate = 0, max = 0;
         int index, loanchoice = 0, term = 0, viewchoice, menuChoice = 0;
         int acctr = 1; // Counter for Creating unique AccNum
         int transctr = 1; // For TransacNum (ginaya ko lang yung ginawa ni jims)
 
         // introduction
+
         System.out.println("\n                 【 Welcome to Loan Computation 】                 ");
         System.out.println("        ╭───────────────────────────────────────────────╮          ");
         System.out.println("        ┊  The Program Computes Loan Interest, Monthly  ┊          ");
@@ -74,6 +85,29 @@ public class FinalProject2 {
                 case 1: // Add new Account
                     System.out.print("\n ➤ Enter Full Name         : ");
                     name = s.nextLine();
+                    System.out.print("\n ➤ Enter Adress         : ");
+                    adressinput = s.nextLine();
+                    while(true) {
+                        System.out.print("\n ➤ Enter Contact Info (format 09641237448) (must be 11 digits) : ");
+                        contactinf = s.nextLine();
+                        Matcher matcher = contactpattern.matcher(contactinf);
+
+                        if(matcher.matches()) {
+                            break;
+                        }else{
+                            System.out.println("Invalid format. Please try again. ");
+                        }
+                    }
+                    while(true){
+                    System.out.print("\n ➤ Enter Email (format name@domain.com)   : ");
+                    emailinput = s.nextLine();
+                    Matcher matcher = emailpattern.matcher(emailinput);
+                        if(matcher.matches()) {
+                            break; //kukoyot ni raphy
+                       }else{
+                     System.out.println("Invalid email format. Try again. ");
+                        }
+                    }
 
                     try { // checking of salary kasi baka tatanga tanga si client mag input
                         System.out.print("\n ➤ Enter Monthly Salary    : PHP ");
@@ -97,6 +131,10 @@ public class FinalProject2 {
                     clientAccNum.add(accNum);
                     clientName.add(name);
                     salaries.add(salary);
+                    address.add(adressinput);
+                    contactinfo.add(contactinf);
+                    email.add(emailinput);
+
 
                     System.out.println("\n                  Account Successfully created!                  ");
                     System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
@@ -184,6 +222,8 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
+                                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
                                     loanCount--;
                                     continue;
                                 }
@@ -211,6 +251,8 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
+                                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
                                     loanCount--;
                                     continue;
                                 }
@@ -240,6 +282,8 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
+                                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
                                     loanCount--;
                                     continue;
                                 }
@@ -251,6 +295,8 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
+                                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
                                     loanCount--;
                                     continue;
                                 }
@@ -279,6 +325,8 @@ public class FinalProject2 {
                                 principal = s.nextDouble();
                                 if (principal > max) {
                                     System.out.println("Exceeds limit.");
+                                    System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
                                     loanCount--;
                                     continue;
                                 }
@@ -305,8 +353,11 @@ public class FinalProject2 {
                                 continue;
                             }
                         } catch (InputMismatchException e) {
-                            System.out.println("Invalid input. This loan has been skipped.");
+                            System.out.println("Invalid input. Enter the correct format.");
                             s.nextLine();
+                            System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
+
+                            loanCount--;
                             continue;
                         }
                         // COMPUTATION
@@ -490,6 +541,10 @@ public class FinalProject2 {
     public static void printTransaction(int i) {
         if (loanTypes.get(i).equals("Emergency Loan")) {
             System.out.printf(" • Account Number    : #%s\n", transAccNums.get(i));
+            System.out.printf(" • Account Name    : #%s\n", clientName.get(i));
+            System.out.printf(" • Account Adress    : #%s\n", address.get(i));
+            System.out.printf(" • Account Contact Info    : #%s\n", contactinfo.get(i));
+            System.out.printf(" • Account Email    : #%s\n", email.get(i));
             System.out.printf(" • Transaction Number: #%s\n", transNums.get(i));
             System.out.printf(" • Loan Type         : %s\n", loanTypes.get(i));
             System.out.printf(" • Loan Amount       : PHP %.2f\n", loanAmo.get(i));
@@ -501,6 +556,11 @@ public class FinalProject2 {
             System.out.println("┈┈┈┈┈┈┈┈─────────────────────────────────────────────────┈┈┈┈┈┈┈┈");
         } else {
             System.out.printf(" • Account Number    : #%s\n", transAccNums.get(i));
+            System.out.printf(" • Account Name    : #%s\n", clientName.get(i));
+            System.out.printf(" • Account Adress    : #%s\n", address.get(i));
+            System.out.printf(" • Account Contact Info    : #%s\n", contactinfo.get(i));
+            System.out.printf(" • Account Email    : #%s\n", email.get(i));
+
             System.out.printf(" • Transaction Number: #%s\n", transNums.get(i));
             System.out.printf(" • Loan Type         : %s\n", loanTypes.get(i));
             System.out.printf(" • Loan Amount       : PHP %.2f\n", loanAmo.get(i));
