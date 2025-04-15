@@ -29,8 +29,8 @@ public class FinalProject2 {
     static Scanner s = new Scanner(System.in);
 
     // declaration of variables
-    static String contactPattern = "\\d{4}\\d{3}\\d{4}";
-    static String emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+    static String contactPattern = "\\d{11}"; // format for 11-digits
+    static String emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"; // format for name@domain.com
     static Pattern contactpattern = Pattern.compile(contactPattern);
     static Pattern emailpattern = Pattern.compile(emailPattern);
     static String accNum = "", name, loantype = "", adressinput, emailinput, contactinf;
@@ -229,11 +229,10 @@ public class FinalProject2 {
             }
 
             // COMPUTATION
-            double interest = principal * rate;
+            double interest = principal * rate * term;
             double totalAmount = principal + interest;
             double maturity = totalAmount; // *Store maturity value
 
-            // Fix monthly payment calculation based on loan type
             double monthly;
             if (loantype.equals("Emergency Loan")) {// Emergency Loan terms are already in months
                 monthly = totalAmount / term;
@@ -326,7 +325,6 @@ public class FinalProject2 {
                         System.out.println("Invalid choice. Please select 1-5.");
                         errorCount++;
                     }
-
             }
             // Display view menu again after each operation
             printViewMenu();
@@ -378,7 +376,7 @@ public class FinalProject2 {
             Matcher matcher = emailpattern.matcher(emailInput);
             if (matcher.matches()) {
                 errorCount = 0;
-                break; // kukoyot ni raphy
+                return emailInput;
             } else {
                 if (errorCount < 2) {
                     System.out.println("\n ! Invalid format. Please enter valid Email.");
@@ -386,7 +384,6 @@ public class FinalProject2 {
                 }
             }
         }
-        return emailInput;
     }
 
     // validating monthly salary info
@@ -424,6 +421,7 @@ public class FinalProject2 {
         loanTermValid = false;
         loantype = "Emergency Loan";
         max = 25000;
+        rate = 0.01;
         principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 25,000]   : PHP ",
                 "\n ! Invalid input. Enter the correct format.");
 
@@ -449,7 +447,7 @@ public class FinalProject2 {
         rate = 0.10;
         principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 500,000]  : PHP ",
                 "\n ! Invalid input. Enter the correct format.");
-        term = getValidTerms("\n ➤ Enter Loan Term   [2 or 4 years]       : ", 3, 6);
+        term = getValidTerms("\n ➤ Enter Loan Term   [2 or 4 years]       : ", 2, 4);
     }
 
     // Housing Loan
@@ -460,7 +458,7 @@ public class FinalProject2 {
         rate = 0.15;
         principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 2,000,000]: PHP ",
                 "\n ! Invalid input. Enter the correct format.");
-        term = getValidTerms("\n ➤ Enter Loan Term   [10 or 20 years]     : ", 3, 6);
+        term = getValidTerms("\n ➤ Enter Loan Term   [10 or 20 years]     : ", 10, 20);
     }
 
     // get the valid loan amount
@@ -476,8 +474,8 @@ public class FinalProject2 {
                     errorCount++;
                     continue;
                 }
-            } else if (validLoanAmount == 0) {
-                if (validLoanAmount < 2) {
+            } else if (validLoanAmount <= 0) {
+                if (errorCount < 2) {
                     System.out.println("\n ! Invalid Amount.");
                     errorCount++;
                     continue;
@@ -748,7 +746,7 @@ public class FinalProject2 {
 
     public static void printLoanMenu() {
         System.out.println("  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮");
-        System.out.println("  ┊  [1]   » Regular     Loan                [4] » Educational Loan  ┊");
+        System.out.println("  ┊  [1]   » Regular     Loan                [4] » Car Loan          ┊");
         System.out.println("  ┊  [2]   » Emergency   Loan                [5] » Housing     Loan  ┊");
         System.out.println("  ┊  [3]   » Educational Loan                                        ┊");
         System.out.println("  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
