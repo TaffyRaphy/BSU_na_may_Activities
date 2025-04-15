@@ -22,6 +22,7 @@ public class FinalProject2 {
     static ArrayList<String> clientAccNum = new ArrayList<>(); // account numbers
     static ArrayList<String> clientName = new ArrayList<>(); // client names
     static ArrayList<Double> salaries = new ArrayList<>(); // monthly salaries
+    static ArrayList<Double> Remainingsalaries = new ArrayList<>(); // monthly salaries
     static ArrayList<String> address = new ArrayList<>();
     static ArrayList<String> contactinfo = new ArrayList<>();
     static ArrayList<String> email = new ArrayList<>();
@@ -36,7 +37,7 @@ public class FinalProject2 {
         Pattern emailpattern = Pattern.compile(emailPattern);
         String accNum = "", name, loantype = "", adressinput, emailinput, contactinf;
         double salary = 0, principal = 0, rate = 0, max = 0;
-        int index, loanchoice = 0, term = 0, viewchoice, menuChoice = 0;
+        int index, loanchoice = 0, term = 0, viewchoice = 0, menuChoice = 0, yr, errorCount = 0;
         int acctr = 1; // Counter for Creating unique AccNum
         int transctr = 1; // For TransacNum (ginaya ko lang yung ginawa ni jims)
 
@@ -51,30 +52,8 @@ public class FinalProject2 {
 
         while (true) { // main menu loop
             // display menu options
-            System.out.println(
-                    "\n                ╭─────────────────────────────────────────────────────╮                ");
-            System.out
-                    .println("                │                 Select from the Menu                │                ");
-            System.out
-                    .println("                │  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮  │                ");
-            System.out
-                    .println("                │  ┊   [1]   »   Add Account                       ┊  │                ");
-            System.out
-                    .println("                │  ┊                                               ┊  │                ");
-            System.out
-                    .println("                │  ┊   [2]   »   New Transaction                   ┊  │                ");
-            System.out
-                    .println("                │  ┊                                               ┊  │                ");
-            System.out
-                    .println("                │  ┊   [3]   »   View Transaction                  ┊  │                ");
-            System.out
-                    .println("                │  ┊                                               ┊  │                ");
-            System.out
-                    .println("                │  ┊   [4]   »   Exit                              ┊  │                ");
-            System.out
-                    .println("                │  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯  │                ");
-            System.out
-                    .println("                ╰─────────────────────────────────────────────────────╯                ");
+            printMainMenu();
+            errorCount = 0; // make sure naka zero every loop
 
             // Checking menu choice
             while (true) {
@@ -83,13 +62,20 @@ public class FinalProject2 {
                     menuChoice = s.nextInt();
                     s.nextLine();
                     if (menuChoice >= 1 && menuChoice <= 4) {
+                        errorCount = 0; // reset error count
                         break;
                     } else {
-                        System.out.println("\n ! Invalid input. Please Enter 1 - 4 only.");
+                        if (errorCount < 2) {
+                            System.out.println("\n ! Invalid input. Please Enter 1 - 4 only.");
+                            errorCount++;
+                        }
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("\n ! Invalid input. Please Enter 1 - 4 only.");
                     s.nextLine();
+                    if (errorCount < 2) {
+                        System.out.println("\n ! Invalid input. Please Enter 1 - 4 only.");
+                        errorCount++;
+                    }
                 }
             }
 
@@ -116,9 +102,13 @@ public class FinalProject2 {
                         Matcher matcher = contactpattern.matcher(contactinf);
 
                         if (matcher.matches()) {
+                            errorCount = 0;
                             break;
                         } else {
-                            System.out.println("\n ! Invalid format. Please enter valid Contact No. ");
+                            if (errorCount < 2) {
+                                System.out.println("\n ! Invalid format. Please enter valid Contact No. ");
+                                errorCount++;
+                            }
                         }
                     }
                     while (true) {
@@ -126,26 +116,34 @@ public class FinalProject2 {
                         emailinput = s.nextLine();
                         Matcher matcher = emailpattern.matcher(emailinput);
                         if (matcher.matches()) {
+                            errorCount = 0;
                             break; // kukoyot ni raphy
                         } else {
-                            System.out.println("\n ! Invalid format. Please enter valid Email.");
+                            if (errorCount < 2) {
+                                System.out.println("\n ! Invalid format. Please enter valid Email.");
+                                errorCount++;
+                            }
                         }
                     }
                     while (true) {
                         try { // checking of salary kasi baka tatanga tanga si client mag input
                             System.out.print("\n ➤ Enter Monthly Salary     : PHP ");
-
                             salary = s.nextDouble();
                             s.nextLine();
                         } catch (InputMismatchException e) {
-                            System.out.println("\n ! Invalid salary. Please enter valid Salary.");
                             s.nextLine();
-                            continue;
+                            if (errorCount < 2) {
+                                System.out.println("\n ! Invalid salary. Please enter valid Salary.");
+                                errorCount++;
+                            }
                         }
                         if (salary <= 0) {
-                            System.out.println("\n ! Invalid salary. It should be not be 0.");
-                            continue;
+                            if (errorCount < 2) {
+                                System.out.println("\n ! Invalid salary. It should be not be 0.");
+                                errorCount++;
+                            }
                         } else {
+                            errorCount = 0;
                             break;
                         }
                     }
@@ -189,6 +187,25 @@ public class FinalProject2 {
                     ArrayList<Integer> tempLoanTerms = new ArrayList<>();
                     ArrayList<String> tempTransNums = new ArrayList<>();
 
+                    // getting the users original salary
+                    double originalSalary = salaries.get(index);
+                    double existingMonthlyPayments = 0;
+
+                    // calculate existing monthly payments for the selected account number
+                    int bilang; // counter
+                    for (bilang = 0; bilang < transAccNums.size(); bilang++) {
+                        if (transAccNums.get(bilang).equals(inputAcc)) {
+                            existingMonthlyPayments += monPay.get(bilang);
+                        }
+                    }
+
+                    // How much the user can spend in this transanction
+                    double availableSalary = originalSalary - existingMonthlyPayments;
+
+                    System.out.printf("\n Your monthly salary: PHP %.2f", originalSalary);
+                    System.out.printf("\n Currently committed: PHP %.2f", existingMonthlyPayments);
+                    System.out.printf("\n Available for loans: PHP %.2f\n", availableSalary);
+
                     System.out.print("\n ➤ Your Transaction Number  : #00" + transctr + "\n");
 
                     // para sa multiple loans in single transanction
@@ -200,17 +217,27 @@ public class FinalProject2 {
                             numLoans = s.nextInt();
                             s.nextLine(); // consume newline
                             if (numLoans > 0) {
+                                errorCount = 0;
                                 break;
                             } else {
-                                System.out.println("\n ! Please enter a positive number.");
+                                if (errorCount < 2) {
+                                    System.out.println("\n ! Please enter a positive number.");
+                                    errorCount++;
+                                    continue;
+                                }
                             }
                         } catch (InputMismatchException e) {
-                            System.out.println("\n ! Invalid input. Please enter a number.");
-                            s.nextLine(); // consume invalid input
+                            s.nextLine();
+                            if (errorCount < 2) {
+                                System.out.println("\n ! Invalid input. Please enter a number.");
+                                errorCount++;
+                                continue;
+                            }
                         }
                     }
 
-                    outerLoop: for (int loanCount = 0; loanCount < numLoans; loanCount++) {
+                    for (int loanCount = 0; loanCount < numLoans; loanCount++) {
+                        errorCount = 0;
                         String transNum = "00" + (transctr); // Generate Transaction ID (ito galing kay boss jims)
                         System.out.println("\n  Processing Loan " + (loanCount + 1) + " of " + numLoans);
 
@@ -229,17 +256,22 @@ public class FinalProject2 {
                                 loanchoice = s.nextInt();
                                 s.nextLine();
                             } catch (InputMismatchException e) {
-                                System.out.println("\n ! Invalid input. Please select 1 - 5.");
                                 s.nextLine();
-                                loanCount--; // retry this loan
-                                continue;
+                                if (errorCount < 2) {
+                                    System.out.println("\n ! Invalid input. Please select 1 - 5.");
+                                    errorCount++;
+                                    continue;
+                                }
                             }
 
                             if (loanchoice < 1 || loanchoice > 5) {
-                                System.out.println("\n ! Invalid choice. Please select 1 - 5.");
-                                loanCount--; // retry this loan
-                                continue;
+                                if (errorCount < 2) {
+                                    System.out.println("\n ! Invalid choice. Please select 1 - 5.");
+                                    errorCount++;
+                                    continue;
+                                }
                             } else {
+                                errorCount = 0;
                                 break;
                             }
                         }
@@ -256,63 +288,115 @@ public class FinalProject2 {
                                 try {
                                     principal = s.nextDouble();
                                     if (principal > max) {
-                                        System.out.println("\n ! Exceeds limit.");
-                                        continue;
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Exceeds limit.");
+                                            System.out.println(
+                                                    "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     } else if (principal == 0) {
-                                        System.out.println("\n ! Invalid Amount.");
-                                        continue;
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid Amount.");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     } else {
+                                        errorCount = 0;
                                         break;
                                     }
                                 } catch (InputMismatchException e) {
-                                    System.out.println("\n ! Invalid input. Enter the correct format.");
                                     s.nextLine();
-                                    continue;
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid input. Enter the correct format.");
+                                        errorCount++;
+                                        continue;
+                                    }
                                 }
                             }
                             while (!loanTermValid) {
                                 System.out.print("\n ➤ Enter Loan Term   [1 or 2 Years]       : ");
                                 try { // Try Catch to Prevent Crash
-                                    int yr = s.nextInt();
+                                    yr = s.nextInt();
                                     if (yr == 1 || yr == 2) {
                                         term = yr;
                                         loanTermValid = true;
+                                        errorCount = 0;
+                                        break; // para sure na aalis sa loop HAHWHAWH
                                     } else {
-                                        System.out.println("\n ! Invalid term. Please enter 1 or 2.");
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid term. Please enter 1 or 2.");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     }
                                 } catch (InputMismatchException e) {
-                                    System.out.println("\n ! Invalid term. Please enter 1 or 2.");
                                     s.nextLine();
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid term. Please enter 1 or 2.");
+                                        errorCount++;
+                                        continue;
+                                    }
                                 }
                             }
                             // EMERGENCY LOAN
                         } else if (loanchoice == 2) {
                             loantype = "Emergency Loan";
                             max = 25000;
-                            System.out.print("\n ➤ Enter Loan Amount [max » PHP 25,000]   : PHP ");
-                            principal = s.nextDouble();
-                            if (principal > max) {
-                                System.out.println("Exceeds limit.");
-                                System.out.println(
-                                        "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-                                loanCount--;
-                                continue;
-                            }
                             while (true) {
-                                System.out.print("\n ➤ Enter Loan Term   [3 or 6 Months]       : ");
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 25,000]   : PHP ");
                                 try {
+                                    principal = s.nextDouble();
+                                    if (principal > max) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Exceeds limit.");
+                                            System.out.println(
+                                                    "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else if (principal == 0) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid Amount.");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else {
+                                        errorCount = 0;
+                                        break;
+                                    }
+                                } catch (InputMismatchException e) {
+                                    s.nextLine();
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid input. Enter the correct format.");
+                                        errorCount++;
+                                        continue;
+                                    }
+                                }
+                            }
+                            while (!loanTermValid) {
+                                System.out.print("\n ➤ Enter Loan Term   [3 or 6 Months]       : ");
+                                try { // Try Catch to Prevent Crash
                                     term = s.nextInt();
                                     if (term == 3 || term == 6) {
                                         rate = 0.01 * term;
+                                        errorCount = 0;
+                                        loanTermValid = true;
                                         break;
                                     } else {
-                                        System.out.println("Invalid term. Please enter 3 or 6.");
-                                        continue outerLoop;
+                                        if (errorCount < 2) {
+                                            System.out.println("Invalid term. Please enter 3 or 6.");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     }
                                 } catch (InputMismatchException e) {
-                                    System.out.println("Invalid input. Please enter a number.");
                                     s.nextLine();
-                                    continue outerLoop;
+                                    if (errorCount < 2) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        errorCount++;
+                                        continue;
+                                    }
                                 }
                             }
                         } else if (loanchoice == 3) { // Educ Loan. Fixed 4 Years loan term
@@ -320,79 +404,157 @@ public class FinalProject2 {
                             max = 30000;
                             rate = 0.10;
                             term = 4;
-                            System.out.print("\n ➤ Enter Loan Amount [max » PHP 30,000]   : PHP ");
-                            principal = s.nextDouble();
-                            if (principal > max) {
-                                System.out.println("Exceeds limit.");
-                                System.out.println(
-                                        "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-                                loanCount--;
-                                continue;
+                            while (true) {
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 30,000]   : PHP ");
+                                try {
+                                    principal = s.nextDouble();
+                                    if (principal > max) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Exceeds limit.");
+                                            System.out.println(
+                                                    "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else if (principal == 0) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid Amount.");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else {
+                                        errorCount = 0;
+                                        break;
+                                    }
+                                } catch (InputMismatchException e) {
+                                    s.nextLine();
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid input. Enter the correct format.");
+                                        errorCount++;
+                                        continue;
+                                    }
+                                }
                             }
                         } else if (loanchoice == 4) { // car loan
                             loantype = "Car Loan";
                             max = 500000;
                             rate = 0.10;
-                            System.out.print("\n ➤ Enter Loan Amount [max » PHP 500,000]  : PHP ");
-                            principal = s.nextDouble();
-                            if (principal > max) {
-                                System.out.println("Exceeds limit.");
-                                System.out.println(
-                                        "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-                                loanCount--;
-                                continue;
-                            }
                             while (true) {
-                                System.out.print("\n ➤ Enter Loan Term   [2 or 4 years]       : ");
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 500,000]  : PHP ");
                                 try {
-                                    int yr = s.nextInt();
-                                    if (yr == 2 || yr == 4) {
-                                        term = yr;
-                                        break;
+                                    principal = s.nextDouble();
+                                    if (principal > max) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Exceeds limit.");
+                                            System.out.println(
+                                                    "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else if (principal == 0) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid Amount.");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     } else {
-                                        System.out.println("Invalid term. Please enter 2 or 4.");
-                                        continue outerLoop;
+                                        errorCount = 0;
+                                        break;
                                     }
                                 } catch (InputMismatchException e) {
-                                    System.out.println("Invalid input. Please enter a number.");
                                     s.nextLine();
-                                    continue outerLoop;
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid input. Enter the correct format.");
+                                        errorCount++;
+                                        continue;
+                                    }
+                                }
+                            }
+                            while (!loanTermValid) {
+                                System.out.print("\n ➤ Enter Loan Term   [2 or 4 years]       : ");
+                                try { // Try Catch to Prevent Crash
+                                    yr = s.nextInt();
+                                    if (yr == 2 || yr == 4) {
+                                        term = yr;
+                                        errorCount = 0;
+                                        loanTermValid = true;
+                                        break;
+                                    } else {
+                                        if (errorCount < 2) {
+                                            System.out.println("Invalid term. Please enter 2 or 4.");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    }
+                                } catch (InputMismatchException e) {
+                                    s.nextLine();
+                                    if (errorCount < 2) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        errorCount++;
+                                        continue;
+                                    }
                                 }
                             }
                         } else if (loanchoice == 5) { // house loan
                             loantype = "Housing Loan";
                             max = 2000000;
                             rate = 0.15;
-                            System.out.print("\n ➤ Enter Loan Amount [max » PHP 2,000,000]: PHP ");
-                            principal = s.nextDouble();
-                            if (principal > max) {
-                                System.out.println("Exceeds limit.");
-                                System.out.println(
-                                        "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-                                loanCount--;
-                                continue;
-                            }
                             while (true) {
-                                System.out.print("\n ➤ Enter Loan Term   [10 or 20 years]     : ");
+                                System.out.print("\n ➤ Enter Loan Amount [max » PHP 2,000,000]: PHP ");
                                 try {
-                                    int yr = s.nextInt();
-                                    if (yr == 10 || yr == 20) {
-                                        term = yr;
-                                        break;
+                                    principal = s.nextDouble();
+                                    if (principal > max) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Exceeds limit.");
+                                            System.out.println(
+                                                    "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    } else if (principal == 0) {
+                                        if (errorCount < 2) {
+                                            System.out.println("\n ! Invalid Amount.");
+                                            errorCount++;
+                                            continue;
+                                        }
                                     } else {
-                                        System.out.println("Invalid term. Please enter 10 or 20.");
-                                        continue outerLoop;
+                                        errorCount = 0;
+                                        break;
                                     }
                                 } catch (InputMismatchException e) {
-                                    System.out.println("Invalid input. Please enter a number.");
                                     s.nextLine();
-                                    continue outerLoop;
+                                    if (errorCount < 2) {
+                                        System.out.println("\n ! Invalid input. Enter the correct format.");
+                                        errorCount++;
+                                        continue;
+                                    }
                                 }
                             }
-                        } else {
-                            System.out.println("Invalid loan type.");
-                            loanCount--;
-                            continue;
+                            while (!loanTermValid) {
+                                System.out.print("\n ➤ Enter Loan Term   [10 or 20 years]     : ");
+                                try {
+                                    yr = s.nextInt();
+                                    if (yr == 10 || yr == 20) {
+                                        term = yr;
+                                        errorCount = 0;
+                                        loanTermValid = true;
+                                        break;
+                                    } else {
+                                        if (errorCount < 2) {
+                                            System.out.println("Invalid term. Please enter 10 or 20.");
+                                            errorCount++;
+                                            continue;
+                                        }
+                                    }
+                                } catch (InputMismatchException e) {
+                                    s.nextLine();
+                                    if (errorCount < 2) {
+                                        System.out.println("Invalid input. Please enter a number.");
+                                        errorCount++;
+                                        continue;
+                                    }
+                                }
+                            }
                         }
                         // COMPUTATION
                         double interest = principal * rate;
@@ -401,11 +563,9 @@ public class FinalProject2 {
 
                         // Fix monthly payment calculation based on loan type
                         double monthly;
-                        if (loantype.equals("Emergency Loan")) {
-                            // Emergency Loan terms are already in months
+                        if (loantype.equals("Emergency Loan")) {// Emergency Loan terms are already in months
                             monthly = totalAmount / term;
-                        } else {
-                            // Other loan types' terms are in years, convert to months
+                        } else {// Other loan types' terms are in years, convert to months
                             monthly = totalAmount / (term * 12);
                         }
 
@@ -426,16 +586,21 @@ public class FinalProject2 {
                     }
 
                     // Check if total Monthly Payment is enough for Client's Monthly Salary
-                    salary = salaries.get(index);
-                    double remaining = salary - totalMonthly;
+                    double totalCommitment = existingMonthlyPayments + totalMonthly; // total gatos ng account iyon
+                    double remaining = originalSalary - totalCommitment;
 
-                    if (remaining < (salary / 3)) {
+                    if (remaining < (originalSalary / 3)) {
                         System.out.println(
                                 "\nMonthly deduction exceeds 1/3 rule. Cancelling all loans in this transaction.");
-                        continue;
+                        System.out.printf(" ! Current monthly commitments: PHP %.2f\n", existingMonthlyPayments);
+                        System.out.printf(" ! New loans would add: PHP %.2f\n", totalMonthly);
+                        System.out.printf(" ! This would leave: PHP %.2f (less than 1/3 of your salary)\n", remaining);
+                        break;
                     }
 
                     System.out.printf("\n   ✅ Added loans: ₱%.2f/month total\n", totalMonthly);
+                    System.out.printf("   ✅ Total monthly loan payments: ₱%.2f/month\n", totalCommitment);
+                    System.out.printf("   ✅ Remaining salary: ₱%.2f/month\n", remaining);
                     // Print current Transaction if Transaction is Succesful
                     for (int i = 0; i < tempLoanTypes.size(); i++) {
                         transNums.add(tempTransNums.get(i));
@@ -448,7 +613,7 @@ public class FinalProject2 {
                         approvals.add(true);
                         maturityValues.add(tempMaturityValues.get(i)); // * Save permanently
                         loanInterest.add(tempLoanInterest.get(i));
-
+                        Remainingsalaries.add(remaining);
                     }
 
                     transctr++; // increment TransacNum for future Transactions
@@ -462,17 +627,8 @@ public class FinalProject2 {
                     break;
 
                 case 3: // Viewing Transactions
-                    System.out.println("                    ╭───────────────────────────────────────────╮");
-                    System.out.println("                    │              View Transaction             │");
-                    System.out.println("                    │╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮│");
-                    System.out.println("                    │┊   [1]   »  Account Number               ┊│");
-                    System.out.println("                    │┊   [2]   »  Transaction Number           ┊│");
-                    System.out.println("                    │┊   [3]   »  Per Type of Loan             ┊│");
-                    System.out.println("                    │┊   [4]   »  View All                     ┊│");
-                    System.out.println("                    │┊   [5]   »  Back to Main Menu            ┊│");
-                    System.out.println("                    │╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯│");
-                    System.out.println("                    ╰───────────────────────────────────────────╯");
-
+                    errorCount = 0;
+                    printViewMenu();
                     // Instead of going back to the main menu when you select something you go back
                     // to the view menu instead
                     boolean viewingTransactions = true;
@@ -482,18 +638,24 @@ public class FinalProject2 {
                         try { // Try Catch to avoid crash
                             viewchoice = s.nextInt();
                             s.nextLine();
+                            errorCount = 0;
                         } catch (InputMismatchException e) {
-                            System.out.println("Invalid input. Please enter a number.");
                             s.nextLine();
-                            continue;
+                            if (errorCount < 2) {
+                                System.out.println("Invalid input. Please enter a number.");
+                                errorCount++;
+                                continue;
+                            }
                         }
 
                         if (viewchoice == 5) { // Return to main menu
+                            errorCount = 0;
                             viewingTransactions = false;
-                            continue;
+                            break;
                         }
 
                         if (viewchoice == 1) { // by AccNum
+                            errorCount = 0;
                             System.out.print("\n ➤ Enter Account Number: ");
                             String accSearch = s.nextLine();
                             boolean found = false;
@@ -509,6 +671,7 @@ public class FinalProject2 {
                                 System.out.println("No transactions found.");
 
                         } else if (viewchoice == 2) { // by TransacNum
+                            errorCount = 0;
                             System.out.print("\n ➤ Enter Transaction Number: ");
                             String transSearch = s.nextLine();
                             System.out.println(
@@ -524,6 +687,7 @@ public class FinalProject2 {
                             if (!found)
                                 System.out.println("Transaction not found.");
                         } else if (viewchoice == 3) { // by Loan Type
+                            errorCount = 0;
                             System.out.println("  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮");
                             System.out.println("  ┊   » Regular     Loan                    » Educational Loan    ┊");
                             System.out.println("  ┊   » Emergency   Loan                    » Housing Loan        ┊");
@@ -543,6 +707,7 @@ public class FinalProject2 {
                             if (!found)
                                 System.out.println("No transactions of this type.");
                         } else if (viewchoice == 4) { // View ALL
+                            errorCount = 0;
                             if (transNums.isEmpty()) {
                                 System.out.println("No transactions yet.");
                             } else {
@@ -551,20 +716,14 @@ public class FinalProject2 {
                                 }
                             }
                         } else {
-                            System.out.println("Invalid choice. Please select 1-5.");
+                            if (errorCount < 2) {
+                                System.out.println("Invalid choice. Please select 1-5.");
+                                errorCount++;
+                                continue;
+                            }
                         }
-
                         // Display view menu again after each operation
-                        System.out.println("                    ╭───────────────────────────────────────────╮");
-                        System.out.println("                    │              View Transaction             │");
-                        System.out.println("                    │╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮│");
-                        System.out.println("                    │┊   [1]   »  Account Number               ┊│");
-                        System.out.println("                    │┊   [2]   »  Transaction Number           ┊│");
-                        System.out.println("                    │┊   [3]   »  Per Type of Loan             ┊│");
-                        System.out.println("                    │┊   [4]   »  View All                     ┊│");
-                        System.out.println("                    │┊   [5]   »  Back to Main Menu            ┊│");
-                        System.out.println("                    │╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯│");
-                        System.out.println("                    ╰───────────────────────────────────────────╯");
+                        printViewMenu();
                     }
                     break;
             }
@@ -576,12 +735,17 @@ public class FinalProject2 {
      * Display Transaction
      */
     public static void printTransaction(int i) {
+        // Find the correct client index based on the account number
+        String accountNum = transAccNums.get(i); // find the transanction number
+        int clientIndex = clientAccNum.indexOf(accountNum); // find the index of the cilent
+
         if (loanTypes.get(i).equals("Emergency Loan")) {
             System.out.printf(" •  Account Number      : #%s\n", transAccNums.get(i));
-            System.out.printf(" •  Client's Name       : #%s\n", clientName.get(i));
-            System.out.printf(" •  Account Adress      : #%s\n", address.get(i));
-            System.out.printf(" •  Account Contact No. : #%s\n", contactinfo.get(i));
-            System.out.printf(" •  Account E-mail      : #%s\n", email.get(i));
+            System.out.printf(" •  Client's Name       : %s\n", clientName.get(clientIndex)); // get the cilent base on
+                                                                                              // the transanction number
+            System.out.printf(" •  Account Adress      : %s\n", address.get(clientIndex));
+            System.out.printf(" •  Account Contact No. : %s\n", contactinfo.get(clientIndex));
+            System.out.printf(" •  Account E-mail      : %s\n", email.get(clientIndex));
             System.out.printf(" •  Transaction Number  : #%s\n", transNums.get(i));
             System.out.printf(" •  Loan Type           : %s\n", loanTypes.get(i));
             System.out.printf(" •  Loan Amount         : PHP %.2f\n", loanAmo.get(i));
@@ -589,14 +753,17 @@ public class FinalProject2 {
             System.out.printf(" •  Total Amount Due    : PHP %.2f\n", maturityValues.get(i));
             System.out.printf(" •  Loan Term           : %d months\n", loanTerms.get(i));
             System.out.printf(" •  Monthly Payment     : PHP %.2f\n", monPay.get(i));
+            System.out.printf(" •  Remaining Sweldo mo after ng transaction     : PHP %.2f\n",
+                    Remainingsalaries.get(i)); // ge utang kapa
+            // tangina hAHAHAH
             System.out.println(" •  Loan Status         : ✅  Approved");
             System.out.println("┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         } else {
             System.out.printf(" •  Account Number      : #%s\n", transAccNums.get(i));
-            System.out.printf(" •  Client's Name       : #%s\n", clientName.get(i));
-            System.out.printf(" •  Client's Adress     : #%s\n", address.get(i));
-            System.out.printf(" •  Account Contact No. : #%s\n", contactinfo.get(i));
-            System.out.printf(" •  Account Email       : #%s\n", email.get(i));
+            System.out.printf(" •  Client's Name       : %s\n", clientName.get(clientIndex));
+            System.out.printf(" •  Client's Adress     : %s\n", address.get(clientIndex));
+            System.out.printf(" •  Account Contact No. : %s\n", contactinfo.get(clientIndex));
+            System.out.printf(" •  Account Email       : %s\n", email.get(clientIndex));
             System.out.printf(" •  Transaction Number  : #%s\n", transNums.get(i));
             System.out.printf(" •  Loan Type           : %s\n", loanTypes.get(i));
             System.out.printf(" •  Loan Amount         : PHP %.2f\n", loanAmo.get(i));
@@ -605,10 +772,12 @@ public class FinalProject2 {
             System.out.printf(" •  Loan Term           : %d months\n", loanTerms.get(i));
             System.out.printf(" •  Monthly Payment     : PHP %.2f\n", monPay.get(i));
             System.out.printf(" •  Yearly Payment      : PHP %.2f\n", yearlyPay.get(i));
+            System.out.printf(" •  Remaining Sweldo mo after ng transaction    : PHP %.2f\n", Remainingsalaries.get(i)); // ge
+                                                                                                                         // utang
+                                                                                                                         // kapa
             System.out.println(" •  Loan Status       : ✅  Approved");
             System.out.println("┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         }
-
     }
 
     // If Accepted then Print ALl
@@ -619,5 +788,47 @@ public class FinalProject2 {
                 printTransaction(i);
             }
         }
+    }
+
+    // method to display the main menu selection
+    public static void printMainMenu() {
+        System.out.println(
+                "\n                ╭─────────────────────────────────────────────────────╮                ");
+        System.out
+                .println("                │                 Select from the Menu                │                ");
+        System.out
+                .println("                │  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮  │                ");
+        System.out
+                .println("                │  ┊   [1]   »   Add Account                       ┊  │                ");
+        System.out
+                .println("                │  ┊                                               ┊  │                ");
+        System.out
+                .println("                │  ┊   [2]   »   New Transaction                   ┊  │                ");
+        System.out
+                .println("                │  ┊                                               ┊  │                ");
+        System.out
+                .println("                │  ┊   [3]   »   View Transaction                  ┊  │                ");
+        System.out
+                .println("                │  ┊                                               ┊  │                ");
+        System.out
+                .println("                │  ┊   [4]   »   Exit                              ┊  │                ");
+        System.out
+                .println("                │  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯  │                ");
+        System.out
+                .println("                ╰─────────────────────────────────────────────────────╯                ");
+    }
+
+    // method to display view method
+    public static void printViewMenu() {
+        System.out.println("                    ╭───────────────────────────────────────────╮");
+        System.out.println("                    │              View Transaction             │");
+        System.out.println("                    │╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮│");
+        System.out.println("                    │┊   [1]   »  Account Number               ┊│");
+        System.out.println("                    │┊   [2]   »  Transaction Number           ┊│");
+        System.out.println("                    │┊   [3]   »  Per Type of Loan             ┊│");
+        System.out.println("                    │┊   [4]   »  View All                     ┊│");
+        System.out.println("                    │┊   [5]   »  Back to Main Menu            ┊│");
+        System.out.println("                    │╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯│");
+        System.out.println("                    ╰───────────────────────────────────────────╯");
     }
 }
