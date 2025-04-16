@@ -9,13 +9,12 @@ public class FinalProject2 {
     static ArrayList<String> transNums = new ArrayList<>(); // View by TransacNum
     static ArrayList<String> transAccNums = new ArrayList<>(); // View by AccNum
     static ArrayList<String> loanTypes = new ArrayList<>(); // View by Loan Types
-    static ArrayList<Double> loanAmo = new ArrayList<>(); // Loan Amount (niloan ni user)
-    static ArrayList<Double> monPay = new ArrayList<>(); // Monthly Payment (babayarn ni user kada buwan kasama na
-    // interest)
+    static ArrayList<Double> loanAmo = new ArrayList<>(); // Loan Amount
+    static ArrayList<Double> monPay = new ArrayList<>(); // Monthly Payment
     static ArrayList<Integer> loanTerms = new ArrayList<>(); // Loan Term (months)
     static ArrayList<Boolean> approvals = new ArrayList<>(); // Approval Status
     static ArrayList<Double> loanInterest = new ArrayList<>();
-    static ArrayList<Double> maturityValues = new ArrayList<>(); // * Total amount to be paid (Principal + Interest)
+    static ArrayList<Double> maturityValues = new ArrayList<>();// Total amount to be paid (Principal + Interest)
     static ArrayList<Double> yearlyPay = new ArrayList<>(); // Yearly payment
 
     // Storing Account Infos
@@ -28,42 +27,36 @@ public class FinalProject2 {
     static ArrayList<String> email = new ArrayList<>();
     static Scanner s = new Scanner(System.in);
 
-    // declaration of variables
+    // Declaration of Variables
     static String contactPattern = "\\d{11}"; // format for 11-digits
     static String emailPattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"; // format for name@domain.com
     static Pattern contactpattern = Pattern.compile(contactPattern);
     static Pattern emailpattern = Pattern.compile(emailPattern);
     static String accNum = "", name, loantype = "", adressinput, emailinput, contactinf;
     static double salary = 0, principal = 0, rate = 0, max = 0;
-    static int index, loanchoice = 0, term = 0, viewchoice = 0, menuChoice = 0, yr, errorCount = 0;
+    static int ctr, index, loanchoice = 0, term = 0, viewchoice = 0, menuChoice = 0, yr, errorCount = 0;
     static boolean loanTermValid = false;
     static int acctr = 1; // Counter for Creating unique AccNum
     static int transctr = 1; // For TransacNum (ginaya ko lang yung ginawa ni jims)
 
     public static void main(String[] args) {
-
-        // introduction
-
-        System.out.println("\n                           【  Welcome to Loan Computation  】                        ");
+        System.out.println("\n                           【  Welcome to Loan Computation  】                        ");// Introduction
         System.out.println("                ╭─────────────────────────────────────────────────────╮             ");
         System.out.println("                ┊     The Program Computes Loan Interest, Monthly     ┊             ");
         System.out.println("                │     Amortization. This Program also list User's     │             ");
         System.out.println("                ┊     Transactionns.                                  ┊             ");
         System.out.println("                ╰─────────────────────────────────────────────────────╯             ");
 
-        while (true) { // main menu loop
-            // display menu options
-            printMainMenu();
+        while (true) { // Main Menu Loop
+            printMainMenu();// Display Main Menu
             errorCount = 0; // make sure naka zero everytime babalik sa main menu
 
-            // Checking menu choice
-            validMainMenuInput();
+            validMainMenuInput();// Checking menu choice
 
             System.out
                     .println("\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
-            // Exit Program
-            if (menuChoice == 4) {
+            if (menuChoice == 4) { // Exit Program
                 System.out.println(" Exiting . . .");
                 break;
             }
@@ -82,50 +75,41 @@ public class FinalProject2 {
         }
     }
 
-    // Adding Account
-    public static void addAccount() {
+    public static void addAccount() { // Adding Account
         errorCount = 0;
-        System.out.print("\n ➤ Enter Full Name   [ e.g. Tung Tung T. Sahur    ]: "); // Clients Name
-        name = s.nextLine();
+
+        name = validName(); // Getting Client's Name
 
         System.out.print("\n ➤ Enter Address     [ City, Province, Country    ]: "); // Clients Address
         adressinput = s.nextLine();
 
-        // Getting Contact Number
-        contactinf = validContactInfo();
+        contactinf = validContactInfo();// Getting Contact Number
 
-        // Getting Email
-        emailinput = validEmailInfo();
+        emailinput = validEmailInfo(); // Getting Email
 
-        // Getting Monthly Salary
-        salary = validSalary();
+        salary = validSalary(); // Getting Monthly Salary
 
-        accNum = String.format("%03d", acctr++); // generate acc num
+        accNum = String.format("%03d", acctr++); // Generate Acc Num
         System.out.println("\n ➤ Generated Account Number : #" + accNum);
 
-        // Add Account to List
         clientAccNum.add(accNum);
         clientName.add(name);
-        salaries.add(salary);
+        salaries.add(salary); // Add Account to List
         address.add(adressinput);
         contactinfo.add(contactinf);
         email.add(emailinput);
 
-        System.out.println(
-                "\n                            Account Successfully created!                            ");
-        System.out.println(
-                "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+        System.out.println("\n                            Account Successfully created!                            ");
+        System.out.println("┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
     }
 
-    // Adding Transanction
-    public static void addTransanction() {
+    public static void addTransanction() { // Adding Transaction
         errorCount = 0;
         System.out.print("\n ➤ Enter your Account Number: #");
         String inputAcc = s.nextLine();
-        index = clientAccNum.indexOf(inputAcc); // Searching Proper Index
+        index = clientAccNum.indexOf(inputAcc);
 
-        // Verifying if Account exist or not
-        if (index == -1) { // No Match
+        if (index == -1) { // Verifying if Account exist or not
             System.out.println("\n ! Account number not found. Please create an account first.");
             return;
         }
@@ -141,11 +125,11 @@ public class FinalProject2 {
         ArrayList<Integer> tempLoanTerms = new ArrayList<>();
         ArrayList<String> tempTransNums = new ArrayList<>();
 
-        // getting the account original salary
+        // Getting Account's Original Salary
         double originalSalary = salaries.get(index);
         double existingMonthlyPayments = 0;
 
-        // calculate existing monthly payments for the selected account number
+        // Calculating Existing Monthly Payments for the selected Account Number
         int bilang; // counter
         for (bilang = 0; bilang < transAccNums.size(); bilang++) {
             if (transAccNums.get(bilang).equals(inputAcc)) {
@@ -153,16 +137,15 @@ public class FinalProject2 {
             }
         }
 
-        // How much the user can spend in this transanction
-        double availableSalary = originalSalary - existingMonthlyPayments;
+        // How much the user can spend in this transaction
+        double availableSalary = (originalSalary - (originalSalary / 3)) - existingMonthlyPayments;
 
-        System.out.printf("\n Your monthly salary: PHP %.2f", originalSalary);
-        System.out.printf("\n Currently committed: PHP %.2f", existingMonthlyPayments);
-        System.out.printf("\n Available for loans: PHP %.2f\n", availableSalary);
+        System.out.printf("\n• Your monthly salary : PHP %.2f", originalSalary);
+        System.out.printf("\n• Currently committed : PHP %.2f", existingMonthlyPayments);
+        System.out.printf("\n• Available for loans : PHP %.2f\n", availableSalary);
 
         System.out.print("\n ➤ Your Transaction Number  : #00" + transctr + "\n");
 
-        // para sa multiple loans in single transanction
         // Ask user how many loans they want
         int numLoans = 0;
         while (true) {
@@ -186,13 +169,13 @@ public class FinalProject2 {
             System.out.println("\n  Processing Loan " + (loanCount + 1) + " of " + numLoans);
 
             // loan type options
-            System.out.println("╭┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Interest┈┈┈┈┈╮");
-            System.out.println("┊ [1]  »    Regular                │   PHP 60k   │   10% / Year     ┊");
-            System.out.println("┊ [2]  »    Emergency              │   PHP 25k   │   1%  / Month    ┊");
-            System.out.println("┊ [3]  »    Educational            │   PHP 30k   │   10% / 4Years   ┊");
-            System.out.println("┊ [4]  »    Car                    │   PHP 500k  │   10% / Year     ┊");
-            System.out.println("┊ [5]  »    Housing                │   PHP 2M    │   15% / Year     ┊");
-            System.out.println("╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
+            System.out.println("  ╭┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Limit┈┈┈┈┈┈┈┈┈┈Interest┈┈┈┈┈╮");
+            System.out.println("  ┊ [1]  »    Regular                │   PHP 60k   │   10% / Year     ┊");
+            System.out.println("  ┊ [2]  »    Emergency              │   PHP 25k   │   1%  / Month    ┊");
+            System.out.println("  ┊ [3]  »    Educational            │   PHP 30k   │   10% / 4Years   ┊");
+            System.out.println("  ┊ [4]  »    Car                    │   PHP 500k  │   10% / Year     ┊");
+            System.out.println("  ┊ [5]  »    Housing                │   PHP 2M    │   15% / Year     ┊");
+            System.out.println("  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
 
             while (true) {
                 loanchoice = getInt("\n ➤ Enter Loan Type (select from the menu) : ",
@@ -231,7 +214,7 @@ public class FinalProject2 {
             // COMPUTATION
             double interest = principal * rate * term;
             double totalAmount = principal + interest;
-            double maturity = totalAmount; // *Store maturity value
+            double maturity = totalAmount;
 
             double monthly;
             if (loantype.equals("Emergency Loan")) {// Emergency Loan terms are already in months
@@ -243,14 +226,14 @@ public class FinalProject2 {
             double yearly = monthly * 12;
             totalMonthly += monthly;
 
-            // dito sstore temporarily yon yung inexplain ko kanina
+            // Storing Temporarily
             tempLoanTypes.add(loantype);
             tempLoanAmo.add(principal);
             tempMonPay.add(monthly);
             tempYearPay.add(yearly);
             tempLoanTerms.add(term);
             tempTransNums.add(transNum);
-            tempMaturityValues.add(maturity); // * Add to temporary list
+            tempMaturityValues.add(maturity);
             tempLoanInterest.add(interest);
         }
 
@@ -266,10 +249,7 @@ public class FinalProject2 {
             System.out.printf(" ! This would leave: PHP %.2f (less than 1/3 of your salary)\n", remaining);
             return;
         }
-
-        System.out.printf("\n   ✅ Added loans: ₱%.2f/month total\n", totalMonthly);
-        System.out.printf("   ✅ Total monthly loan payments: ₱%.2f/month\n", totalCommitment);
-        System.out.printf("   ✅ Remaining salary: ₱%.2f/month\n", remaining);
+        System.out.printf("\n   ✅ Total monthly loan payments: ₱%.2f/month\n", totalCommitment);
         // Print current Transaction if Transaction is Succesful
         for (int i = 0; i < tempLoanTypes.size(); i++) {
             transNums.add(tempTransNums.get(i));
@@ -331,10 +311,9 @@ public class FinalProject2 {
         }
     }
 
-    // checking main menu input
-    public static void validMainMenuInput() {
+    public static void validMainMenuInput() { // checking main menu input
         while (true) {
-            menuChoice = getInt("\n ➤ Enter Choice :", "\n ! Invalid input. Please Enter 1 - 4 only.");
+            menuChoice = getInt("\n ➤ Enter Choice : ", "\n ! Invalid input. Please Enter 1 - 4 only.");
             if (menuChoice >= 1 && menuChoice <= 4) {
                 errorCount = 0; // reset error count
                 break;
@@ -347,50 +326,87 @@ public class FinalProject2 {
         }
     }
 
-    // validating contanct info
-    public static String validContactInfo() {
+    public static String validName() { // validating client name
+        String Name;
+        while (true) {
+            boolean duplicate = false;
+            System.out.print("\n ➤ Enter Full Name   [ e.g. Tung Tung T. Sahur    ]: ");
+            Name = s.nextLine();
+
+            for (int ctr = 0; ctr < clientName.size(); ctr++) {
+                if (Name.equalsIgnoreCase(clientName.get(ctr))) {
+                    System.out.println("\n ! This Person already have an Account");
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                return Name;
+            }
+        }
+    }
+
+    public static String validContactInfo() { // validating contact no.
         String ContactInfo;
         while (true) {
+            boolean duplicate = false;
             System.out.print("\n ➤ Enter Contact No. [ 11 Digits e.g. 09661234567 ]: ");
             ContactInfo = s.nextLine();
             Matcher matcher = contactpattern.matcher(ContactInfo);
-            if (matcher.matches()) {
-                errorCount = 0;
-                break;
-            } else {
-                if (errorCount < 2) {
-                    System.out.println("\n ! Invalid format. Please enter valid Contact No. ");
-                    errorCount++;
-                }
-            }
-        }
-        return ContactInfo;
-    }
-
-    // validating email info
-    public static String validEmailInfo() {
-        String emailInput;
-        while (true) {
-            System.out.print("\n ➤ Enter E-mail      [ Format » name@domain.com   ]: ");
-            emailInput = s.nextLine();
-            Matcher matcher = emailpattern.matcher(emailInput);
-            if (matcher.matches()) {
-                errorCount = 0;
-                return emailInput;
-            } else {
+            if (!matcher.matches()) {
                 if (errorCount < 2) {
                     System.out.println("\n ! Invalid format. Please enter valid Email.");
                     errorCount++;
                 }
+                continue;
+            }
+            for (int ctr = 0; ctr < contactinfo.size(); ctr++) {
+                if (ContactInfo.equalsIgnoreCase(contactinfo.get(ctr))) {
+                    System.out.println("\n ! This Contact No. already Exists. Please try again.");
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                errorCount = 0;
+                return ContactInfo; // Valid and non Existing Contact Number
             }
         }
     }
 
-    // validating monthly salary info
-    public static Double validSalary() {
+    public static String validEmailInfo() { // validating email info
+        String emailInput;
+        while (true) {
+            boolean duplicate = false;
+            System.out.print("\n ➤ Enter E-mail      [ Format » name@domain.com   ]: ");
+            emailInput = s.nextLine();
+            Matcher matcher = emailpattern.matcher(emailInput);
+
+            if (!matcher.matches()) {
+                if (errorCount < 2) {
+                    System.out.println("\n ! Invalid format. Please enter valid Email.");
+                    errorCount++;
+                }
+                continue; // continue the loop
+            }
+            for (int ctr = 0; ctr < email.size(); ctr++) { // Check if email already exists
+                if (emailInput.equalsIgnoreCase(email.get(ctr))) {
+                    System.out.println("\n ! This Email already Exists. Please try again.");
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                errorCount = 0;
+                return emailInput; // Valid and non Existing E-mail
+            }
+        }
+    }
+
+    public static Double validSalary() { // validating monthly salary info
         Double MonthlyPayment = 0.0;
         while (true) {
-            MonthlyPayment = getDouble("\n ➤ Enter Monthly Salary     : PHP",
+            MonthlyPayment = getDouble("\n ➤ Enter Monthly Salary     : PHP ",
                     "\n ! Invalid salary. Please enter valid Salary.");
             if (MonthlyPayment <= 0) {
                 if (errorCount < 2) {
@@ -650,46 +666,129 @@ public class FinalProject2 {
         // Find the correct client index based on the account number
         String accountNum = transAccNums.get(i); // find the account number based on the transanctionNumberArray
         int clientIndex = clientAccNum.indexOf(accountNum); // find the index of the cilent
+        String monSalString = String.format("%.2f", salaries.get(clientIndex));
+        String loanAmtString = String.format("%.2f", loanAmo.get(i));
+        String loanIntString = String.format("%.2f", loanInterest.get(i));
+        String totAmtDue = String.format("%.2f", maturityValues.get(i));
+        String monPayString = String.format("%.2f", monPay.get(i));
 
         if (loanTypes.get(i).equals("Emergency Loan")) {
-            System.out.printf(" •  Account Number      : #%s\n", transAccNums.get(i));
-            System.out.printf(" •  Client's Name       : %s\n", clientName.get(clientIndex)); // get the cilent base on
-                                                                                              // the transanction number
-            System.out.printf(" •  Account Adress      : %s\n", address.get(clientIndex));
-            System.out.printf(" •  Account Contact No. : %s\n", contactinfo.get(clientIndex));
-            System.out.printf(" •  Account E-mail      : %s\n", email.get(clientIndex));
-            System.out.printf(" •  Transaction Number  : #%s\n", transNums.get(i));
-            System.out.printf(" •  Loan Type           : %s\n", loanTypes.get(i));
-            System.out.printf(" •  Loan Amount         : PHP %.2f\n", loanAmo.get(i));
-            System.out.printf(" •  Loan Interest       : PHP %.2f\n", loanInterest.get(i));
-            System.out.printf(" •  Total Amount Due    : PHP %.2f\n", maturityValues.get(i));
-            System.out.printf(" •  Loan Term           : %d months\n", loanTerms.get(i));
-            System.out.printf(" •  Monthly Payment     : PHP %.2f\n", monPay.get(i));
-            System.out.printf(" •  Remaining Sweldo mo after ng transaction     : PHP %.2f\n",
-                    Remainingsalaries.get(i)); // ge utang kapa
-            // tangina hAHAHAH
-            System.out.println(" •  Loan Status         : ✅  Approved");
+            System.out.println(
+                    "\n                               【 Client Informations 】                               \n");
+            System.out
+                    .println("┌────────────────────┬───────────────────────────┬────────────────────────────────────┐");
+            System.out
+                    .println("│                    │                           │                                    │");
+            System.out.print("│ Account No. : #" + transAccNums.get(i) + " │ Contact No. : "
+                    + contactinfo.get(clientIndex) + " │ Client : ");
+            tableAlign(clientName.get(clientIndex), 26);
+            System.out.println(
+                    "\n│                    │                           │                                    │");
+            System.out.print("│ Transac No. : #" + transNums.get(i) + " │ Monthly Sal.: PHP");
+            tableAlign(monSalString, 9);
+            System.out.print(" E-mail : ");
+            tableAlign(email.get(clientIndex), 26);
+            System.out.println(
+                    "\n│                    │                           │                                    │");
+            System.out
+                    .println("├────────────────────┴───────────────────────────┴────────────────────────────────────┤");
+            System.out.print("│ Client's Address : ");
+            tableAlign(address.get(clientIndex), 65);
+            System.out.println(
+                    "\n└─────────────────────────────────────────────────────────────────────────────────────┘");
+            System.out.println(
+                    "\n                                【 Loan Informations 】                                \n");
+            System.out
+                    .println("┌─────────Loan─Type────────┬───────────Loan─Term──────────┬────────Loan─Amount────────┐");
+            System.out
+                    .println("│                          │                              │                           │");
+            System.out.print("│ » ");
+            tableAlign(loanTypes.get(i), 23);
+            System.out.print(" » ");
+            tableAlign(loanTerms.get(i) + "Month/s", 27);
+            System.out.print(" » PHP ");
+            tableAlign(loanAmtString, 20);
+            System.out.println(
+                    "\n│                          │                              │                           │");
+            System.out
+                    .println("├─────────Interest─────────┼───────Total─Amount─Due───────┼──────Monthly─Payment──────┤");
+            System.out
+                    .println("│                          │                              │                           │");
+            System.out.print("│ » PHP ");
+            tableAlign(loanIntString, 19);
+            System.out.print(" » PHP ");
+            tableAlign(totAmtDue, 23);
+            System.out.print(" » PHP ");
+            tableAlign(monPayString, 20);
+            System.out.println(
+                    "/n│                          │                              │                           │");
+            System.out
+                    .println("└──────────────────────────┴──────────────────────────────┴───────────────────────────┘");
             System.out.println("┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         } else {
-            System.out.printf(" •  Account Number      : #%s\n", transAccNums.get(i));
-            System.out.printf(" •  Client's Name       : %s\n", clientName.get(clientIndex));
-            System.out.printf(" •  Client's Adress     : %s\n", address.get(clientIndex));
-            System.out.printf(" •  Account Contact No. : %s\n", contactinfo.get(clientIndex));
-            System.out.printf(" •  Account Email       : %s\n", email.get(clientIndex));
-            System.out.printf(" •  Transaction Number  : #%s\n", transNums.get(i));
-            System.out.printf(" •  Loan Type           : %s\n", loanTypes.get(i));
-            System.out.printf(" •  Loan Amount         : PHP %.2f\n", loanAmo.get(i));
-            System.out.printf(" •  Loan Interest       : PHP %.2f\n", loanInterest.get(i));
-            System.out.printf(" •  Total Amount Due    : PHP %.2f\n", maturityValues.get(i));
-            System.out.printf(" •  Loan Term           : %d years\n", loanTerms.get(i));
-            System.out.printf(" •  Monthly Payment     : PHP %.2f\n", monPay.get(i));
-            System.out.printf(" •  Yearly Payment      : PHP %.2f\n", yearlyPay.get(i));
-            System.out.printf(" •  Remaining Sweldo mo after ng transaction    : PHP %.2f\n", Remainingsalaries.get(i)); // ge
-                                                                                                                         // utang
-                                                                                                                         // kapa
-            System.out.println(" •  Loan Status       : ✅  Approved");
+            System.out.println(
+                    "\n                               【 Client Informations 】                               \n");
+            System.out
+                    .println("┌────────────────────┬───────────────────────────┬────────────────────────────────────┐");
+            System.out
+                    .println("│                    │                           │                                    │");
+            System.out.print("│ Account No. : #" + transAccNums.get(i) + " │ Contact No. : "
+                    + contactinfo.get(clientIndex) + " │ Client : ");
+            tableAlign(clientName.get(clientIndex), 26);
+            System.out.println(
+                    "\n│                    │                           │                                    │");
+            System.out.print("│ Transac No. : #" + transNums.get(i) + " │ Monthly Sal.: PHP");
+            tableAlign(monSalString, 9);
+            System.out.print(" E-mail : ");
+            tableAlign(email.get(clientIndex), 26);
+            System.out.println(
+                    "\n│                    │                           │                                    │");
+            System.out
+                    .println("├────────────────────┴───────────────────────────┴────────────────────────────────────┤");
+            System.out.print("│ Client's Address : ");
+            tableAlign(address.get(clientIndex), 65);
+            System.out.println(
+                    "\n└─────────────────────────────────────────────────────────────────────────────────────┘");
+            System.out.println(
+                    "\n                                【 Loan Informations 】                                \n");
+            System.out
+                    .println("┌─────────Loan─Type────────┬───────────Loan─Term──────────┬────────Loan─Amount────────┐");
+            System.out
+                    .println("│                          │                              │                           │");
+            System.out.print("│ » ");
+            tableAlign(loanTypes.get(i), 23);
+            System.out.print(" » ");
+            tableAlign(loanTerms.get(i) + "Year/s", 27);
+            System.out.print(" » PHP ");
+            tableAlign(loanAmtString, 20);
+            System.out.println(
+                    "\n│                          │                              │                           │");
+            System.out
+                    .println("├─────────Interest─────────┼───────Total─Amount─Due───────┼──────Monthly─Payment──────┤");
+
+            System.out
+                    .println("│                          │                              │                           │");
+            System.out.print("│ » PHP ");
+            tableAlign(loanIntString, 19);
+            System.out.print(" » PHP ");
+            tableAlign(totAmtDue, 23);
+            System.out.print(" » PHP ");
+            tableAlign(monPayString, 20);
+            System.out.println(
+                    "\n│                          │                              │                           │");
+            System.out
+                    .println("└──────────────────────────┴──────────────────────────────┴───────────────────────────┘");
             System.out.println("┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         }
+    }
+
+    // Method for Alignment
+    public static void tableAlign(String fill, int num) {
+        System.out.print(fill);
+        for (int startingNum = fill.length(); startingNum < num; startingNum++) {
+            System.out.print(" ");
+        }
+        System.out.print("│");
     }
 
     // If Accepted then Print ALl
@@ -702,35 +801,21 @@ public class FinalProject2 {
         }
     }
 
-    // method to display the main menu selection
     public static void printMainMenu() {
-        System.out.println(
-                "\n                ╭─────────────────────────────────────────────────────╮                ");
-        System.out
-                .println("                │                 Select from the Menu                │                ");
-        System.out
-                .println("                │  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮  │                ");
-        System.out
-                .println("                │  ┊   [1]   »   Add Account                       ┊  │                ");
-        System.out
-                .println("                │  ┊                                               ┊  │                ");
-        System.out
-                .println("                │  ┊   [2]   »   New Transaction                   ┊  │                ");
-        System.out
-                .println("                │  ┊                                               ┊  │                ");
-        System.out
-                .println("                │  ┊   [3]   »   View Transaction                  ┊  │                ");
-        System.out
-                .println("                │  ┊                                               ┊  │                ");
-        System.out
-                .println("                │  ┊   [4]   »   Exit                              ┊  │                ");
-        System.out
-                .println("                │  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯  │                ");
-        System.out
-                .println("                ╰─────────────────────────────────────────────────────╯                ");
+        System.out.println("\n                ╭─────────────────────────────────────────────────────╮                ");
+        System.out.println("                │                 Select from the Menu                │                ");
+        System.out.println("                │  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮  │                ");
+        System.out.println("                │  ┊   [1]   »   Add Account                       ┊  │                ");
+        System.out.println("                │  ┊                                               ┊  │                ");
+        System.out.println("                │  ┊   [2]   »   New Transaction                   ┊  │                ");
+        System.out.println("                │  ┊                                               ┊  │                ");
+        System.out.println("                │  ┊   [3]   »   View Transaction                  ┊  │                ");
+        System.out.println("                │  ┊                                               ┊  │                ");
+        System.out.println("                │  ┊   [4]   »   Exit                              ┊  │                ");
+        System.out.println("                │  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯  │                ");
+        System.out.println("                ╰─────────────────────────────────────────────────────╯                ");
     }
 
-    // method to display view method
     public static void printViewMenu() {
         System.out.println("                    ╭───────────────────────────────────────────╮");
         System.out.println("                    │              View Transaction             │");
@@ -746,8 +831,8 @@ public class FinalProject2 {
 
     public static void printLoanMenu() {
         System.out.println("  ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈Loan┈Type┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮");
-        System.out.println("  ┊  [1]   » Regular     Loan                [4] » Car Loan          ┊");
-        System.out.println("  ┊  [2]   » Emergency   Loan                [5] » Housing     Loan  ┊");
+        System.out.println("  ┊  [1]   » Regular     Loan                [4] » Car     Loan      ┊");
+        System.out.println("  ┊  [2]   » Emergency   Loan                [5] » Housing Loan      ┊");
         System.out.println("  ┊  [3]   » Educational Loan                                        ┊");
         System.out.println("  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯");
     }
