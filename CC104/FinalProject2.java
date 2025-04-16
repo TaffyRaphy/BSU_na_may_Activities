@@ -80,8 +80,7 @@ public class FinalProject2 {
 
         name = validName(); // Getting Client's Name
 
-        System.out.print("\n ➤ Enter Address     [ City, Province, Country    ]: "); // Clients Address
-        adressinput = s.nextLine();
+        adressinput = validAddress();
 
         contactinf = validContactInfo();// Getting Contact Number
 
@@ -333,6 +332,10 @@ public class FinalProject2 {
             System.out.print("\n ➤ Enter Full Name   [ e.g. Tung Tung T. Sahur    ]: ");
             Name = s.nextLine();
 
+            if (Name.isEmpty()) {
+                System.out.println("\n ! Please enter your name. Do not enter a Blank Input");
+                continue;
+            }
             for (int ctr = 0; ctr < clientName.size(); ctr++) {
                 if (Name.equalsIgnoreCase(clientName.get(ctr))) {
                     System.out.println("\n ! This Person already have an Account");
@@ -346,6 +349,20 @@ public class FinalProject2 {
         }
     }
 
+    public static String validAddress() { // validating address
+        String addressInput;
+        while (true) {
+            System.out.print("\n ➤ Enter Address     [ City, Province, Country    ]: "); // Clients Address
+            addressInput = s.nextLine();
+            if (addressInput.isEmpty()) {
+                System.out.println("\n ! Please enter your address. Do not enter a Blank Input");
+                continue;
+            } else {
+                return addressInput;
+            }
+        }
+    }
+
     public static String validContactInfo() { // validating contact no.
         String ContactInfo;
         while (true) {
@@ -355,7 +372,7 @@ public class FinalProject2 {
             Matcher matcher = contactpattern.matcher(ContactInfo);
             if (!matcher.matches()) {
                 if (errorCount < 2) {
-                    System.out.println("\n ! Invalid format. Please enter valid Email.");
+                    System.out.println("\n ! Invalid format. Please enter Contact No.");
                     errorCount++;
                 }
                 continue;
