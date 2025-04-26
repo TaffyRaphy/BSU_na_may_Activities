@@ -1,4 +1,4 @@
-package CC104.SelfStudy;
+package SelfStudy;
 
 import java.util.Scanner;
 
