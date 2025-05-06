@@ -154,6 +154,8 @@ public class FinalProject2 {
                     System.err.println("\n ! Please enter a positive number.");
                     errorCount++;
                     continue;
+                } else {
+                    errorCount = 0;
                 }
             }
         }
@@ -295,6 +297,8 @@ public class FinalProject2 {
                     if (errorCount < 2) {
                         System.err.println("Invalid choice. Please select 1-5.");
                         errorCount++;
+                    } else {
+                        errorCount = 0;
                     }
             }
             printViewMenu(); // Display view menu again after each operation
@@ -312,6 +316,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid input. Please Enter 1 - 4 only.");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
             }
         }
@@ -329,6 +335,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Please enter your name. Do not enter a Blank Input");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -337,6 +345,8 @@ public class FinalProject2 {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Person already have an Account");
                         errorCount2++;
+                    } else {
+                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
@@ -358,6 +368,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Please enter your address. Do not enter a Blank Input");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
                 continue;
             } else {
@@ -379,6 +391,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid format. Please enter Contact No.");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -386,7 +400,9 @@ public class FinalProject2 {
                 if (ContactInfo.equalsIgnoreCase(contactinfo.get(ctr))) {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Contact No. already Exists. Please try again.");
-                        errorCount++;
+                        errorCount2++;
+                    } else {
+                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
@@ -412,6 +428,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid format. Please enter valid Email.");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -420,13 +438,14 @@ public class FinalProject2 {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Email already Exists. Please try again.");
                         errorCount2++;
+                    } else {
+                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
                 }
             }
             if (!duplicate) {
-                errorCount = 0;
                 return emailInput; // Valid and non Existing E-mail
             }
         }
@@ -442,6 +461,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid salary. It should be not be 0.");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
             } else {
                 break;
@@ -452,31 +473,25 @@ public class FinalProject2 {
 
     public static void regularLoan() { // Regular Loan conditions
         loanType = "Regular Loan";
-        max = 60000;
         rate = 0.10;
-        principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 60,000]   : PHP ",
-                "\n ! Invalid input. Enter the correct format.");
+        principal = 60000;
         term = getValidTerms("\n ➤ Enter Loan Term   [1 or 2 Years]       : ", 1, 2);
     }
 
     public static void emergencyLoan() { // Emergency Loan conditions
         loanTermValid = false;
         loanType = "Emergency Loan";
-        max = 25000;
         rate = 0.01;
-        principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 25,000]   : PHP ",
-                "\n ! Invalid input. Enter the correct format.");
+        principal = 25000;
         term = getValidTerms("\n ➤ Enter Loan Term   [3 or 6 Months]       : ", 3, 6);
     }
 
     public static void educationalLoan() { // Education Loan conditions
         loanTermValid = false;
         loanType = "Educational Loan";
-        max = 30000;
         rate = 0.10; // With Fixed term, no need for asking Term
         term = 4;
-        principal = getValidLoanAmount("\n ➤ Enter Loan Amount [max » PHP 30,000]   : PHP ",
-                "\n ! Invalid input. Enter the correct format.");
+        principal = 30000;
     }
 
     public static void carLoan() { // Car Loan conditions
@@ -508,17 +523,23 @@ public class FinalProject2 {
                     System.err.println("\n ! Exceeds limit.");
                     errorCount++;
                     continue;
+                } else {
+                    errorCount = 0;
+                    continue;
                 }
-            } else if (validLoanAmount <= 0) {
+            }
+            if (validLoanAmount <= 0) {
                 if (errorCount < 2) {
                     System.err.println("\n ! Invalid Amount.");
                     errorCount++;
                     continue;
+                } else {
+                    errorCount = 0;
+                    continue;
                 }
-            } else {
-                errorCount = 0;
-                return validLoanAmount;
             }
+            errorCount = 0;
+            return validLoanAmount;
         }
     }
 
@@ -536,6 +557,8 @@ public class FinalProject2 {
                     System.err.println("\n ! Invalid term. Please enter " + term1 + " or " + term2 + ".");
                     errorCount1++;
                     continue;
+                } else {
+                    errorCount1 = 0;
                 }
             }
         }
@@ -589,6 +612,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("Invalid choice. Please select 1-5.");
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
             }
         }
@@ -643,6 +668,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println(errorMessage);
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
             }
         }
@@ -662,6 +689,8 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println(errorMessage);
                     errorCount1++;
+                } else {
+                    errorCount1 = 0;
                 }
             }
         }
