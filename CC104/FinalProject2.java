@@ -180,8 +180,6 @@ public class FinalProject2 {
                     System.err.println("\n ! Please enter a positive number.");
                     errorCount++;
                     continue;
-                } else {
-                    errorCount = 0;
                 }
             }
         }
