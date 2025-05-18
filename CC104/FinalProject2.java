@@ -12,11 +12,9 @@ public class FinalProject2 {
     static ArrayList<String> loanTypeList = new ArrayList<>(); // Needed for View by Loan Types
     static ArrayList<Double> loanAmoList = new ArrayList<>(); // Loan Amount
     static ArrayList<Double> monPayList = new ArrayList<>(); // Monthly Payment
-    static ArrayList<Integer> loanTermList = new ArrayList<>(); // Loan Term (months)
     static ArrayList<Boolean> approvals = new ArrayList<>(); // Approval Status
     static ArrayList<Double> loanIntList = new ArrayList<>(); // Loan Interest
     static ArrayList<Double> matValList = new ArrayList<>(); // Total amount to be paid (Principal + Interest)
-    static ArrayList<Double> yearlyPay = new ArrayList<>(); // Yearly payment
     // Storing Account Informations
     static ArrayList<String> clientAccNum = new ArrayList<>(); // account numbers
     static ArrayList<String> clientName = new ArrayList<>(); // client names
@@ -53,8 +51,8 @@ public class FinalProject2 {
     static String yellow = "\u001B[38;5;226m";
 
     public static void main(String[] args) { // Main Method
-
         // Introduction
+
         System.out.println(orange + "\n                                                      【  " + white
                 + "Welcome to Loan Computation" + orange + "  】"
                 + "\n                                           ╭─────────────────────────────────────────────────────╮"
@@ -89,6 +87,7 @@ public class FinalProject2 {
                 case 3:
                     viewTransanctionMenu();
                     break;
+
             }
         }
     }
@@ -106,7 +105,7 @@ public class FinalProject2 {
         System.out.println("\n ➤ Generated Account Number : #" + accNum);
         // List Client's Information
         clientAccNum.add(accNum);
-        clientName.add(nameInput.concat("                    "));
+        clientName.add(nameInput);
         salaryList.add(salaryInput);
         address.add(adressInput);
         contactinfo.add(contactInput);
@@ -120,14 +119,24 @@ public class FinalProject2 {
     }
 
     public static void addTransanction() { // Adding Transaction
+        if (clientAccNum.isEmpty()) {
+            System.err.println(" ! There is no existing Account yet");
+            System.out.println(orange
+                    + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈─┈───────────────────────────────────────────────────────────────────────────────────────────────────────────┈─┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+                    + white);
+            return;
+        }
         errorCount = 0;
         // Creating new Transaction to the Account Number
-        System.out.print("\n ➤ Enter your Account Number: #");
+        System.out.print(white + "\n ➤ Enter your Account Number: #");
         String inputAcc = s.nextLine();
         index = clientAccNum.indexOf(inputAcc);
 
         if (index == -1) { // Verifying if Account exist or not
             System.err.println("\n ! Account number not found. Please create an account first.");
+            System.out.println(orange
+                    + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈─┈───────────────────────────────────────────────────────────────────────────────────────────────────────────┈─┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+                    + white);
             return;
         }
         // Initialization of Temporary List to Restart Computation
@@ -136,7 +145,6 @@ public class FinalProject2 {
         ArrayList<Double> tempLoanAmo = new ArrayList<>();
         ArrayList<Double> tempLoanInterest = new ArrayList<>();
         ArrayList<Double> tempMaturityValues = new ArrayList<>();
-        ArrayList<Double> tempYearPay = new ArrayList<>();
         ArrayList<Double> tempMonPay = new ArrayList<>();
         ArrayList<Integer> tempLoanTerms = new ArrayList<>();
         ArrayList<String> tempTransNums = new ArrayList<>();
@@ -155,15 +163,14 @@ public class FinalProject2 {
         double availableSalary = (originalSalary - (originalSalary / 3)) - existingMonthlyPayments;
 
         // Prints Account Information to help Client
-        System.out.print(yellow);
-        System.out.printf("\n• Your monthly salary : PHP %.2f", originalSalary);
-        System.out.printf("\n• Currently committed : PHP %.2f", existingMonthlyPayments);
-        System.out.printf("\n• Available for loans : PHP %.2f\n", availableSalary);
+        System.out.printf(orange + "\n• Your monthly salary :" + yellow + " PHP %.2f", originalSalary);
+        System.out.printf(orange + "\n• Currently committed :" + yellow + " PHP %.2f", existingMonthlyPayments);
+        System.out.printf(orange + "\n• Available for loans :" + yellow + " PHP %.2f\n", availableSalary);
         System.out.print(white + "\n ➤ Your Transaction Number  : #00" + transctr + "\n");
 
         int numLoans = 0;
         while (true) { // Ask Client how many Loans they want
-            numLoans = getInt("\n ➤ How many loans do you want to take? : ",
+            numLoans = getInt(white + "\n ➤ How many loans do you want to take? : ",
                     "\n ! Invalid input. Please enter a number.");
             if (numLoans > 0) {
                 errorCount = 0;
@@ -186,27 +193,33 @@ public class FinalProject2 {
 
             // Loan Type Details & Options
             System.out.println(blue + "   ╭┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈" + white + "Loan┈Type" + blue + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┬┈┈┈┈"
-                    + white + "Amount" + blue + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┬┈┈┈┈┈" + white + "Interest" + blue + "┈┈┈┈┈╮"
+                    + white + "Amount" + blue + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┬┈┈┈┈┈┈┈┈┈" + white + "Terms" + blue
+                    + "┈┈┈┈┈┈┈┈┈┬┈┈┈┈┈┈" + white + "Interest" + blue + "┈┈┈┈┈┈╮"
                     + "\n   ┊ " + white + "[ 1 ]" + blue + "  »    " + white + "Regular     Loan" + blue
-                    + "                 │    " + white + "PHP" + yellow + " 60k   " + white + "( Fixed )" + blue
-                    + "    │   " + yellow + "10% " + white + "/ Year" + blue + "     ┊"
+                    + "                 │    " + white + "PHP" + orange + " 60k   " + white + "( Fixed )" + blue
+                    + "    │" + orange + "   1" + white + "   /" + orange + "   2" + white + "  Years" + blue
+                    + "    │     " + orange + "10% " + white + "/ Year" + blue + "     ┊"
                     + "\n   ┊ " + white + "[ 2 ]" + blue + "  »    " + white + "Emergency   Loan" + blue
-                    + "                 │    " + white + "PHP" + yellow + " 25k   " + white + "( Fixed )" + blue
-                    + "    │   " + yellow + "1%  " + white + "/ Month" + blue + "    ┊"
+                    + "                 │    " + white + "PHP" + orange + " 25k   " + white + "( Fixed )" + blue
+                    + "    │" + orange + "   3" + white + "   /" + orange + "   6" + white + "  Months" + blue
+                    + "   │     " + orange + "1%  " + white + "/ Month" + blue + "    ┊"
                     + "\n   ┊ " + white + "[ 3 ]" + blue + "  »    " + white + "Educational Loan" + blue
-                    + "                 │    " + white + "PHP" + yellow + " 30k   " + white + "( Fixed )" + blue
-                    + "    │   " + yellow + "10% " + white + "/ 4Years" + blue + "   ┊"
+                    + "                 │    " + white + "PHP" + orange + " 30k   " + white + "( Fixed )" + blue
+                    + "    │" + white + "  [Fixed]" + orange + "  4  " + white + "Years" + blue + "    │     " + orange
+                    + "10% " + white + "/ Year" + blue + "     ┊"
                     + "\n   ┊ " + white + "[ 4 ]" + blue + "  »    " + white + "Car         Loan" + blue
-                    + "                 │    " + white + "PHP" + yellow + " 500k  " + white + "(  Max  )" + blue
-                    + "    │   " + yellow + "10% " + white + "/ Year" + blue + "     ┊"
+                    + "                 │    " + white + "PHP" + orange + " 500k  " + white + "(  Max  )" + blue
+                    + "    │" + orange + "   2" + white + "   /" + orange + "   4" + white + "  Years" + blue
+                    + "    │     " + orange + "10% " + white + "/ Year" + blue + "     ┊"
                     + "\n   ┊ " + white + "[ 5 ]" + blue + "  »    " + white + "Housing     Loan" + blue
-                    + "                 │    " + white + "PHP" + yellow + " 2M    " + white + "(  Max  )" + blue
-                    + "    │   " + yellow + "15% " + white + "/ Year" + blue + "     ┊"
-                    + "\n   ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯"
+                    + "                 │    " + white + "PHP" + orange + " 2M    " + white + "(  Max  )" + blue
+                    + "    │" + orange + "   10" + white + "  /" + orange + "   20" + white + " Years" + blue
+                    + "    │     " + orange + "15% " + white + "/ Year" + blue + "     ┊"
+                    + "\n   ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┴┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯"
                     + white);
 
             while (true) { // While Loop until gets a valid Input
-                loanChoice = getInt("\n ➤ Enter Loan Type (select from the menu) : ",
+                loanChoice = getInt(white + "\n ➤ Enter Loan Type (select from the menu) : ",
                         "\n ! Invalid input. Please select 1 - 5.");
                 if (loanChoice < 1 || loanChoice > 5) {
                     if (errorCount < 2) {
@@ -241,7 +254,7 @@ public class FinalProject2 {
             // COMPUTATION
             double interest = principal * rate * term;
             double totalAmount = principal + interest;
-            double maturity = totalAmount;
+            double maturity = totalAmount;// not necessary
             double monthly;
 
             if (loanType.equals("Emergency Loan")) { // Emergency Loan terms are already in months
@@ -250,13 +263,11 @@ public class FinalProject2 {
                 monthly = totalAmount / (term * 12);
             }
 
-            double yearly = monthly * 12;
             totalMonthly += monthly;
 
             tempLoanTypes.add(loanType);
             tempLoanAmo.add(principal);
             tempMonPay.add(monthly);
-            tempYearPay.add(yearly); // Storing Temporarily
             tempLoanTerms.add(term);
             tempTransNums.add(transNum);
             tempMaturityValues.add(maturity);
@@ -267,27 +278,17 @@ public class FinalProject2 {
         double remaining = originalSalary - totalCommitment; // Amount Client's can afford
 
         if (remaining < (originalSalary / 3)) { // Check Client's Monthly Salary if can afford Monthly Payment
-            System.err.println("\nMonthly deduction exceeds 1/3 rule. Cancelling all loans in this transaction.");
-            System.err.printf(" ! Current monthly commitments: PHP %.2f\n", existingMonthlyPayments);
-            System.err.printf(" ! New loans would add: PHP %.2f\n", totalMonthly);
-            System.err.printf(" ! This would leave: PHP %.2f (less than 1/3 of your salary)\n", remaining);
-
-            // Add pause to allow user to read the error message
-            System.out.print("\nPress Enter to continue...");
-            s.nextLine(); // Wait for user to press Enter
-
+            oneThird(existingMonthlyPayments, totalMonthly, remaining);
             return;
         }
-        System.out.printf("\n   ✅ Total monthly loan payments: ₱%.2f/month\n", totalCommitment);
+        System.out.printf(green + "\n   ✅ " + white + "Total monthly loan payments: ₱%.2f/month\n", totalCommitment);
         // Print current Transaction if Transaction is Successful
         for (int i = 0; i < tempLoanTypes.size(); i++) {
             transNumList.add(tempTransNums.get(i));
             accNumList.add(inputAcc);
             loanTypeList.add(tempLoanTypes.get(i));
             loanAmoList.add(tempLoanAmo.get(i));
-            loanTermList.add(tempLoanTerms.get(i));
             monPayList.add(tempMonPay.get(i));
-            yearlyPay.add(tempYearPay.get(i));
             approvals.add(true);
             matValList.add(tempMaturityValues.get(i));
             loanIntList.add(tempLoanInterest.get(i));
@@ -305,11 +306,18 @@ public class FinalProject2 {
 
     public static void viewTransanctionMenu() {
         errorCount = 0;
+        if (clientAccNum.isEmpty()) {
+            System.err.println(" ! There is no existing Account yet");
+            System.out.println(orange
+                    + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈─┈───────────────────────────────────────────────────────────────────────────────────────────────────────────┈─┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+                    + white);
+            return;
+        }
         printViewMenu();
-        // Instead of going back to the main menu when you select something you go back
+        // Instead of going back to the main menu when you select something, you go back
         // to the view menu instead
         while (true) {
-            viewChoice = getInt("\n ➤ Enter choice: ", "Invalid input. Please enter a number.");
+            viewChoice = getInt(white + "\n ➤ Enter choice: ", "Invalid input. Please enter a number.");
 
             if (viewChoice == 5) { // Back to Main Menu
                 System.out.println(orange
@@ -343,20 +351,19 @@ public class FinalProject2 {
     }
 
     public static void validMainMenuInput() { // Validation of Main Menu Input
-        errorCount1 = 0;
         while (true) {
             menuChoice = getInt("\n ➤ Enter Choice : ", "\n ! Invalid input. Please Enter 1 - 4 only.");
             mChoiceString = "" + menuChoice;
             if (menuChoice >= 1 && menuChoice <= 4) {
+                errorCount1 = 0;
                 break;
             } else {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid input. Please Enter 1 - 4 only.");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
             }
+
         }
     }
 
@@ -367,13 +374,11 @@ public class FinalProject2 {
         while (true) {
             boolean duplicate = false;
             System.out.print("\n ➤ Enter Full Name   [Last Name, First Name  M.I. ]: ");
-            Name = s.nextLine();
+            Name = s.nextLine().concat("                    ");
             if (Name.trim().isEmpty()) { // Blank Input is invalid
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Please enter your name. Do not enter a Blank Input");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -382,8 +387,6 @@ public class FinalProject2 {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Person already have an Account");
                         errorCount2++;
-                    } else {
-                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
@@ -405,8 +408,6 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Please enter your address. Do not enter a Blank Input");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
                 continue;
             } else {
@@ -428,8 +429,6 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid format. Please enter Contact No.");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -438,8 +437,6 @@ public class FinalProject2 {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Contact No. already Exists. Please try again.");
                         errorCount2++;
-                    } else {
-                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
@@ -465,8 +462,6 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("\n ! Invalid format. Please enter valid Email.");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
                 continue;
             }
@@ -475,8 +470,6 @@ public class FinalProject2 {
                     if (errorCount2 < 2) {
                         System.err.println("\n ! This Email already Exists. Please try again.");
                         errorCount2++;
-                    } else {
-                        errorCount2 = 0;
                     }
                     duplicate = true;
                     break;
@@ -496,12 +489,11 @@ public class FinalProject2 {
                     "\n ! Invalid salary. Please enter valid Salary.");
             if (MonthlyPayment <= 0) {
                 if (errorCount1 < 2) {
-                    System.err.println("\n ! Invalid salary. It should be not be 0.");
+                    System.err.println("\n ! Invalid salary. It should not be 0.");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
             } else {
+                errorCount1 = 0;
                 break;
             }
         }
@@ -553,15 +545,13 @@ public class FinalProject2 {
 
     public static double getValidLoanAmount(String promptAmount, String errorAmount) { // Getting Valid Loan Amount
         double validLoanAmount;
+        errorCount = 0;
         while (true) {
             validLoanAmount = getDouble(promptAmount, errorAmount);
             if (validLoanAmount > max) {
                 if (errorCount < 2) {
                     System.err.println("\n ! Exceeds limit.");
                     errorCount++;
-                    continue;
-                } else {
-                    errorCount = 0;
                     continue;
                 }
             }
@@ -570,12 +560,8 @@ public class FinalProject2 {
                     System.err.println("\n ! Invalid Amount.");
                     errorCount++;
                     continue;
-                } else {
-                    errorCount = 0;
-                    continue;
                 }
             }
-            errorCount = 0;
             return validLoanAmount;
         }
     }
@@ -627,8 +613,9 @@ public class FinalProject2 {
         boolean found = false;
         System.out.print("\n ➤ Enter Transaction Number: ");
         String transSearch = s.nextLine();
-        System.out.println(
-                "\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────────────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+        System.out.println(orange
+                + "\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────────────────────────────────────────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈"
+                + white);
 
         printTransacHeader();
         for (int i = 0; i < transNumList.size(); i++) {
@@ -661,8 +648,7 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println("Invalid choice. Please select 1-5.");
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
+
                 }
             }
         }
@@ -712,7 +698,6 @@ public class FinalProject2 {
     }
 
     public static double getDouble(String prompt, String errorMessage) { // Getting Double Input
-        errorCount1 = 0;
         double input = 0;
         while (true) {
             System.out.print(prompt);
@@ -725,18 +710,16 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println(errorMessage);
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
             }
         }
     }
 
     public static int getInt(String prompt, String errorMessage) { // Getting Integer Input
-        errorCount1 = 0;
         int input = 0;
+        errorCount1 = 0;
         while (true) {
-            System.out.print(prompt);
+            System.out.print(white + prompt);
             try {
                 input = s.nextInt();
                 s.nextLine();
@@ -746,8 +729,6 @@ public class FinalProject2 {
                 if (errorCount1 < 2) {
                     System.err.println(errorMessage);
                     errorCount1++;
-                } else {
-                    errorCount1 = 0;
                 }
             }
         }
@@ -786,9 +767,9 @@ public class FinalProject2 {
     }
 
     public static void printAllSuccessfulTransactions(ArrayList<Integer> indexes) { // If Accepted then Print All
-        System.out.println(orange + "\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈─────────────────────────────────────────" + green
+        System.out.println(orange + "\n┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈───────────────────────────────────────┈┈" + green
                 + "Transactions Added This Session" + orange
-                + "─────────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈" + white);
+                + "┈┈───────────────────────────────────────┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈" + white);
         printTransacHeader();
         for (int i : indexes) {
             if (approvals.get(i)) {
@@ -859,10 +840,17 @@ public class FinalProject2 {
                 + "┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╮"
                 + "\n  ┊  " + white + "[ 1 ]" + blue + "   » " + white + "Regular     Loan                  [ 4 ] "
                 + blue + "»" + white + " Car     Loan" + blue + "      ┊"
-                + "\n  ┊  " + white + "[ 4 ]" + blue + "   » " + white + "Emergency   Loan                  [ 5 ] "
+                + "\n  ┊  " + white + "[ 2 ]" + blue + "   » " + white + "Emergency   Loan                  [ 5 ] "
                 + blue + "»" + white + " Housing Loan" + blue + "      ┊"
-                + "\n  ┊  " + white + "[ 5 ]" + blue + "   » " + white + "Educational Loan" + blue
+                + "\n  ┊  " + white + "[ 3 ]" + blue + "   » " + white + "Educational Loan" + blue
                 + "                                            ┊"
                 + "\n  ╰┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈╯" + white);
+    }
+
+    public static void oneThird(double existingMonthlyPayments, double totalMonthly, double remaining) {
+        System.err.println("\nMonthly deduction exceeds 1/3 rule. Cancelling all loans in this transaction.");
+        System.err.printf(" ! Current monthly commitments: PHP %.2f\n", existingMonthlyPayments);
+        System.err.printf(" ! New loans would add: PHP %.2f\n", totalMonthly);
+        System.err.printf(" ! This would leave: PHP %.2f (less than 1/3 of your salary)\n", remaining);
     }
 }
