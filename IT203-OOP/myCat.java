@@ -1,5 +1,3 @@
-
-
 public class myCat {
  String name;
  String gender;

@@ -1,5 +1,3 @@
-
-
 public class Mainsu {
     public static void main(String[] args) {
         myCat cat = new myCat(); 
