@@ -38,9 +38,9 @@ public class machineProblem1 {
         productNo = 1;
 
         System.out.println();
-        System.out.println("\t\t\t\t\t================================================================");
-        System.out.println("\t\t\t\t\t                    =====[Sales Report!]=====");
-        System.out.println("\t\t\t\t\t================================================================");
+        System.out.println("\t\t\t\t\t\t\t\t================================================================");
+        System.out.println("\t\t\t\t\t\t\t\t                    =====[Sales Report!]=====");
+        System.out.println("\t\t\t\t\t\t\t\t================================================================");
 
          for (int a = 0; a <= 1; a++){
             if (store1){
@@ -61,12 +61,9 @@ public class machineProblem1 {
                                 break;
                         }
                 for (int c = 0; c <= 3; c++){
-                    if (saleData [a] [b] [c] < 10){
-                        System.out.print("\t\tWeek " + (c+1) + " sales : PHP " + saleData [a] [b] [c] + " \t");
-                    } else if (saleData [a] [b] [c] >= 100){
-                        System.out.print("\t\tWeek " + (c+1) + " sales : PHP " + saleData [a] [b] [c] + "\t");
-                    } else{
-                        System.out.print("\t\tWeek " + (c+1) + " sales : PHP " + saleData [a] [b] [c] + "\t");
+                    System.out.print("\t\tWeek " + (c+1) + " sales : PHP " + saleData [a] [b] [c]);
+                    if (c < 3) {
+                        System.out.print("\t\t  ");
                     }
                 }
                 productNo++;
