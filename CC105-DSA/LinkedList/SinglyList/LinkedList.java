@@ -1,4 +1,4 @@
-package LinkedList;                          // Declares this class belongs to the LinkedList package
+package LinkedList.SinglyList;                          // Declares this class belongs to the LinkedList package
 
 public class LinkedList {                    // Defines a public class named LinkedList - represents the entire linked list structure
     Node ulo;                               // Head pointer - points to the first node in the linked list (ulo = "head" in Filipino)
