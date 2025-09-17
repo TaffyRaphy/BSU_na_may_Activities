@@ -74,4 +74,40 @@ public class Methods {
                 temp.next = ibaNaIturo.next;
         }
     }
+
+    public int searchAt(int hahanapin){
+        Node tagaHanap = head;
+        int where = 0;
+        while (tagaHanap != null) {
+            if (tagaHanap.laman == hahanapin){
+                return where;
+            } else{
+                tagaHanap = tagaHanap.next;
+                where++;
+            }
+        }
+        return -1;
+    }
+
+    public void bubbleSort() {
+        if (head == null || head.next == null) {
+            return;
+        }
+        
+        boolean swapped;
+        do {
+            swapped = false;
+            Node current = head;
+            
+            while (current.next != null) {
+                if (current.laman > current.next.laman) {
+                    int temp = current.laman;
+                    current.laman = current.next.laman;
+                    current.next.laman = temp;
+                    swapped = true;
+                }
+                current = current.next;
+            }
+        } while (swapped);
+    }
 }

@@ -17,10 +17,22 @@ public class Main {
         hi.traverseBackward();
         */
 
+        /*
         System.out.print("Before: ");
         hi.traverseForward();
 
         hi.deleteAt(1);
+
+        System.out.print("\nAfter: ");
+        hi.traverseForward();
+        */
+
+        //System.out.println("Number 2 is found at " + hi.searchAt(2) + " index");
+
+        System.out.print("Before: ");
+        hi.traverseForward();
+
+        hi.bubbleSort();
 
         System.out.print("\nAfter: ");
         hi.traverseForward();
