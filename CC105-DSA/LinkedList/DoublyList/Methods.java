@@ -62,17 +62,61 @@ public class Methods {
     }
 
     public void deleteAt(int saanPoba){
+        if (head == null || saanPoba < 0) {
+            return; // Invalid input or empty list
+        }
+        
         if (saanPoba == 0){
             head = head.next;
-        } else{
-                Node temp = head;
-                Node ibaNaIturo = null;
-                for (int i = 0; i < saanPoba; i++){
-                    temp = temp.next;
-                }
-                ibaNaIturo = temp.next;
-                temp.next = ibaNaIturo.next;
+            if (head != null) {
+                head.prev = null; // Update prev pointer for doubly linked list
+            }
+        } else {
+            Node temp = head;
+            
+            // Traverse to the target position
+            for (int i = 0; i < saanPoba && temp != null; i++){
+                temp = temp.next;
+            }
+            
+            if (temp == null) {
+                return; // Position out of bounds
+            }
+            
+            // Update the links
+            if (temp.prev != null) {
+                temp.prev.next = temp.next;
+            }
+            if (temp.next != null) {
+                temp.next.prev = temp.prev;
+            }
         }
+    }
+
+    public void deleteAtSingly(int saanPoba){
+        if (head == null || saanPoba < 0) {
+            return; // Invalid input or empty list
+        }
+        
+        // If deleting the head node (position 0)
+        if (saanPoba == 0){
+            head = head.next;
+            return;
+        }
+        
+        // Find the node before the target position
+        Node current = head;
+        for (int i = 0; i < saanPoba - 1 && current != null; i++){
+            current = current.next;
+        }
+        
+        // If position is out of bounds
+        if (current == null || current.next == null) {
+            return;
+        }
+        
+        // Skip the target node by updating the link
+        current.next = current.next.next;
     }
 
     public int searchAt(int hahanapin){
