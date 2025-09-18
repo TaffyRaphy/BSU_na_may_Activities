@@ -1,3 +1,4 @@
+package ArrayExercises;
 import java.util.Scanner;
 
 public class machineProblem1 {
