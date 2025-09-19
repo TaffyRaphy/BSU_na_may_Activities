@@ -40,4 +40,16 @@ public class ArrayStack {
         }
         return data[top--];
     }
+
+    public String reverse(String word){
+        for (char c : word.toCharArray()){
+            push(c);
+        }
+        
+        String result = "";
+        while (!isEmpty()) {
+            result += pop();
+        }
+        return result;
+    }
 }
