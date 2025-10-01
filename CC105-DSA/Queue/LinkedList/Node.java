@@ -1,4 +1,4 @@
-package Stack.LinkedList.MP2;
+package Queue.LinkedList;
 
 public class Node {
     String value;
@@ -6,5 +6,6 @@ public class Node {
     
     Node (String data){
         value = data;
+        next = null;
     }
 }
