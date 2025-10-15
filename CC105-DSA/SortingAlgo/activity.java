@@ -1,5 +1,4 @@
 package SortingAlgo;
-
 import java.util.Scanner;
 public class activity {
     public static void main(String[] args) {
@@ -20,7 +19,7 @@ public class activity {
         showArray(data);
 
         System.out.println("\n///////////////////////////////////////////////");
-        bubbleSort(bSort); // Use bSort instead of data
+        bubbleSort(bSort);
         System.out.println("\n///////////////////////////////////////////////");
         selectionSort(sSort);
         System.out.println("\n///////////////////////////////////////////////");
@@ -31,6 +30,7 @@ public class activity {
     public static void bubbleSort(int[] array) {
         System.out.println("Bubble Sort: \nIntial Array: ");
         showArray(array);
+	System.out.println();
         int n = array.length;
 
 
@@ -38,7 +38,7 @@ public class activity {
 
         for (int i = 0; i < n - 1; i++) {
             passCounter++;
-            System.out.println("\nPass " + passCounter + ":");
+            System.out.println("Pass " + passCounter + ":");
 
             for (int j = 0; j < n - i - 1; j++) {
                 if (array[j] > array[j + 1]) {
@@ -54,6 +54,7 @@ public class activity {
     public static void selectionSort(int [] array){
         System.out.println("Selection Sort: \nIntial Array: ");
         showArray(array);
+	System.out.println();
         int n = array.length;
         
         for (int i = 0; i < n - 1; i++){
@@ -81,7 +82,8 @@ public class activity {
     public static void insertionSort (int [] array){
         System.out.println("Insertion Sort: \nIntial Array: ");
         showArray(array);
-        
+	System.out.println();
+
         for (int i = 1; i < array.length; i++){
             int key = array [i];
             int j = i - 1;
@@ -91,7 +93,6 @@ public class activity {
             while (j >= 0 && array [j] > key){
                 array [j + 1] = array [j];
                 j--;
-                showArray(array);
             }
             array[j + 1] = key;
             showArray(array);
@@ -99,13 +100,13 @@ public class activity {
     }
     public static void showArray (int [] array){
         System.out.print("[");
-        for (int i = 0; i < array.length; i++){ // Use array.length instead of hardcoded 5
+        for (int i = 0; i < array.length; i++){
             System.out.print(array[i]);
             if (i < array.length - 1){
                 System.out.print(", ");
             }
         }
-        System.out.println("]"); // Changed to println for newline
+        System.out.println("]");
     }
     
     public static int[] cloneArray(int[] array) {
