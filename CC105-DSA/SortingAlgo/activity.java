@@ -49,6 +49,9 @@ public class activity {
                 }
             }
         }
+        System.out.print("\nFinal sorted Array: ");
+        showArray(array);
+        System.out.println();
     }
 
     public static void selectionSort(int [] array){
@@ -77,6 +80,9 @@ public class activity {
                 showArray(array);
             }
         }
+        System.out.print("\nFinal sorted Array: ");
+        showArray(array);
+        System.out.println();
     }
     
     public static void insertionSort (int [] array){
@@ -88,7 +94,7 @@ public class activity {
             int key = array [i];
             int j = i - 1;
             
-            System.out.println("\nPass " + i + ":");
+            System.out.println("Pass " + i + ":");
 
             while (j >= 0 && array [j] > key){
                 array [j + 1] = array [j];
@@ -97,6 +103,9 @@ public class activity {
             array[j + 1] = key;
             showArray(array);
         }
+        System.out.print("\nFinal sorted Array: ");
+        showArray(array);
+        System.out.println();
     }
     public static void showArray (int [] array){
         System.out.print("[");
