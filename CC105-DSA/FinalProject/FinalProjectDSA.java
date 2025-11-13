@@ -278,6 +278,11 @@ public class FinalProjectDSA {
     }
 
     public void sortStudentList(){
+        if (studentList.getSize() == 0) {
+        System.out.println("Cannot sort: Student list is empty!");
+        return;
+        }
+
         System.out.println("\nSort by:");
         System.out.println("1. ID");
         System.out.println("2. Name (First Name)");
@@ -315,6 +320,11 @@ public class FinalProjectDSA {
     }
 
     public void searchStudent(){
+        if (studentList.getSize() == 0) {
+        System.out.println("Cannot sort: Student list is empty!");
+        return;
+        }
+        
         System.out.println("\nSearch by:");
         System.out.println("1. ID");
         System.out.println("2. First Name");
@@ -822,6 +832,24 @@ public class FinalProjectDSA {
                 }
                 break;
             case 0:
+                if (!requestQueue.isEmpty()){
+                    System.out.println("Warning: You have pending requests in the queue!");
+                    System.out.print("Are you sure you want to exit the program? (yes/no): ");
+                    String exit = sc.nextLine();
+
+                    while (true){
+                        if (!exit.equalsIgnoreCase("yes") || !exit.equalsIgnoreCase("no")){
+                        System.out.print("Invalid Input. Type yes or no: ");
+                        exit = sc.nextLine();
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    if (exit.equalsIgnoreCase("no")){
+                        return;
+                    }
+                }
                 System.out.println("Exiting Program");
                 break;
         }
