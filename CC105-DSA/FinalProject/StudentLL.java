@@ -1,7 +1,5 @@
 package FinalProject;
 
-import Activity5.Student;
-
 public class StudentLL {
     private LLNode head;
     private int size;
@@ -36,7 +34,7 @@ public class StudentLL {
 
         LLNode current = head;
         while (current.next != null) {
-            if (current.next.student.getId().equals(current)){
+            if (current.next.student.getId().equals(id)){
                 current.next = current.next.next;
                 size--;
                 return true;
@@ -46,7 +44,7 @@ public class StudentLL {
         return false;
     }
 
-    public StudentEncap search (String id){
+    public StudentEncap searchId (String id){
         LLNode current = head;
         while (current != null){
             if (current.student.getId().equals(id)){
@@ -57,42 +55,74 @@ public class StudentLL {
         return null;
     }
 
-    public StudentEncap searchFirstName(String firstName){
+    public StudentEncap [] searchAllFirstName(String firstName){
+        int count = 0;
         LLNode current = head;
+        while(current != null){
+            if (current.student.getFirstName().equalsIgnoreCase(firstName)){
+                count++;
+            }
+            current = current.next;
+        }
+
+        if (count == 0){
+            return new StudentEncap[0];
+        }
+
+        StudentEncap[] results = new StudentEncap[count];
+        current = head;
+        int index = 0;
         while (current != null) {
             if (current.student.getFirstName().equalsIgnoreCase(firstName)){
-                return current.student;
+                results[index++] = current.student;
             }
             current = current.next;
         }
-        return null;
+
+        return results;
     }
 
-    public StudentEncap searchLastName(String lastName){
+    public StudentEncap [] searchAllLastName(String lastName){
+        int count = 0;
         LLNode current = head;
-        while (current != null) {
-            if (current.student.getFirstName().equalsIgnoreCase(lastName    )){
-                return current.student;
+        while(current != null){
+            if (current.student.getLastName().equalsIgnoreCase(lastName)){
+                count++;
             }
             current = current.next;
         }
-        return null;
+
+        if (count == 0){
+            return new StudentEncap[0];
+        }
+
+        StudentEncap[] results = new StudentEncap[count];
+        current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.student.getLastName().equalsIgnoreCase(lastName)){
+                results[index++] = current.student;
+            }
+            current = current.next;
+        }
+
+        return results;
     }
 
-    public boolean update(String id, String firstName, String middleName, String lastName, double gpa) {
-        StudentEncap student = search(id);
+    public boolean update(String id, String firstName, String middleName, String lastName, double gwa) {
+        StudentEncap student = searchId(id);
         if (student != null) {
             student.setFirstName(firstName);
             student.setMiddleName(middleName);
             student.setLastName(lastName);
-            student.setGPA(gpa);
+            student.setGWA(gwa);
             return true;
         }
         return false;
     }
 
-    public boolean exists(String id) {
-        return search(id) != null;
+    public boolean existsId(String id) {
+        return searchId(id) != null;
     }
 
     public void display() {
@@ -119,13 +149,15 @@ public class StudentLL {
         this.head = head;
     }
 
+    /*
     public StudentLL copy() {
         StudentLL newList = new StudentLL();
         LLNode current = head;
         while (current != null) {
-            newList.add(new StudentEncap(current.student.getId(), current.student.getFirstName(), current.student.getMiddleName(), current.student.getLastName(), current.student.getGPA()));
+            newList.add(new StudentEncap(current.student.getId(), current.student.getFirstName(), current.student.getMiddleName(), current.student.getLastName(), current.student.getGWA()));
             current = current.next;
         }
         return newList;
     }
+    */
 }

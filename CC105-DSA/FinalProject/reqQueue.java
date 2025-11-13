@@ -1,18 +1,18 @@
 package FinalProject;
 
-public class EnrollmentReq {
+public class reqQueue {
     private QueueNode front;
     private QueueNode rear;
     private int size;
 
-    public EnrollmentReq(){
+    public reqQueue(){
         this.front = null;
         this.rear = null;
         this.size = 0;
     }
 
-    public void enqueue(String requestType, String studentId){
-        QueueNode newNode = new QueueNode(requestType, studentId);
+    public void enqueue(String requestType, String studentId, StudentEncap studentData){
+        QueueNode newNode = new QueueNode(requestType, studentId, studentData);
 
         if (rear == null) {
             front = rear = newNode;
@@ -21,7 +21,7 @@ public class EnrollmentReq {
             rear = newNode;
         }
         size++;
-        System.out.println("Enqueued: " + requestType + " for Student ID: " + studentId);
+        System.out.println("Enqueued: " + requestType + "Request for Student ID: " + studentId);
     }
 
     public QueueNode dequeue(){
@@ -45,20 +45,29 @@ public class EnrollmentReq {
             return;
         }
 
-        System.out.println("====Enrollment Queue====");
+        System.out.println("====Request Queue====");
         QueueNode current = front;
         int position = 1;
         while (current != null) {
-            System.out.println(position +". " + current.requestType + " - Student ID: " + current.studentId);
+            if (current.studentData != null){
+                System.out.println(position + ". " + current.requestType + " - " + current.studentData);
+            } else{
+                System.out.println(position + ". " + current.requestType + " - Student ID: " + current.studentId);
+            }
             current = current.next;
             position++;
         }
     }
+
     public boolean isEmpty(){
         return front == null;
     }
 
     public int getSize(){
         return size;
+    }
+
+    public QueueNode peek(){
+        return front;
     }
 }

@@ -5,14 +5,14 @@ public class StudentEncap {
     private String lastName;
     private String firstName;
     private String middleName;
-    private double gpa;
+    private double gwa;
 
-    public StudentEncap (String id, String lastName, String firstName, String middleName, double gpa){
+    public StudentEncap (String id, String lastName, String firstName, String middleName, double gwa){
         this.id= id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.middleName = middleName;
-        this.gpa = gpa;
+        this.gwa = gwa;
     }
 
     public String getId(){
@@ -31,8 +31,8 @@ public class StudentEncap {
         return middleName;
     }
 
-    public double getGPA(){
-        return gpa;
+    public double getGWA(){
+        return gwa;
     }
 
     public void setId (String id){
@@ -51,12 +51,12 @@ public class StudentEncap {
         this.middleName = middleName;
     }
 
-    public void setGPA (double gpa){
-        this.gpa = gpa;
+    public void setGWA (double gwa){
+        this.gwa = gwa;
     }
     
     public String getFullName(){
-        return firstName + " " + middleName + " " + lastName;
+        return firstName + " " + middleName + ". " + lastName;
     }
 
     public String getFullNameWithMiddleInitial(){
@@ -65,10 +65,10 @@ public class StudentEncap {
 
     @Override
     public String toString() {
-        return "ID: " + id + ", Name: " + getFullName() + ", GPA: " + gpa;
+        return "ID: " + id + ", Full Name: " + getFullName() + ", GWA: " + gwa;
     }
 
     public String toCSV() {
-        return id + "," + firstName + "," + middleName + "," + lastName + "," + gpa;
+        return id + "," + firstName + "," + middleName + "," + lastName + "," + gwa;
     }
 }
