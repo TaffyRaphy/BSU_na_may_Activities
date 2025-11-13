@@ -758,7 +758,7 @@ public class FinalProjectDSA {
     }
 
     public void printMainMenu(){
-        System.out.println("---Main Menu---");
+        System.out.println("====Main Menu====");
 
         if (isSorted){
             System.out.println("[List status: Sorted by " + getDataType(sortedBy) + "]");
