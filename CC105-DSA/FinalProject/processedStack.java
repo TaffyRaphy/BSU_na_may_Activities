@@ -1,14 +1,16 @@
 package FinalProject;
-
+//Stack for Processed Request Class
 public class processedStack {
     private proStackNode top;
     private int size;
 
+    //Constructor for processedStack Class
     public processedStack(){
         this.top = null;
         this.size = 0;
     }
 
+    //Pushes the stack 
     public void push(String request, StudentEncap student){
         StudentEncap studentCopy = new StudentEncap(student.getId(), student.getFirstName(), student.getMiddleName(), student.getLastName(), student.getGWA());
         proStackNode newNode = new proStackNode(request, studentCopy);
@@ -17,6 +19,7 @@ public class processedStack {
         size++;
     }
 
+    //Pops the stack
     public proStackNode pop(){
         if (top == null){
             System.out.println("Stack is empty! Nothing to undo");
@@ -29,6 +32,7 @@ public class processedStack {
         return temp;
     }
     
+    //Displays the Stack
     public void display(){
         if (top == null){
             System.out.println("No Requests Stored in history");
@@ -45,14 +49,17 @@ public class processedStack {
         }
     }
 
+    //Checks if the stack is empty
     public boolean isEmpty(){
         return top == null;
     }
 
+    //Gets the size of the stack
     public int getSize(){
         return size;
     }
     
+    //Clears the stack
     public void clear() {
         top = null;
         size = 0;

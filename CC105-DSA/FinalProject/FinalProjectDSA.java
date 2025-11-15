@@ -6,17 +6,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
+//Main Class for this Project
 public class FinalProjectDSA {
     private StudentLL studentList;
     private reqQueue requestQueue;
     private processedStack undoStack;
     private processedStack redoStack;
     private Scanner sc;
-    private boolean isSorted;
-    private int sortedBy;
-    private int studentIdCounter;
+    private boolean isSorted; //Variable that checks if list is sorted
+    private int sortedBy; //By Which the list sorted 
+    private boolean isAscending; //Variable that checks if list is sorted in ascending order
+    private int studentIdCounter; //Counter for generating Student IDs
 
+    //Constructor to initialize all data structures and variables
     public FinalProjectDSA (){
         sc = new Scanner(System.in);
         studentList = new StudentLL();
@@ -25,20 +27,24 @@ public class FinalProjectDSA {
         redoStack = new processedStack();
         isSorted = false;
         sortedBy = 0;
+        isAscending = true;
         studentIdCounter = 1;
     }
 
+    //Main Method to run the program
     public static void main(String[] args) {
         FinalProjectDSA program = new FinalProjectDSA();
         program.sysrun();
     }
 
+    //Generates Student ID (format: 2025XXX)
     public String generateStudentId(){
         String id = String.format("2025%03d", studentIdCounter);
         studentIdCounter++;
         return id;
     }
 
+    //Checks if Student ID is valid
     public boolean isValidStudentId(String id){
         if (id == null || id.length() != 7){
             return false;
@@ -55,6 +61,7 @@ public class FinalProjectDSA {
         }
     }
 
+    //Validates User Input for Name
     public String getValidName(String fieldName, String currentValue){
         while (true){
             if (currentValue != null){
@@ -71,17 +78,18 @@ public class FinalProjectDSA {
         }
     }
 
+    //Validates User Input for GWA (1.00 - 5.00)
     public double getValidGWA(Double currentValue){
         while (true){
             if (currentValue != null){
                 System.out.print("Enter new GWA (current: " + currentValue + ") : ");
             } else {
-                System.out.print("Enter Student GWA (0.00 - 5.00): ");
+                System.out.print("Enter Student GWA (1.00 - 5.00): ");
             }
             try {
                 double gwa = sc.nextDouble();
                 sc.nextLine();
-                if (gwa < 0.00 || gwa > 5.00){
+                if (gwa < 1.00 || gwa > 5.00){
                     System.out.println("Invalid GWA!");
                 } else{
                     return gwa;
@@ -92,6 +100,8 @@ public class FinalProjectDSA {
             }
         }
     }
+
+    //Adds Student to the system and goes to the Queue
     public void addStudent(){
         String id = generateStudentId();
         System.out.println("Generated Student ID: " + id);
@@ -103,9 +113,10 @@ public class FinalProjectDSA {
 
         StudentEncap student = new StudentEncap(id, fName, mName, lName, gwa);
         requestQueue.enqueue("ADD STUDENT", id, student);
-        System.out.println("Student Add request is successful! Please proceed to '4' in the main menu to process your request.");
+        System.out.println("Student Add request is successful! Please proceed to option '5' in the main menu to process your request.");
     }
 
+    //Edits Student Data and goes to the Queue
     public void editStudent() {
         System.out.print("Enter Student ID to edit: ");
         String id = sc.nextLine();
@@ -118,6 +129,7 @@ public class FinalProjectDSA {
 
         boolean editing = true;
         
+        //Prompts user which student data to edit
         while (editing) {
             System.out.println("\nCurrent Student Information:");
             System.out.println(existingStudent);
@@ -190,11 +202,12 @@ public class FinalProjectDSA {
             StudentEncap updatedStudent = new StudentEncap(id, firstName, middleName, lastName, gwa);
             
             requestQueue.enqueue("EDIT STUDENT", id, updatedStudent);
-            System.out.println("Student Edit request is successful! Please proceed to '4' in the main menu to process your request.");
+            System.out.println("Student Edit request is successful! Please proceed to option '5' in the main menu to process your request.");
             editing = false;
         }
     }
 
+    //Deletes Student Data and goes to the queue
     public void deleteStudent(){
         System.out.print("Enter Student ID to delete: ");
         String id = sc.nextLine();
@@ -206,9 +219,10 @@ public class FinalProjectDSA {
         }
 
         requestQueue.enqueue("DELETE STUDENT", id, student);
-        System.out.println("Student Delete request is succesfully! Please proceed to '4' in the main menu to process your request.");
+        System.out.println("Student Delete request is successfully! Please proceed to option '5' in the main menu to process your request.");
     }
 
+    //Removes the top request from the queue
     public void dropTopRequest(){
         QueueNode request = requestQueue.peek();
         if (request == null) {
@@ -216,6 +230,7 @@ public class FinalProjectDSA {
             return;
         }
 
+        //Asks User Confirmation
         System.out.println("Top request: " + request.requestType + " for Student ID: " + request.studentId);
         System.out.print("Are you sure you want to drop this request? (yes/no): ");
         String confirmation = sc.nextLine();
@@ -231,12 +246,32 @@ public class FinalProjectDSA {
         }
     }
 
+    //Processes the next request in the queue and clears redo stack after processing
     public void processRequest(){
-        QueueNode request = requestQueue.dequeue();
+        QueueNode request = requestQueue.peek();
         if (request == null) {
+            System.out.println("Request Queue is empty!");
             return;
         }
 
+        //asks for user confirmation
+        System.out.println("\n===== Request to Process =====");
+        System.out.println("Request Type: " + request.requestType);
+        System.out.println("Student ID: " + request.studentId);
+        if (request.studentData != null) {
+            System.out.println("Student Data: " + request.studentData);
+        }
+        System.out.println("==============================");
+        System.out.print("Do you want to process this request? (yes/no): ");
+        String confirmation = sc.nextLine();
+
+        if (!confirmation.equalsIgnoreCase("yes")) {
+            System.out.println("Request processing cancelled.");
+            return;
+        }
+
+        // Dequeue only after confirmation
+        request = requestQueue.dequeue();
         redoStack.clear();
 
         System.out.println("Processing: " + request.requestType + " for Student ID: " + request.studentId);
@@ -277,10 +312,11 @@ public class FinalProjectDSA {
         System.out.println("Request processed successfully!");
     }
 
+    //Sorts Student Data by which data and ascending or descending
     public void sortStudentList(){
         if (studentList.getSize() == 0) {
-        System.out.println("Cannot sort: Student list is empty!");
-        return;
+            System.out.println("Cannot sort: Student list is empty!");
+            return;
         }
 
         System.out.println("\nSort by:");
@@ -304,7 +340,28 @@ public class FinalProjectDSA {
             sc.nextLine();
             return;
         }
-        
+
+        System.out.println("\nSort order:");
+        System.out.println("1. Ascending");
+        System.out.println("2. Descending");
+        System.out.println("=====================");
+        System.out.print("Choose sort order (1-2): ");
+        int orderChoice = 0;
+        try {
+            orderChoice = sc.nextInt();
+            sc.nextLine();
+
+            if (orderChoice < 1 || orderChoice > 2){
+                System.out.println("Invalid choice! must be between 1-2");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid choice!");
+            sc.nextLine();
+            return;
+        }
+
+        isAscending = (orderChoice == 1);
 
         System.out.println("\n===== Before Sort =====");
         studentList.display();
@@ -315,10 +372,12 @@ public class FinalProjectDSA {
 
         System.out.println("\n===== After Sort =====");
         studentList.display();
-        System.out.println("The list data is now sorted - binary search will be automatically used for " + getDataType(choice));
+        System.out.println("The list data is now sorted by " + getDataType(choice) + " in " + (isAscending ? "ascending" : "descending") + " order");
+        System.out.println("Binary search will be automatically used for " + getDataType(choice));
         
     }
 
+    //Searches Student's Data using Linear or Binary Search
     public void searchStudent(){
         if (studentList.getSize() == 0) {
         System.out.println("Cannot sort: Student list is empty!");
@@ -330,6 +389,7 @@ public class FinalProjectDSA {
         System.out.println("2. First Name");
         System.out.println("3. Last Name");
 
+        //If the list is sorted binary search will be used automatically
         if (isSorted){
             System.out.println("\nNOTE: List is currently sorted by " + getDataType(sortedBy));
             System.out.println("Binary search will be used where applicable");
@@ -431,6 +491,7 @@ public class FinalProjectDSA {
         }
     }
 
+    //Gets which data the list sorted by
     public String getDataType(int type){
         switch (type) {
             case 1: return "ID";
@@ -441,21 +502,25 @@ public class FinalProjectDSA {
         }
     }
 
+    //Linear Search of Student ID
     public StudentEncap LsearchById(String id){
         System.out.println("Performing Linear Search by ID...");
         return studentList.searchId(id);
     }
 
+    //Linear Search of Student First Name
     public StudentEncap[] LsearchByFname(String firstName){
         System.out.println("Performing Linear Search by First Name...");
         return studentList.searchAllFirstName(firstName);
     }
 
+    //Linear Search of Student Last Name
     public StudentEncap[] LsearchByLname(String lastName){
         System.out.println("Performing Linear Search by Last Name...");
         return studentList.searchAllLastName(lastName);
     }
 
+    //Binary Search of Student ID
     public StudentEncap BsearchById(String id){
         System.out.println("Performing Binary Search by ID...");
 
@@ -488,6 +553,7 @@ public class FinalProjectDSA {
         return null;
     }
 
+    //Binary Search of Student First Name
     public StudentEncap [] BsearchByFname(String firstName){
         System.out.println("Performing Binary Search by First Name...");
 
@@ -545,6 +611,7 @@ public class FinalProjectDSA {
         return results;
     }
 
+    //Binary Search of Student Last Name
     public StudentEncap [] BsearchByLname(String lastName){
         System.out.println("Performing Binary Search by Last Name...");
 
@@ -602,6 +669,7 @@ public class FinalProjectDSA {
         return results;
     }
     
+    //Undoes the last processed request
     public void undoLastRequest(){
         proStackNode request = undoStack.pop();
         if (request == null){
@@ -631,6 +699,7 @@ public class FinalProjectDSA {
         System.out.println("Request undone successfully!");
     }
 
+    //Restores the previous undone action
     public void redoLastRequest(){
         proStackNode request = redoStack.pop();
         if (request == null){
@@ -660,6 +729,7 @@ public class FinalProjectDSA {
         System.out.println("Request redone successfully!");
     }
 
+    //Saves student data to CSV File 
     public void save(){
         System.out.print("Enter filename (e.g. students.csv OR C:\\Users\\User\\Documents\\students.csv): ");
         String filename = sc.nextLine();
@@ -672,15 +742,22 @@ public class FinalProjectDSA {
             writer.println("COUNTER:" + studentIdCounter);
             writer.println("StudentID,FirstName,MiddleName,LastName,GWA");
             LLNode current = studentList.getHead();
+            int savedCount = 0;
             while (current != null) {
                 writer.println(current.student.toCSV());
+                savedCount++;
                 current = current.next;
             }
+            System.out.println("\n===== Save Successful =====");
+            System.out.println("File saved: " + filename);
+            System.out.println("Students saved: " + savedCount);
+            System.out.println("===========================");
         } catch (IOException e){
-            System.out.println("Error saving file:" + e.getMessage());
+            System.out.println("Error saving file: " + e.getMessage());
         }
     }
 
+    //Loads student data from CSV file to the system
     public void load(){
         System.out.print("Enter filename to load (e.g. students.csv OR C:\\Users\\User\\Documents\\students.csv): ");
         String filename = sc.nextLine();
@@ -692,6 +769,7 @@ public class FinalProjectDSA {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             
+            //Tries to count the student ID counter to keep up with the loaded student id number
             if (line != null && line.startsWith("COUNTER:")) {
                 try {
                     studentIdCounter = Integer.parseInt(line.substring(8));
@@ -767,11 +845,12 @@ public class FinalProjectDSA {
         }
     }
 
+    //Displays the main menu
     public void printMainMenu(){
         System.out.println("====Main Menu====");
 
         if (isSorted){
-            System.out.println("[List status: Sorted by " + getDataType(sortedBy) + "]");
+            System.out.println("[List status: Sorted by " + getDataType(sortedBy) + " (" + (isAscending ? "Ascending" : "Descending") + ")]");
         } else{
             System.out.println("[List status: Unsorted]");
         }
@@ -789,6 +868,7 @@ public class FinalProjectDSA {
         System.out.println("=====================");
     }
 
+    //Executes the selected menu option
     public void menuChoice (int choice){
         switch (choice) {
             case 1:
@@ -828,7 +908,7 @@ public class FinalProjectDSA {
                 } else if (fileChoice.equals("2")){
                     load();
                 } else{
-                    System.out.println("Wrong choice! Please enter '1' or '2");
+                    System.out.println("Wrong choice! Please enter '1' or '2'.");
                 }
                 break;
             case 0:
@@ -838,7 +918,7 @@ public class FinalProjectDSA {
                     String exit = sc.nextLine();
 
                     while (true){
-                        if (!exit.equalsIgnoreCase("yes") || !exit.equalsIgnoreCase("no")){
+                        if (!exit.equalsIgnoreCase("yes") && !exit.equalsIgnoreCase("no")){
                         System.out.print("Invalid Input. Type yes or no: ");
                         exit = sc.nextLine();
                         } else {
@@ -855,6 +935,7 @@ public class FinalProjectDSA {
         }
     }
 
+    //Implements insertion sort
     public void insertionSort(int choice){
         if (studentList.getHead() == null || studentList.getHead().next == null){
             return;
@@ -882,20 +963,31 @@ public class FinalProjectDSA {
         studentList.setHead(sorted);
     }
 
+    //Compares the student's data based on specified data type (id, first name etc.)
     public int compare(StudentEncap s1, StudentEncap s2, int choice){
+        int result;
         switch (choice) {
             case 1:
-                return s1.getId().compareTo(s2.getId());
+                result = s1.getId().compareTo(s2.getId());
+                break;
             case 2:
-                return s1.getFirstName().compareToIgnoreCase(s2.getFirstName());
+                result = s1.getFirstName().compareToIgnoreCase(s2.getFirstName());
+                break;
             case 3:
-                return s1.getLastName().compareToIgnoreCase(s2.getLastName());
+                result = s1.getLastName().compareToIgnoreCase(s2.getLastName());
+                break;
             case 4:
-                return Double.compare(s1.getGWA(), s2.getGWA());
+                result = Double.compare(s1.getGWA(), s2.getGWA());
+                break;
             default:
-                return 0;
+                result = 0;
         }
+        
+        // Reverse the comparison if descending order
+        return isAscending ? result : -result;
     }
+
+    //Main program loop for asking main menu choice
     public void sysrun(){
         System.out.println("Welcome to Student Information Managment Program!!!");
         while (true) {

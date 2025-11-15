@@ -1,5 +1,5 @@
 package FinalProject;
-
+//Request Queue class
 public class reqQueue {
     private QueueNode front;
     private QueueNode rear;
@@ -11,6 +11,7 @@ public class reqQueue {
         this.size = 0;
     }
 
+    //Enqueue Request
     public void enqueue(String requestType, String studentId, StudentEncap studentData){
         QueueNode newNode = new QueueNode(requestType, studentId, studentData);
 
@@ -24,9 +25,10 @@ public class reqQueue {
         System.out.println("Enqueued: " + requestType + "Request for Student ID: " + studentId);
     }
 
+    //Dequeue Request
     public QueueNode dequeue(){
         if (front == null){
-            System.out.println("Queue is empty");
+            System.out.println("Request Queue is empty");
             return null;
         }
         
@@ -39,6 +41,7 @@ public class reqQueue {
         return temp;
     }
 
+    //Display Request Queue
     public void display(){
         if (front == null){
             System.out.println("Queue is empty.");
@@ -59,14 +62,17 @@ public class reqQueue {
         }
     }
 
+    //Checks if the queue is empty
     public boolean isEmpty(){
         return front == null;
     }
 
+    //Returns the size of the queue
     public int getSize(){
         return size;
     }
 
+    //Peeks the front of the queue
     public QueueNode peek(){
         return front;
     }

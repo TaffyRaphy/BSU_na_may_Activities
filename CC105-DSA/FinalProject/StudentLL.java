@@ -1,14 +1,16 @@
 package FinalProject;
-
+//Linked List for Student Class
 public class StudentLL {
     private LLNode head;
     private int size;
 
+    //Constructor for StudentLL class
     public StudentLL(){
         this.head = null;
         this.size = 0;
     }
 
+    //Adds Student Data to the LinkedList Method
     public void add(StudentEncap student){
         LLNode newNode = new LLNode(student);
         if (head == null){
@@ -23,6 +25,7 @@ public class StudentLL {
         size++;
     }
 
+    //Removes Student to the Linked List by Student's ID Method
     public boolean remove (String id){
         if (head == null) return false;
 
@@ -44,6 +47,7 @@ public class StudentLL {
         return false;
     }
 
+    //Searches Student's ID Method
     public StudentEncap searchId (String id){
         LLNode current = head;
         while (current != null){
@@ -55,6 +59,7 @@ public class StudentLL {
         return null;
     }
 
+    //Searches Student's First Name Method
     public StudentEncap [] searchAllFirstName(String firstName){
         int count = 0;
         LLNode current = head;
@@ -82,6 +87,7 @@ public class StudentLL {
         return results;
     }
 
+    //Searches Student's First Name Method
     public StudentEncap [] searchAllLastName(String lastName){
         int count = 0;
         LLNode current = head;
@@ -109,6 +115,7 @@ public class StudentLL {
         return results;
     }
 
+    //Updates Student's Data Method
     public boolean update(String id, String firstName, String middleName, String lastName, double gwa) {
         StudentEncap student = searchId(id);
         if (student != null) {
@@ -121,10 +128,12 @@ public class StudentLL {
         return false;
     }
 
+    //Checks if Student's ID exists
     public boolean existsId(String id) {
         return searchId(id) != null;
     }
 
+    //Displays All of Students listed in the program
     public void display() {
         if (head == null) {
             System.out.println("No students in the list.");
@@ -137,27 +146,18 @@ public class StudentLL {
         }
     }
 
+    //Gets the size of the Linked List
     public int getSize() {
         return size;
     }
 
+    //Gets the head of the linked list
     public LLNode getHead() {
         return head;
     }
 
+    //Sets the head of the linked list
     public void setHead(LLNode head) {
         this.head = head;
     }
-
-    /*
-    public StudentLL copy() {
-        StudentLL newList = new StudentLL();
-        LLNode current = head;
-        while (current != null) {
-            newList.add(new StudentEncap(current.student.getId(), current.student.getFirstName(), current.student.getMiddleName(), current.student.getLastName(), current.student.getGWA()));
-            current = current.next;
-        }
-        return newList;
-    }
-    */
 }
