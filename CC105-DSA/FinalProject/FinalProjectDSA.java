@@ -219,7 +219,7 @@ public class FinalProjectDSA {
         }
 
         requestQueue.enqueue("DELETE STUDENT", id, student);
-        System.out.println("Student Delete request is successfully! Please proceed to option '5' in the main menu to process your request.");
+        System.out.println("Student Delete request is successful! Please proceed to option '5' in the main menu to process your request.");
     }
 
     //Removes the top request from the queue
@@ -848,12 +848,6 @@ public class FinalProjectDSA {
     //Displays the main menu
     public void printMainMenu(){
         System.out.println("====Main Menu====");
-
-        if (isSorted){
-            System.out.println("[List status: Sorted by " + getDataType(sortedBy) + " (" + (isAscending ? "Ascending" : "Descending") + ")]");
-        } else{
-            System.out.println("[List status: Unsorted]");
-        }
         System.out.println("1) Add Student (Queue Request)");
         System.out.println("2) Edit Student (Queue Request)");
         System.out.println("3) Delete Student (Queue Request)");
@@ -867,6 +861,12 @@ public class FinalProjectDSA {
         System.out.println("11) Display Student List in the System");
         System.out.println("12) Display System Queue Request");
         System.out.println("0) Exit Program");
+        
+        if (isSorted){
+            System.out.println("[List status: Sorted by " + getDataType(sortedBy) + " (" + (isAscending ? "Ascending" : "Descending") + ")]");
+        } else{
+            System.out.println("[List status: Unsorted]");
+        }
         System.out.println("=====================");
     }
 

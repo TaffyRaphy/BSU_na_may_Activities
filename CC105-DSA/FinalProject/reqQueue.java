@@ -22,7 +22,7 @@ public class reqQueue {
             rear = newNode;
         }
         size++;
-        System.out.println("Enqueued: " + requestType + "Request for Student ID: " + studentId);
+        System.out.println("Enqueued: " + requestType + " - Request for Student ID: " + studentId);
     }
 
     //Dequeue Request
