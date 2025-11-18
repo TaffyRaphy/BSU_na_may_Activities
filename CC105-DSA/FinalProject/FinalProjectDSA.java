@@ -864,13 +864,15 @@ public class FinalProjectDSA {
         System.out.println("8) Undo Last Action");
         System.out.println("9) Redo");
         System.out.println("10) Save/Load");
+        System.out.println("11) Display Student List in the System");
+        System.out.println("12) Display System Queue Request");
         System.out.println("0) Exit Program");
         System.out.println("=====================");
     }
 
     //Executes the selected menu option
     public void menuChoice (int choice){
-        switch (choice) {
+        switch (choice {
             case 1:
                 addStudent();
                 break;
@@ -910,6 +912,12 @@ public class FinalProjectDSA {
                 } else{
                     System.out.println("Wrong choice! Please enter '1' or '2'.");
                 }
+                break;
+            case 11:
+                studentList.display();
+                break;
+            case 12:
+                requestQueue.display();
                 break;
             case 0:
                 if (!requestQueue.isEmpty()){
@@ -992,19 +1000,19 @@ public class FinalProjectDSA {
         System.out.println("Welcome to Student Information Managment Program!!!");
         while (true) {
             printMainMenu();
-            System.out.print("Choose one from the menu (0-10) : ");
-            int choice = 11;
+            System.out.print("Choose one from the menu (0-12) : ");
+            int choice = -1;
             try {
                 choice = sc.nextInt();
                 sc.nextLine();
             } catch (Exception e) {
                 sc.nextLine();
-                System.out.println("Invalid Input, Please enter a number from 0-10");
+                System.out.println("Invalid Input, Please enter a number from 0-12");
+                continue;  // ← Add this to skip to next iteration
             }
             
-
-            if (choice < 0 || choice > 10){
-                System.out.println("Invalid choice, Choose from 0-10 only");
+            if (choice < 0 || choice > 12){
+                System.out.println("Invalid choice, Choose from 0-12 only");
                 continue;
             }
             

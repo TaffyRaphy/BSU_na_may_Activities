@@ -8,7 +8,7 @@ public class StudentEncap {
     private double gwa; //Student's General Weighted Average
 
     //Constructor for Student Encapsulation Class
-    public StudentEncap (String id, String lastName, String firstName, String middleName, double gwa){
+    public StudentEncap (String id,String firstName, String middleName, String lastName, double gwa){
         this.id= id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -60,12 +60,12 @@ public class StudentEncap {
         this.gwa = gwa;
     }
     
-    //Concatenates Student's Names to form Student's Full Name With Middle Name
+    //Concatenates Student's Names to form Student's Full Name
     public String getFullName(){
-        return firstName + " " + middleName + ". " + lastName;
+        return firstName + " " + middleName + " " + lastName;
     }
 
-    //Concatenates Student's Names to form Student's Full Name With Middle Name
+    //Concatenates Student's Names to form Student's Full Name With Middle Initial
     public String getFullNameWithMiddleInitial(){
         return firstName + " " + middleName.substring(0,1) + ". " + lastName;
     }
