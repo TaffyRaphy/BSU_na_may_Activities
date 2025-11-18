@@ -28,7 +28,7 @@ public class FinalProjectDSA {
         isSorted = false;
         sortedBy = 0;
         isAscending = true;
-        studentIdCounter = 1;
+        studentIdCounter = 0;
     }
 
     //Main Method to run the program
