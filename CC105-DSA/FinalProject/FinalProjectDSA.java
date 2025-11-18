@@ -872,7 +872,7 @@ public class FinalProjectDSA {
 
     //Executes the selected menu option
     public void menuChoice (int choice){
-        switch (choice {
+        switch (choice) {
             case 1:
                 addStudent();
                 break;
