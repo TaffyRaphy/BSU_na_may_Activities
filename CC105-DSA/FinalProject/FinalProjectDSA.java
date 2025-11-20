@@ -1009,7 +1009,7 @@ public class FinalProjectDSA {
 
     //Main program loop for asking main menu choice
     public void sysrun(){
-        System.out.println("Welcome to Student Information Managment Program!!!");
+        System.out.println("Welcome to Student Information Management Program!!!");
         while (true) {
             printMainMenu();
             System.out.print("Choose one from the menu (0-12) : ");
