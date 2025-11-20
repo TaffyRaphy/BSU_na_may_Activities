@@ -542,6 +542,10 @@ public class FinalProjectDSA {
             int mid = left + (right - left) / 2;
             int comparison = students[mid].getId().compareTo(id);
 
+            if (!isAscending) {
+                comparison = -comparison;
+            }
+
             if (comparison == 0){
                 return students [mid];
             } else if (comparison < 0){
@@ -576,6 +580,10 @@ public class FinalProjectDSA {
         while (left <= right) {
             int mid = left + (right - left) / 2;
             int comparison = students[mid].getFirstName().compareToIgnoreCase(firstName);
+            
+            if (!isAscending) {
+                comparison = -comparison;
+            }
             
             if (comparison == 0) {
                 firstMatch = mid;
@@ -634,6 +642,10 @@ public class FinalProjectDSA {
         while (left <= right) {
             int mid = left + (right - left) / 2;
             int comparison = students[mid].getLastName().compareToIgnoreCase(lastName);
+            
+            if (!isAscending) {
+                comparison = -comparison;
+            }
             
             if (comparison == 0) {
                 firstMatch = mid;
