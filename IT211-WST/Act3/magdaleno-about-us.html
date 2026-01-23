@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>About Us - Magdaleno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* ID CARD CONTAINER */
+        .id-card {
+            background-color: #f9e5a0;
+            width: 800px;
+            max-width: 95%;
+            border-radius: 60px;
+            border: none;
+            padding: 0;
+            position: relative;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        /* Star Border Container */
+        .star-border {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .star {
+            position: absolute;
+            font-size: 30px;
+            color: #2c2c2c;
+        }
+
+        /* Corner stars */
+        .star:nth-child(1) { top: 8px; left: 12px; transform: rotate(-15deg); font-size: 32px; }
+        .star:nth-child(2) { top: 10px; right: 8px; transform: rotate(25deg); font-size: 35px; }
+        .star:nth-child(3) { bottom: 12px; left: 15px; transform: rotate(40deg); font-size: 28px; }
+        .star:nth-child(4) { bottom: 8px; right: 10px; transform: rotate(-20deg); font-size: 33px; }
+
+        /* Top stars - playful spacing */
+        .star:nth-child(5) { top: 12px; left: calc(8% - 10px); transform: rotate(10deg); font-size: 28px; }
+        .star:nth-child(6) { top: 8px; left: calc(15% - 12px); transform: rotate(-15deg); }
+        .star:nth-child(7) { top: 15px; left: calc(22% - 8px); transform: rotate(20deg); font-size: 32px; }
+        .star:nth-child(8) { top: 10px; left: calc(30% - 15px); transform: rotate(-8deg); }
+        .star:nth-child(9) { top: 12px; left: calc(37% - 10px); transform: rotate(25deg); font-size: 29px; }
+        .star:nth-child(10) { top: 9px; left: calc(45% - 12px); transform: rotate(-12deg); }
+        .star:nth-child(11) { top: 14px; left: calc(52% - 8px); transform: rotate(18deg); font-size: 31px; }
+        .star:nth-child(12) { top: 11px; left: calc(60% - 14px); transform: rotate(-22deg); }
+        .star:nth-child(13) { top: 8px; left: calc(67% - 11px); transform: rotate(15deg); font-size: 28px; }
+        .star:nth-child(14) { top: 13px; left: calc(75% - 9px); transform: rotate(-18deg); }
+        .star:nth-child(15) { top: 10px; left: calc(82% - 13px); transform: rotate(28deg); font-size: 32px; }
+        .star:nth-child(16) { top: 12px; left: calc(90% - 10px); transform: rotate(-10deg); }
+
+        /* Bottom stars - playful spacing */
+        .star:nth-child(17) { bottom: 10px; left: calc(8% - 12px); transform: rotate(22deg); font-size: 29px; }
+        .star:nth-child(18) { bottom: 14px; left: calc(15% - 8px); transform: rotate(-16deg); }
+        .star:nth-child(19) { bottom: 9px; left: calc(22% - 14px); transform: rotate(12deg); font-size: 31px; }
+        .star:nth-child(20) { bottom: 12px; left: calc(30% - 10px); transform: rotate(-25deg); }
+        .star:nth-child(21) { bottom: 11px; left: calc(37% - 11px); transform: rotate(18deg); font-size: 28px; }
+        .star:nth-child(22) { bottom: 8px; left: calc(45% - 9px); transform: rotate(-14deg); }
+        .star:nth-child(23) { bottom: 13px; left: calc(52% - 13px); transform: rotate(24deg); font-size: 30px; }
+        .star:nth-child(24) { bottom: 10px; left: calc(60% - 12px); transform: rotate(-20deg); }
+        .star:nth-child(25) { bottom: 12px; left: calc(67% - 10px); transform: rotate(16deg); font-size: 32px; }
+        .star:nth-child(26) { bottom: 9px; left: calc(75% - 14px); transform: rotate(-12deg); }
+        .star:nth-child(27) { bottom: 14px; left: calc(82% - 8px); transform: rotate(20deg); font-size: 29px; }
+        .star:nth-child(28) { bottom: 11px; left: calc(90% - 11px); transform: rotate(-18deg); }
+
+        /* Left stars - playful spacing */
+        .star:nth-child(29) { left: 12px; top: calc(10% - 10px); transform: rotate(-14deg); font-size: 31px; }
+        .star:nth-child(30) { left: 18px; top: calc(17% - 12px); transform: rotate(20deg); }
+        .star:nth-child(31) { left: 10px; top: calc(24% - 8px); transform: rotate(-18deg); font-size: 28px; }
+        .star:nth-child(32) { left: 14px; top: calc(31% - 14px); transform: rotate(25deg); }
+        .star:nth-child(33) { left: 16px; top: calc(38% - 10px); transform: rotate(-10deg); font-size: 30px; }
+        .star:nth-child(34) { left: 11px; top: calc(45% - 11px); transform: rotate(16deg); }
+        .star:nth-child(35) { left: 15px; top: calc(52% - 13px); transform: rotate(-22deg); font-size: 29px; }
+        .star:nth-child(36) { left: 13px; top: calc(59% - 9px); transform: rotate(18deg); }
+        .star:nth-child(37) { left: 17px; top: calc(66% - 12px); transform: rotate(-15deg); font-size: 32px; }
+        .star:nth-child(38) { left: 12px; top: calc(73% - 10px); transform: rotate(22deg); }
+        .star:nth-child(39) { left: 14px; top: calc(80% - 14px); transform: rotate(-12deg); font-size: 28px; }
+        .star:nth-child(40) { left: 10px; top: calc(87% - 11px); transform: rotate(14deg); }
+
+        /* Right stars - playful spacing */
+        .star:nth-child(41) { right: 14px; top: calc(10% - 12px); transform: rotate(24deg); font-size: 30px; }
+        .star:nth-child(42) { right: 10px; top: calc(17% - 10px); transform: rotate(-18deg); }
+        .star:nth-child(43) { right: 16px; top: calc(24% - 14px); transform: rotate(12deg); font-size: 31px; }
+        .star:nth-child(44) { right: 12px; top: calc(31% - 9px); transform: rotate(-20deg); }
+        .star:nth-child(45) { right: 15px; top: calc(38% - 11px); transform: rotate(26deg); font-size: 28px; }
+        .star:nth-child(46) { right: 11px; top: calc(45% - 13px); transform: rotate(-16deg); }
+        .star:nth-child(47) { right: 13px; top: calc(52% - 10px); transform: rotate(19deg); font-size: 32px; }
+        .star:nth-child(48) { right: 17px; top: calc(59% - 12px); transform: rotate(-14deg); }
+        .star:nth-child(49) { right: 12px; top: calc(66% - 8px); transform: rotate(22deg); font-size: 29px; }
+        .star:nth-child(50) { right: 14px; top: calc(73% - 14px); transform: rotate(-24deg); }
+        .star:nth-child(51) { right: 10px; top: calc(80% - 11px); transform: rotate(16deg); font-size: 30px; }
+        .star:nth-child(52) { right: 16px; top: calc(87% - 9px); transform: rotate(-12deg); }
+
+        /* ID Content Area */
+        .id-content {
+            padding: 60px 80px;
+            position: relative;
+            z-index: 5;
+            background-image: url('cardbg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 30px;
+        }
+
+        /* Header */
+        .id-header {
+            text-align: right;
+            margin-bottom: 5px;
+            padding-bottom: 10px;
+        }
+
+        .id-header h2 {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Main Layout */
+        .id-main {
+            display: flex;
+            gap: 40px;
+            position: relative;
+        }
+
+        /* Photo Section */
+        .photo-section {
+            flex: 0 0 300px;
+        }
+
+        .photo-frame {
+            width: 300px;
+            height: 360px;
+            background-color: #fff;
+            border: 2px solid #2c2c2c;
+            transform: rotate(-1deg);
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-caption {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 8px;
+            font-weight: bold;
+            border-top: 1px solid #2c2c2c;
+            border-bottom: 1px solid #2c2c2c;
+            padding: 5px 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Details Section */
+        .details-section {
+            flex: 1;
+            padding-top: 0;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .field-value {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 26px;
+            border-bottom: 2px dotted #2c2c2c;
+            padding: 2px 0;
+            min-height: 35px;
+            font-weight: bold;
+        }
+
+        /* MAP SECTION */
+        .map-section {
+            width: 800px;
+            max-width: 95%;
+            background: #fcedc1;
+            border-radius: 50px;
+            border: 2px solid #2c2c2c74;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .map-section h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border: 2px solid #2c2c2c74;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="id-card">
+        <!-- Star Border -->
+        <div class="star-border">
+            <!-- Corner Stars -->
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <!-- Top Stars -->
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <!-- Bottom Stars -->
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <!-- Left Stars -->
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <!-- Right Stars -->
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+            <div class="star">★</div>
+        </div>
+
+        <div class="id-content">
+            <div class="id-main">
+                <div class="photo-section">
+                    <div class="photo-frame">
+                        <img src="magdaleno.jpg" alt="Profile Photo">
+                    </div>
+                    <div class="photo-caption">Photograph of Authorized Programmer</div>
+                </div>
+
+                <div class="details-section">
+                    <div class="id-header">
+                        <h2>PERMANENT PROGRAMMER LICENSE</h2>
+                    </div>
+                    <div class="field">
+                        <div class="field-label">ISSUED TO</div>
+                        <div class="field-value">Aaron Justine B. Magdaleno</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">CONTACT NUMBER</div>
+                        <div class="field-value">0999-576-0086</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">EMAIL ADDRESS</div>
+                        <div class="field-value" style="font-size: 22px;">magdalenoaaron@gmail.com</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">COMPANY ADDRESS</div>
+                        <div class="field-value">Los Angeles, California</div>
+                    </div>
+
+                    <div class="field">
+                        <div class="field-label">COMPANY AFFILIATION</div>
+                        <div class="field-value">Riot Games INC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <h3>Current Company Map<br>Current Location: Los Angeles, California</h3>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13225.77626357911!2d-118.47590297230725!3d34.03247840449752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bb147c58ab95%3A0xd27aa3a914d492b4!2sRiot%20Games%20Inc.!5e0!3m2!1sen!2sph!4v1768314138768!5m2!1sen!2sph" 
+                allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
+
+</body>
+</html>
