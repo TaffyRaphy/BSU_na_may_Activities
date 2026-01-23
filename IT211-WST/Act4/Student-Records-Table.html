@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>About Us - Meras</title>
+<html><head>
+    <title>Table of Students</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
     <style>
         * { 
             box-sizing: border-box; 
@@ -26,20 +26,6 @@
             min-height: 100vh;
             padding: 20px;
             color: #333;
-        }
-
-        /* ID CARD CONTAINER */
-        .id-card {
-            background-color: #f9e5a0;
-            width: 800px;
-            max-width: 95%;
-            border-radius: 60px;
-            border: none;
-            padding: 0;
-            position: relative;
-            box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
-            overflow: hidden;
         }
 
         /* Star Border Container */
@@ -131,238 +117,181 @@
             border-radius: 30px;
         }
 
-        /* Header */
-        .id-header {
-            text-align: right;
-            margin-bottom: 5px;
-            padding-bottom: 10px;
-        }
-
-        .id-header h2 {
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        /* Main Layout */
-        .id-main {
-            display: flex;
-            gap: 40px;
-            position: relative;
-        }
-
-        /* Photo Section */
-        .photo-section {
-            flex: 0 0 300px;
-        }
-
-        .photo-frame {
-            width: 300px;
-            height: 360px;
-            background-color: #fff;
-            border: 2px solid #2c2c2c;
-            transform: rotate(-1deg);
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-caption {
-            font-size: 10px;
-            text-align: center;
-            margin-top: 8px;
-            font-weight: bold;
-            border-top: 1px solid #2c2c2c;
-            border-bottom: 1px solid #2c2c2c;
-            padding: 5px 10px;
-            letter-spacing: 1px;
-        }
-
-        /* Details Section */
-        .details-section {
-            flex: 1;
-            padding-top: 0;
-        }
-
-        .field {
-            margin-bottom: 18px;
-        }
-
-        .field-label {
-            font-size: 11px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-            color: #000;
-            text-transform: uppercase;
-        }
-
-        .field-value {
-            font-family: 'Nanum Pen Script', cursive;
-            font-size: 26px;
-            border-bottom: 2px dotted #2c2c2c;
-            padding: 2px 0;
-            min-height: 35px;
-            font-weight: bold;
-        }
-
-        /* MAP SECTION */
-        .map-section {
-            width: 800px;
+        /* ID CARD CONTAINER */
+        .id-card {
+            background-color: #f9e5a0;
+            width: 850px;
             max-width: 95%;
-            background: #fcedc1;
-            border-radius: 50px;
-            border: 2px solid #2c2c2c74;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .map-section h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .map-container {
-            width: 100%;
-            height: 300px;
-            border: 2px solid #2c2c2c74;
-            border-radius: 10px;
+            border-radius: 60px;
+            border: none;
+            padding: 0;
+            position: relative;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
             overflow: hidden;
         }
-        
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
+
+        /* Table Styling */
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #2c2c2c;
+            color: #f9e5a0;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 2px dotted #2c2c2c;
+            border-left: 2px dotted #2c2c2c;
+            border-right: 2px dotted #2c2c2c;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        td a {
+            background-color: #2c2c2c;
+            color: #f9e5a0;
+            padding: 6px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        caption{
+            font-size: 16px;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     </style>
-</head>
+</head>    
+
 <body>
 
-    <div class="id-card">
-        <!-- Star Border -->
-        <div class="star-border">
-            <!-- Corner Stars -->
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <!-- Top Stars -->
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <!-- Bottom Stars -->
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <!-- Left Stars -->
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <!-- Right Stars -->
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-            <div class="star">★</div>
-        </div>
-
-        <div class="id-content">
-            <div class="id-main">
-                <div class="photo-section">
-                    <div class="photo-frame">
-                        <img src="meras.jpg" alt="Profile Photo">
-                    </div>
-                    <div class="photo-caption">Photograph of Authorized Programmer</div>
-                </div>
-
-                <div class="details-section">
-                    <div class="id-header">
-                        <h2>PERMANENT PROGRAMMER LICENSE</h2>
-                    </div>
-                    <div class="field">
-                        <div class="field-label">ISSUED TO</div>
-                        <div class="field-value">Vanessa Reign Meras</div>
-                    </div>
-
-                    <div class="field">
-                        <div class="field-label">CONTACT NUMBER</div>
-                        <div class="field-value">0915-940-8088</div>
-                    </div>
-
-                    <div class="field">
-                        <div class="field-label">EMAIL ADDRESS</div>
-                        <div class="field-value" style="font-size: 22px;">vanessareignm@gmail.com</div>
-                    </div>
-
-                    <div class="field">
-                        <div class="field-label">COMPANY ADDRESS</div>
-                        <div class="field-value">Malolos, Bulacan</div>
-                    </div>
-
-                    <div class="field">
-                        <div class="field-label">COMPANY AFFILIATION</div>
-                        <div class="field-value">Bulacan State University</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="id-card">
+    <!-- Star Border -->
+    <div class="star-border">
+        <!-- Corner Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Top Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Bottom Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Left Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Right Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
     </div>
 
-    <div class="map-section">
-        <h3>Current Company Map<br>Current Location: Malolos, Bulacan</h3>
-        <div class="map-container">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3855.940561571169!2d120.8142371758532!3d14.856555170757753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396521324f0f717%3A0x6d1f39ed59256ee6!2sBulacan%20State%20University!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph" 
-                allowfullscreen="" loading="lazy">
-            </iframe>
-        </div>
+    <div class="id-content">
+        <table>
+        <caption>List of Students</caption>
+        <tr>
+            <th>Student No.</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Contact No.</th>
+            <th>Birthday</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>2024100962</td>
+            <td>Igot</td>
+            <td>Raphael Louis</td>
+            <td>0949-443-5476</td>
+            <td>May 19, 2006</td>
+            <td><a href="igot-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024100691</td>
+            <td>Magdaleno</td>
+            <td>Aaron</td>
+            <td>0999-576-0086</td>
+            <td>December 20, 2005</td>
+            <td><a href="magdaleno-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024100966</td>
+            <td>Maniego</td>
+            <td>Mark Reeze</td>
+            <td>0923-928-7754</td>
+            <td>April 26, 2006</td>
+            <td><a href="maniego-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024104598</td>
+            <td>Marcelino</td>
+            <td>Kal-El</td>
+            <td>0932-474-0468</td>
+            <td>July 5, 2006</td>
+            <td><a href="marcelino-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2018109104</td>
+            <td>Meras</td>
+            <td>Vanessa Reign</td>
+            <td>0915-940-8088</td>
+            <td>November 22, 2005</td>
+            <td><a href="meras-about-us.html" target="_blank">View</a></td>
+        </tr>
+    </table>
     </div>
-
+</div>
 </body>
 </html>
