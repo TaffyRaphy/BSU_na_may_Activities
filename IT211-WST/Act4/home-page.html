@@ -24,8 +24,41 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 20px;
+            padding-bottom: 20px;
             color: #333;
+        }
+
+        .header{
+            height: 50px;
+            position: sticky;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 100;
+            padding: 0;
+            background-image: url('https://raw.githubusercontent.com/TaffyRaphy/BSU_na_may_Activities/refs/heads/main/IT211-WST/Act3/cardbg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
+            border-right: 2px solid #2c2c2c3d;
+            border-left: 2px solid #2c2c2c3d;
+            border-bottom: 2px solid #2c2c2c3d;
+        }
+
+        .navigation-bar{
+            position: relative;
+            width: 1800px;
+            max-width: 100%;
+            z-index: 15;
+            margin-left: 50px;
+            margin-right: 50px;
+            padding-left: 15px;
+            padding-right: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .id-card {
@@ -37,8 +70,39 @@
             padding: 0;
             position: relative;
             box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
+            margin-top: 50px;
+            margin-bottom: 20px;
             overflow: hidden;
+        }
+
+        .anchor{
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .anchor a{
+            color: #2c2c2c;
+            margin-right: 90px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-anchor{
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .login-anchor a{
+            color: #2c2c2c;
+            margin-right: 70px;
+            text-decoration: none;
+            font-weight: bold;
         }
 
         /* Star Border Container */
@@ -167,6 +231,20 @@
 </head>
 
 <body>
+    <div class="header">
+        <div class="navigation-bar">
+            <div class="anchor">
+                <a href="Student-Adding-Form.html" target="_blank">Add New Student</a>
+                <a href="Student-Editing-Form.html" target="_blank">Edit Student Record</a>
+                <a href="Student-Records-Table.html" target="_blank">Student Records</a>
+                <a href="user-account-form.html" target="_blank">Add New Account</a>
+            </div>
+            <div class="login-anchor">
+                <a href="log-in-form.html" target="_blank">Login</a>
+            </div>
+        </div>
+</div>
+
     <div class="id-card">
     <!-- Star Border -->
     <div class="star-border">
