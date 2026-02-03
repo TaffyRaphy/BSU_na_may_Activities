@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Table of Students</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-image: url('https://raw.githubusercontent.com/TaffyRaphy/BSU_na_may_Activities/refs/heads/main/IT211-WST/imagesrc/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Star Border Container */
+        .star-border {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .star {
+            position: absolute;
+            font-size: 30px;
+            color: #2c2c2c;
+        }
+
+        /* Corner stars */
+        .star:nth-child(1) { top: 8px; left: 12px; transform: rotate(-15deg); font-size: 32px; }
+        .star:nth-child(2) { top: 10px; right: 8px; transform: rotate(25deg); font-size: 35px; }
+        .star:nth-child(3) { bottom: 12px; left: 15px; transform: rotate(40deg); font-size: 28px; }
+        .star:nth-child(4) { bottom: 8px; right: 10px; transform: rotate(-20deg); font-size: 33px; }
+
+        /* Top stars - playful spacing */
+        .star:nth-child(5) { top: 12px; left: calc(8% - 10px); transform: rotate(10deg); font-size: 28px; }
+        .star:nth-child(6) { top: 8px; left: calc(15% - 12px); transform: rotate(-15deg); }
+        .star:nth-child(7) { top: 15px; left: calc(22% - 8px); transform: rotate(20deg); font-size: 32px; }
+        .star:nth-child(8) { top: 10px; left: calc(30% - 15px); transform: rotate(-8deg); }
+        .star:nth-child(9) { top: 12px; left: calc(37% - 10px); transform: rotate(25deg); font-size: 29px; }
+        .star:nth-child(10) { top: 9px; left: calc(45% - 12px); transform: rotate(-12deg); }
+        .star:nth-child(11) { top: 14px; left: calc(52% - 8px); transform: rotate(18deg); font-size: 31px; }
+        .star:nth-child(12) { top: 11px; left: calc(60% - 14px); transform: rotate(-22deg); }
+        .star:nth-child(13) { top: 8px; left: calc(67% - 11px); transform: rotate(15deg); font-size: 28px; }
+        .star:nth-child(14) { top: 13px; left: calc(75% - 9px); transform: rotate(-18deg); }
+        .star:nth-child(15) { top: 10px; left: calc(82% - 13px); transform: rotate(28deg); font-size: 32px; }
+        .star:nth-child(16) { top: 12px; left: calc(90% - 10px); transform: rotate(-10deg); }
+
+        /* Bottom stars - playful spacing */
+        .star:nth-child(17) { bottom: 10px; left: calc(8% - 12px); transform: rotate(22deg); font-size: 29px; }
+        .star:nth-child(18) { bottom: 14px; left: calc(15% - 8px); transform: rotate(-16deg); }
+        .star:nth-child(19) { bottom: 9px; left: calc(22% - 14px); transform: rotate(12deg); font-size: 31px; }
+        .star:nth-child(20) { bottom: 12px; left: calc(30% - 10px); transform: rotate(-25deg); }
+        .star:nth-child(21) { bottom: 11px; left: calc(37% - 11px); transform: rotate(18deg); font-size: 28px; }
+        .star:nth-child(22) { bottom: 8px; left: calc(45% - 9px); transform: rotate(-14deg); }
+        .star:nth-child(23) { bottom: 13px; left: calc(52% - 13px); transform: rotate(24deg); font-size: 30px; }
+        .star:nth-child(24) { bottom: 10px; left: calc(60% - 12px); transform: rotate(-20deg); }
+        .star:nth-child(25) { bottom: 12px; left: calc(67% - 10px); transform: rotate(16deg); font-size: 32px; }
+        .star:nth-child(26) { bottom: 9px; left: calc(75% - 14px); transform: rotate(-12deg); }
+        .star:nth-child(27) { bottom: 14px; left: calc(82% - 8px); transform: rotate(20deg); font-size: 29px; }
+        .star:nth-child(28) { bottom: 11px; left: calc(90% - 11px); transform: rotate(-18deg); }
+
+        /* Left stars - playful spacing */
+        .star:nth-child(29) { left: 12px; top: calc(10% - 10px); transform: rotate(-14deg); font-size: 31px; }
+        .star:nth-child(30) { left: 18px; top: calc(17% - 12px); transform: rotate(20deg); }
+        .star:nth-child(31) { left: 10px; top: calc(24% - 8px); transform: rotate(-18deg); font-size: 28px; }
+        .star:nth-child(32) { left: 14px; top: calc(31% - 14px); transform: rotate(25deg); }
+        .star:nth-child(33) { left: 16px; top: calc(38% - 10px); transform: rotate(-10deg); font-size: 30px; }
+        .star:nth-child(34) { left: 11px; top: calc(45% - 11px); transform: rotate(16deg); }
+        .star:nth-child(35) { left: 15px; top: calc(52% - 13px); transform: rotate(-22deg); font-size: 29px; }
+        .star:nth-child(36) { left: 13px; top: calc(59% - 9px); transform: rotate(18deg); }
+        .star:nth-child(37) { left: 17px; top: calc(66% - 12px); transform: rotate(-15deg); font-size: 32px; }
+        .star:nth-child(38) { left: 12px; top: calc(73% - 10px); transform: rotate(22deg); }
+        .star:nth-child(39) { left: 14px; top: calc(80% - 14px); transform: rotate(-12deg); font-size: 28px; }
+        .star:nth-child(40) { left: 10px; top: calc(87% - 11px); transform: rotate(14deg); }
+
+        /* Right stars - playful spacing */
+        .star:nth-child(41) { right: 14px; top: calc(10% - 12px); transform: rotate(24deg); font-size: 30px; }
+        .star:nth-child(42) { right: 10px; top: calc(17% - 10px); transform: rotate(-18deg); }
+        .star:nth-child(43) { right: 16px; top: calc(24% - 14px); transform: rotate(12deg); font-size: 31px; }
+        .star:nth-child(44) { right: 12px; top: calc(31% - 9px); transform: rotate(-20deg); }
+        .star:nth-child(45) { right: 15px; top: calc(38% - 11px); transform: rotate(26deg); font-size: 28px; }
+        .star:nth-child(46) { right: 11px; top: calc(45% - 13px); transform: rotate(-16deg); }
+        .star:nth-child(47) { right: 13px; top: calc(52% - 10px); transform: rotate(19deg); font-size: 32px; }
+        .star:nth-child(48) { right: 17px; top: calc(59% - 12px); transform: rotate(-14deg); }
+        .star:nth-child(49) { right: 12px; top: calc(66% - 8px); transform: rotate(22deg); font-size: 29px; }
+        .star:nth-child(50) { right: 14px; top: calc(73% - 14px); transform: rotate(-24deg); }
+        .star:nth-child(51) { right: 10px; top: calc(80% - 11px); transform: rotate(16deg); font-size: 30px; }
+        .star:nth-child(52) { right: 16px; top: calc(87% - 9px); transform: rotate(-12deg); }
+
+        /* ID Content Area */
+        .id-content {
+            padding: 60px 80px;
+            position: relative;
+            z-index: 5;
+            background-image: url('https://raw.githubusercontent.com/TaffyRaphy/BSU_na_may_Activities/refs/heads/main/IT211-WST/Act3/cardbg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 30px;
+        }
+
+        /* ID CARD CONTAINER */
+        .id-card {
+            background-color: #f9e5a0;
+            width: 850px;
+            max-width: 95%;
+            border-radius: 60px;
+            border: none;
+            padding: 0;
+            position: relative;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        /* Table Styling */
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #2c2c2c;
+            color: #f9e5a0;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 2px dotted #2c2c2c;
+            border-left: 2px dotted #2c2c2c;
+            border-right: 2px dotted #2c2c2c;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        td a {
+            background-color: #2c2c2c;
+            color: #f9e5a0;
+            padding: 6px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        caption{
+            font-size: 16px;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>    
+
+<body>
+
+<div class="id-card">
+    <!-- Star Border -->
+    <div class="star-border">
+        <!-- Corner Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Top Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Bottom Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Left Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <!-- Right Stars -->
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+        <div class="star">★</div>
+    </div>
+
+    <div class="id-content">
+        <table>
+        <caption>List of Students</caption>
+        <tr>
+            <th>Student No.</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Contact No.</th>
+            <th>Birthday</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>2024100962</td>
+            <td>Igot</td>
+            <td>Raphael Louis</td>
+            <td>0949-443-5476</td>
+            <td>May 19, 2006</td>
+            <td><a href="igot-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024100691</td>
+            <td>Magdaleno</td>
+            <td>Aaron</td>
+            <td>0999-576-0086</td>
+            <td>December 20, 2005</td>
+            <td><a href="magdaleno-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024100966</td>
+            <td>Maniego</td>
+            <td>Mark Reeze</td>
+            <td>0923-928-7754</td>
+            <td>April 26, 2006</td>
+            <td><a href="maniego-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2024104598</td>
+            <td>Marcelino</td>
+            <td>Kal-El</td>
+            <td>0932-474-0468</td>
+            <td>July 5, 2006</td>
+            <td><a href="marcelino-about-us.html" target="_blank">View</a></td>
+        </tr>
+        <tr>
+            <td>2018109104</td>
+            <td>Meras</td>
+            <td>Vanessa Reign</td>
+            <td>0915-940-8088</td>
+            <td>November 22, 2005</td>
+            <td><a href="meras-about-us.html" target="_blank">View</a></td>
+        </tr>
+    </table>
+    </div>
+</div>
+</body>
+</html>

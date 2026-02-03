@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    
+    <h1>Sample Java Script</h1>
+
+
+
+    <head>
+        <script>
+            
+        </script>
+    </head>
+
+    <body>
+        <form method="post" action="#">
+            <label>Enter a Number:</label>
+            <input type="number" id = "inputNum" name="num">
+            <button type="button" onclick="getNumber()">Submit</button>
+            <button type="button" onclick="cancels()">Cancel</button>
+        </form>
+        
+        <div id="result"></div>
+    </body>
+
+
+
+</html>
+
+        <script>
+            function getNumber(){
+                input = document.getElementById("inputNum").value;
+
+                hellooooo(input);
+            }
+
+            function cancels(){
+                document.getElementById("result").innerHTML = "";
+                document.getElementById("inputNum").value = "";
+            }
+
+            function hellooooo (b){
+                resultDiv = document.getElementById("result");
+
+                resultDiv.innerHTML = "";
+                
+                for(c = 1 ; c<=b; c++) {
+                    if (c % 2){
+                        resultDiv.innerHTML += c + " is odd<br>";
+                    } else{
+                        resultDiv.innerHTML += c + " is even<br>";
+                    }
+                }
+            }
+        </script>
